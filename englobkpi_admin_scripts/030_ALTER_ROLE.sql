@@ -1,0 +1,3 @@
+ALTER ROLE englobkpi WITH PASSWORD '2cNUVfN~Fp`2Zzh3EV2rcV49&~^Ev4y%';
+ALTER ROLE powerbi WITH PASSWORD 'xJE~cEcvF3QFt2^qdhvPN7DfzzXpkJTf';
+ALTER ROLE postgres WITH PASSWORD 'EF`wzHV%r5bt`57~jmPCFezwMRL%gZme';

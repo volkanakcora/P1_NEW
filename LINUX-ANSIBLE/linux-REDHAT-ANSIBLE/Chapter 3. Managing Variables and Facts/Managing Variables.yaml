@@ -1,0 +1,266 @@
+Invalid variable names	Valid variable names
+web server	            web_server
+remote.file	            remote_file
+1st file	              file_1
+                        file1
+
+remoteserver$1	        remote_server_1
+                        remote_server1
+
+
+Defining Variables:
+Variables can be defined in a variety of places in an Ansible project. If a variable is set using the same name in two places, and 
+those settings have different values, precedence determines which value is used.
+
+
+
+Some variables are facts that can be set by Ansible based on the configuration of a system. Other variables can be 
+set inside the playbook, and affect one play in that playbook, or only one task in that play. You can also set extra variables on 
+the ansible-playbook command line by using the 
+'''--extra-vars''' or -e option and specifying those variables, and they override all other values for that variable name.
+
+
+
+!!!!!!!!!! Here is a simplified list of ways to define a variable, ordered from lowest precedence to highest:
+
+- Group variables defined in the inventory.
+
+- Group variables defined in files in a group_vars subdirectory in the same directory as the inventory or the playbook.
+
+- Host variables defined in the inventory.
+
+- Host variables defined in files in a host_vars subdirectory in the same directory as the inventory or the playbook.
+
+- Host facts, discovered at runtime.
+
+- Play variables in the playbook (vars and vars_files).
+
+- Task variables.
+
+- Extra variables defined on the command line.
+
+
+
+
+Variables in Playbooks:
+Variables play an important role in Ansible Playbooks because they ease the management of variable data in a playbook.
+
+Defining Variables in Playbooks:
+When writing playbooks, you can define your own variables and then invoke those values in a task. For example, a variable 
+named web_package can be defined with a value of httpd. A task can then call the variable using the yum module to install the httpd package.
+
+
+
+One common method is to place a variable in a vars block at the beginning of a playbook:
+
+- hosts: all
+  vars:
+    user: joe
+    home: /home/joe
+
+....
+
+It is also possible to define playbook variables in external files:
+
+- hosts: all
+  vars_files:
+    - vars/users.yml
+
+variables are then defined in that file or those files in YAML format:
+
+user: joe
+home: /home/joe
+
+.....
+
+
+--- - - - - - - - - - - - - - -  Using Variables in Playbooks
+
+vars:
+  user: joe
+
+tasks:
+  # This line will read: Creates the user joe
+  - name: Creates the user {{ user }}
+    user:
+      # This line will create the user named Joe
+      name: "{{ user }}"
+
+
+
+--- - - - - -  - - - - - - - -  Host Variables and Group Variables
+
+Inventory variables that apply directly to hosts fall into two broad categories: 
+host variables apply to a specific host, and group variables apply to all hosts in a host group or in a group of host groups. 
+
+- The preferred approach to defining variables for hosts and host groups is to create two directories, group_vars and host_vars
+
+
+The following examples illustrate this approach in more detail. Consider a scenario where there are two data centers to manage and the data center hosts are defined in the ~/project/inventory inventory file:
+
+#[admin@station project]$ cat ~/project/inventory
+
+[datacenter1]
+demo1.example.com
+demo2.example.com
+
+[datacenter2]
+demo3.example.com
+demo4.example.com
+
+[datacenters:children]
+datacenter1
+datacenter2
+
+If you need to define a general value for all servers in both data centers, set a group variable for the datacenters host group:
+
+#[admin@station project]$ cat ~/project/group_vars/datacenters
+package: httpd
+
+
+If the value to define varies for each data center, set a group variable for each data center host group:
+
+#[admin@station project]$ cat ~/project/group_vars/datacenter1
+package: httpd
+
+#[admin@station project]$ cat ~/project/group_vars/datacenter2
+package: apache
+
+
+
+If the value to be defined varies for each host in every data center, then define the variables in separate host variable files:
+
+#[admin@station project]$ cat ~/project/host_vars/demo1.example.com
+package: httpd
+
+#[admin@station project]$ cat ~/project/host_vars/demo2.example.com
+package: apache
+
+#[admin@station project]$ cat ~/project/host_vars/demo3.example.com
+package: mariadb-server
+
+#[admin@station project]$ cat ~/project/host_vars/demo4.example.com
+package: mysql-server
+
+
+
+The directory structure for the example project, project, if it contained all the example files above, would appear as follows:
+
+project
+├── ansible.cfg
+├── group_vars
+│   ├── datacenters
+│   ├── datacenters1
+│   └── datacenters2
+├── host_vars
+│   ├── demo1.example.com
+│   ├── demo2.example.com
+│   ├── demo3.example.com
+│   └── demo4.example.com
+├── inventory
+└── playbook.yml
+
+
+
+
+!!! Overriding Variables from the Command Line: [user@demo ~]$ ansible-playbook main.yml -e "package=apache"
+
+
+[[[[[[[[[[[[[[[[[[[[[[[[[[ ARRAYS AS VARS]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+For example, consider the following snippet:
+
+user1_first_name: Bob
+user1_last_name: Jones
+user1_home_dir: /users/bjones
+user2_first_name: Anne
+user2_last_name: Cook
+user2_home_dir: /users/acook
+This could be rewritten as an array called users:
+
+users:
+  bjones:
+    first_name: Bob
+    last_name: Jones
+    home_dir: /users/bjones
+  acook:
+    first_name: Anne
+    last_name: Cook
+    home_dir: /users/acook
+
+
+
+
+
+[[[[[[[[[[[[[[[[[[[ REGISTERED VALUES FOR DEBUG, YOU SHOULD ADD REGISTER AND DEBUG IT AS:]]]]]]]]]]]]]]]]]]]
+
+The following playbook demonstrates how to capture the output of a command for debugging purposes:
+
+---
+- name: Installs a package and prints the result
+  hosts: all
+  tasks:
+    - name: Install the package
+      yum:
+        name: httpd
+        state: installed
+      register: install_result
+
+    - debug:
+        var: install_result
+
+
+[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[ EXECISE ]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+---
+- name: Deploy and start Apache HTTPD service
+  hosts: webserver
+  vars:
+    web_pkg: httpd
+    firewall_pkg: firewalld
+    web_service: httpd
+    firewall_service: firewalld
+    python_pkg: python3-PyMySQL
+    rule: http
+
+  tasks:
+    - name: Required packages are installed and up to date
+      yum:
+        name:
+          - "{{ web_pkg  }}"
+          - "{{ firewall_pkg }}"
+          - "{{ python_pkg }}"
+        state: latest
+
+    - name: The {{ firewall_service }} service is started and enabled
+      service:
+        name: "{{ firewall_service }}"
+        enabled: true
+        state: started
+
+    - name: The {{ web_service }} service is started and enabled
+      service:
+        name: "{{ web_service }}"
+        enabled: true
+        state: started
+
+    - name: Web content is in place
+      copy:
+        content: "Example web content"
+        dest: /var/www/html/index.html
+
+    - name: The firewall port for {{ rule }} is open
+      firewalld:
+        service: "{{ rule }}"
+        permanent: true
+        immediate: true
+        state: enabled
+
+- name: Verify the Apache service
+  hosts: localhost
+  become: false
+  tasks:
+    - name: Ensure the webserver is reachable
+      uri:
+        url: http://servera.lab.example.com
+        status_code: 200

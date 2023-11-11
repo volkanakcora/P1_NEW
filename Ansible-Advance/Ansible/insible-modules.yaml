@@ -1,0 +1,60 @@
+# Command modules
+Executes a cmmand on a remote node
+-
+  name: Play1
+  hosts: localhost
+  tasks:
+      - name: Execute command 'DATE'
+        command: date
+
+      - name: Display resolv.conf contents
+        command: cat /etc/resolv.conf
+
+      - name: Display resolv.conf contents
+        command: cat resolv.conf chdir =/etc  #(ıncase you need to change directory 
+                                               #before executing command)
+     
+     # this command to create folder if the folder does not exist
+      - name: Display resolv.conf contents
+      - command: mkdir /folder creates =/folder
+
+#Script Modules
+
+#Runs a local script on a remote node after transferring it
+ 
+-
+  name: Play1
+  hosts: localhost
+  tasks:
+      - name: Run a script on remote server
+        command: /some/local/script.sh -arg1 -arg2
+
+# Services Modules
+
+#Manage services -Start  - Stop -Restart
+
+-
+  name: Start services in order
+  hosts: localhost
+  tasks:
+      - name: Start the database service
+        service: name = postgresql  state=started (to ensure that servıce has already been started)
+
+      - name: Start the httpd service
+        service: name = httpd state=started
+
+#lineinfile modules
+
+#search for a line in a file
+#and replace it or add it if if does not exist
+
+-
+  name: Add DNS server to resolv.conf
+  hosts: localhost
+  tasks:
+      - lineinfile:
+          path: /etc/resolv.conf
+          line: "nameserver 10.1.250.10"
+
+      
+       

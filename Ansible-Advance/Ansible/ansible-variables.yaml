@@ -1,0 +1,134 @@
+#Variables
+
+# Stores information that varies with each host
+
+web_node1 ansible_host=web01.xyz.com ansible_connection=winrm ansible_user=administrator ansible_password=Win$Pass
+web_node2 ansible_host=web02.xyz.com ansible_connection=winrm ansible_user=administrator ansible_password=Win$Pass
+web_node3 ansible_host=web03.xyz.com ansible_connection=winrm ansible_user=administrator ansible_password=Win$Pass
+
+# DB Servers
+sql_db1 ansible_host=sql01.xyz.com ansible_connection=ssh ansible_user=root ansible_ssh_pass=Lin$Pass
+sql_db2 ansible_host=sql02.xyz.com ansible_connection=ssh ansible_user=root ansible_ssh_pass=Lin$Pass
+
+
+Playbook.yml
+
+-
+  name: Add DNS Server to resolve.conf
+  hosts: localhost
+  vars: 10.1.250.10
+  tasks:
+      - lineinfile:
+          path: /etc/resolv.conf
+          line: 'nameserver {{10.1.250.10}}'
+
+# Or we can have seperate file dedicated for variables
+
+variable1: value1
+variable2: value2
+
+
+# Example that is used to set multiple firewall configurations
+
+-
+  name: Set firewall configurations
+  hosts: web
+  tasks:
+    - firewalld:
+        service: https
+        permanent: true
+        state: enabled
+    - firewalld:
+        port: 8081/tcp
+        permanent: true
+        state: disabled
+    - firewalld:
+        port: 161-162/udp
+        permanent: true
+        state: disabled
+    - firewalld:
+        service: 192.0.2.0/24
+        permanent: internal
+        state: enabled
+
+
+
+# another more organized Example that is used to set multiple firewall configurations
+
+
+#sample ınventory file
+
+web http_port= 8081 snmp_port=161-162 inter_ip_range=192.0.2.0
+
+
+-
+  name: Set firewall configurations
+  hosts: web
+  tasks:
+    - firewalld:
+        service: https
+        permanent: true
+        state: enabled
+    - firewalld:
+        port: "{{http_port}}"/tcp
+        permanent: true
+        state: disabled
+    - firewalld:
+        port: "{{snmp_port}}"/udp
+        permanent: true
+        state: disabled
+    - firewalld:
+        service: "{{inter_ip_range}}"/24
+        permanent: internal
+        state: enabled
+
+#Examples
+
+    name: 'Update nameserver entry into resolv.conf file on localhost'
+    hosts: localhost
+    tasks:
+        -
+            name: 'Update nameserver entry into resolv.conf file'
+            lineinfile:
+                path: /etc/resolv.conf
+                line: 'nameserver {{ nameserver_ip}}'
+
+#1
+
+# Sample Inventory File
+
+localhost ansible_connection=localhost nameserver_ip=10.1.250.10 snmp_port=160-161
+
+#yaml
+
+-
+    name: 'Update nameserver entry into resolv.conf file on localhost'
+    hosts: localhost
+    tasks:
+        -
+            name: 'Update nameserver entry into resolv.conf file'
+            lineinfile:
+                path: /etc/resolv.conf
+                line: 'nameserver {{ nameserver_ip }}'
+        -
+            name: 'Disable SNMP Port'
+            firewalld:
+                port: "{{snmp_port}}"
+                permanent: true
+                state: disabled
+
+#2
+
+-
+    hosts: localhost
+    vars:
+        car_model: 'BMW M3'
+        country_name: USA
+        title: 'Systems Engineer'
+    tasks:
+        -
+            command: 'echo "My car''s model is {{ car_model }}"'
+        -
+            command: 'echo "I live in the {{ country_name }}"'
+        -
+            command: 'echo "I work as a {{ title }}"'

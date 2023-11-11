@@ -1,0 +1,143 @@
+On workstation, run the lab role-collections start command. This command creates the working directory, /home/student/role-collections, and populates it with an Ansible project.
+
+[student@workstation ~]$ lab role-collections start
+Procedure 7.4. Instructions
+
+Install and then inspect the gls.utils collection.
+
+Install the gls.utils collection from the tar file at http://materials.example.com/labs/role-collections/gls-utils-0.0.1.tar.gz. You can copy and paste that URL from the /home/student/role-collections/url.txt file.
+
+[student@workstation ~]$ ansible-galaxy collection install \
+> http://materials.example.com/labs/role-collections/gls-utils-0.0.1.tar.gz
+Process install dependency map
+Starting collection install process
+Installing 'gls.utils:0.0.1' to '/home/student/.ansible/collections/ansible_collections/gls/utils'
+Notice that the preceding command installs the collection in the /home/student/.ansible/collections/ansible_collections/gls/utils directory.
+
+List the roles that the collection provides.
+
+[student@workstation ~]$ ls \
+> ~/.ansible/collections/ansible_collections/gls/utils/roles
+backup  restore
+From the preceding output, notice that the collection provides two roles: backup and restore.
+
+
+Each role provides a README.md file. Consult the README.md file for the backup role.
+
+[student@workstation ~]$ cat \
+> ~/.ansible/collections/ansible_collections/gls/utils/roles/backup/README.md
+...output omitted...
+List the modules that the collection provides.
+
+
+[student@workstation ~]$ ls \
+> ~/.ansible/collections/ansible_collections/gls/utils/plugins/modules
+newping.py
+The collection provides the newping module.
+
+Use the ansible-doc command to consult the newping module documentation.
+
+[student@workstation ~]$ ansible-doc gls.utils.newping
+...output omitted...
+Complete and then run the /home/student/role-collections/bck.yml playbook. That playbook uses the gls.utils.newping module and the gls.utils.backup role.
+
+Change to the role-collections working directory.
+
+[student@workstation ~]$ cd ~/role-collections
+[student@workstation role-collections]$
+Edit the bck.yml playbook. In the first task, invoke the gls.utils.newping module.
+
+...output omitted...
+  tasks:
+    - name: Ensure the machine is up
+      gls.utils.newping:
+        data: pong
+...output omitted...
+Do not close the file yet.
+
+In the second task, invoke the gls.utils.backup role. When done, save and close the file.
+
+...output omitted...
+    - name: Ensure configuration files are saved
+      include_role:
+        name: gls.utils.backup
+      vars:
+        backup_id: backup_etc
+        backup_files:
+          - /etc/sysconfig
+          - /etc/yum.repos.d
+...output omitted...
+
+
+The resulting file should display as follows:
+
+---
+- name: Backup the system configuration
+  hosts: servera.lab.example.com
+  become: true
+  gather_facts: false
+
+  tasks:
+    - name: Ensure the machine is up
+      gls.utils.newping:
+        data: pong
+
+    - name: Ensure configuration files are saved
+      include_role:
+        name: gls.utils.backup
+      vars:
+        backup_id: backup_etc
+        backup_files:
+          - /etc/sysconfig
+          - /etc/yum.repos.d
+Verify the syntax of the bck.yml playbook.
+
+[student@workstation role-collections]$ ansible-playbook --syntax-check bck.yml
+
+playbook: bck.yml
+Run the playbook.
+
+[student@workstation role-collections]$ ansible-playbook bck.yml
+...output omitted...
+In the second part of this exercise, install content collections specified by a requirements.yml file.
+
+To test your work when done, run the new_system.yml playbook. That playbook uses the redhat.insights.insights_client and redhat.rhel_system_roles.selinux roles to configure Red Hat Insights and SELinux on the servera machine.
+
+Review the requirements.yml file. The file lists two collections to install from tar files hosted on the materials.example.com web server.
+
+---
+collections:
+  - name: http://materials.example.com/labs/role-collections/redhat-insights-1.0.5.tar.gz
+  - name: http://materials.example.com/labs/role-collections/redhat-rhel_system_roles-1.0.1.tar.gz
+Use the ansible-galaxy command with the requirements.yml file to install the collections.
+
+[student@workstation role-collections]$ ansible-galaxy collection install \
+> -r requirements.yml
+Process install dependency map
+Starting collection install process
+Installing 'redhat.insights:1.0.5' to '/home/student/.ansible/collections/ansible_collections/redhat/insights'
+Installing 'redhat.rhel_system_roles:1.0.1' to '/home/student/.ansible/collections/ansible_collections/redhat/rhel_system_roles'
+Review the new_system.yml playbook.
+
+---
+- name: Configure the system
+  hosts: servera.lab.example.com
+  become: true
+  gather_facts: true
+
+  tasks:
+    - name: Ensure the system is registered with Insights
+      include_role:
+        name: redhat.insights.insights_client
+      vars:
+        auto_config: false
+        insights_proxy: http://proxy.example.com:8080
+
+    - name: Ensure SELinux mode is Enforcing
+      include_role:
+        name: redhat.rhel_system_roles.selinux
+      vars:
+        selinux_state: enforcing
+Run the new_system.yml playbook in check mode to confirm that you correctly installed the required collections. Because the classroom systems are not registered with Red Hat and might not have internet access, the new_system.yml playbook cannot complete successfully. However, to confirm that you correctly installed the required collections, you can still run the playbook in check mode.
+
+[student@workstation role-collections]$ ansible-playbook --check new_system.yml

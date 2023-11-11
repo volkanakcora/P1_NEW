@@ -1,0 +1,4 @@
+---
+# defaults file for my_new_role
+#
+system_owner: user@host.example.com

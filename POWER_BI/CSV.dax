@@ -1,0 +1,76 @@
+CSV-monthly
+===========
+let
+    Source = Folder.Files("S:\Energie\Prod_DEVELOP\003 Business Operations\Applications\M7\EPEX\SLAreporting\CSV\shrd_syt1\monthly"),
+    #"Filtered Hidden Files1" = Table.SelectRows(Source, each [Attributes]?[Hidden]? <> true),
+    #"Invoke Custom Function1" = Table.AddColumn(#"Filtered Hidden Files1", "Transform File", each #"Transform File"([Content])),
+    #"Renamed Columns1" = Table.RenameColumns(#"Invoke Custom Function1", {"Name", "Source.Name"}),
+    #"Removed Other Columns1" = Table.SelectColumns(#"Renamed Columns1", {"Source.Name", "Transform File"}),
+    #"Expanded Table Column1" = Table.ExpandTableColumn(#"Removed Other Columns1", "Transform File", Table.ColumnNames(#"Transform File"(#"Sample File")))
+in
+    #"Expanded Table Column1"
+	
+	
+let
+    Source = SharePoint.Files("https://bluebook.deutsche-boerse.de/sites/sp0232/", [ApiVersion = 15]),
+    #"Filtered Rows" = Table.SelectRows(Source, each [Folder Path] = "https://bluebook.deutsche-boerse.de/sites/sp0232/SP - Energy/10 KPI & SLA Reporting/02) Service Level Reporting/generate/CSV/shrd_syt1/monthly/"),
+    #"Filtered Rows1" = Table.SelectRows(#"Filtered Rows", each [Extension] = ".csv"),
+    #"Filtered Hidden Files1" = Table.SelectRows(#"Filtered Rows1", each [Attributes]?[Hidden]? <> true),
+    #"Invoke Custom Function1" = Table.AddColumn(#"Filtered Hidden Files1", "Transform File", each #"Transform File"([Content])),
+    #"Renamed Columns1" = Table.RenameColumns(#"Invoke Custom Function1", {"Name", "Source.Name"}),
+    #"Removed Other Columns1" = Table.SelectColumns(#"Renamed Columns1", {"Source.Name", "Transform File"}),
+    #"Expanded Table Column1" = Table.ExpandTableColumn(#"Removed Other Columns1", "Transform File", Table.ColumnNames(#"Transform File"(#"Sample File")))
+in
+    #"Expanded Table Column1"
+	
+CSV-yearly
+==========
+let
+    Source = Folder.Files("S:\Energie\Prod_DEVELOP\003 Business Operations\Applications\M7\EPEX\SLAreporting\CSV\shrd_syt1\yearly"),
+    #"Filtered Hidden Files1" = Table.SelectRows(Source, each [Attributes]?[Hidden]? <> true),
+    #"Invoke Custom Function1" = Table.AddColumn(#"Filtered Hidden Files1", "Transform File (2)", each #"Transform File (2)"([Content])),
+    #"Renamed Columns1" = Table.RenameColumns(#"Invoke Custom Function1", {"Name", "Source.Name"}),
+    #"Removed Other Columns1" = Table.SelectColumns(#"Renamed Columns1", {"Source.Name", "Transform File (2)"}),
+    #"Expanded Table Column1" = Table.ExpandTableColumn(#"Removed Other Columns1", "Transform File (2)", Table.ColumnNames(#"Transform File (2)"(#"Sample File (2)")))
+in
+    #"Expanded Table Column1"
+	
+
+let
+    Source = SharePoint.Files("https://bluebook.deutsche-boerse.de/sites/sp0232/", [ApiVersion = 15]),
+    #"Filtered Rows" = Table.SelectRows(Source, each [Folder Path] = "https://bluebook.deutsche-boerse.de/sites/sp0232/SP - Energy/10 KPI & SLA Reporting/02) Service Level Reporting/generate/CSV/shrd_syt1/yearly/"),
+    #"Filtered Rows1" = Table.SelectRows(#"Filtered Rows", each [Extension] = ".csv"),
+    #"Filtered Hidden Files1" = Table.SelectRows(#"Filtered Rows1", each [Attributes]?[Hidden]? <> true),
+    #"Invoke Custom Function1" = Table.AddColumn(#"Filtered Hidden Files1", "Transform File (2)", each #"Transform File (2)"([Content])),
+    #"Renamed Columns1" = Table.RenameColumns(#"Invoke Custom Function1", {"Name", "Source.Name"}),
+    #"Removed Other Columns1" = Table.SelectColumns(#"Renamed Columns1", {"Source.Name", "Transform File (2)"}),
+    #"Expanded Table Column1" = Table.ExpandTableColumn(#"Removed Other Columns1", "Transform File (2)", Table.ColumnNames(#"Transform File (2)"(#"Sample File (2)")))
+in
+    #"Expanded Table Column1"
+
+
+
+
+
+let
+    Source = SharePoint.Files("https://bluebook.deutsche-boerse.de/sites/sp0232/", [ApiVersion = 15]),
+    #"Filtered Rows" = Table.SelectRows(Source, each Text.Contains([Folder Path], "XBID-AVAILABILITY")),
+    #"Filtered Hidden Files1" = Table.SelectRows(#"Filtered Rows", each [Attributes]?[Hidden]? <> true),
+    #"Invoke Custom Function1" = Table.AddColumn(#"Filtered Hidden Files1", "Transform File (11)", each #"Transform File (11)"([Content])),
+    #"Renamed Columns1" = Table.RenameColumns(#"Invoke Custom Function1", {"Name", "Source.Name"}),
+    #"Filtered Hidden Files2" = Table.SelectRows(#"Renamed Columns1", each [Attributes]?[Hidden]? <> true),
+    #"Filtered Hidden Files3" = Table.SelectRows(#"Filtered Hidden Files2", each [Attributes]?[Hidden]? <> true),
+    #"Invoke Custom Function2" = Table.AddColumn(#"Filtered Hidden Files3", "Transform File (2)", each #"Transform File (2)"([Content])),
+    #"Filtered Hidden Files4" = Table.SelectRows(#"Invoke Custom Function2", each [Attributes]?[Hidden]? <> true),
+    #"Invoke Custom Function3" = Table.AddColumn(#"Filtered Hidden Files4", "Transform File (6)", each #"Transform File (6)"([Content])),
+    #"Filtered Hidden Files5" = Table.SelectRows(#"Invoke Custom Function3", each [Attributes]?[Hidden]? <> true),
+    #"Invoke Custom Function4" = Table.AddColumn(#"Filtered Hidden Files5", "Transform File (7)", each #"Transform File (7)"([Content])),
+    #"Filtered Hidden Files6" = Table.SelectRows(#"Invoke Custom Function4", each [Attributes]?[Hidden]? <> true),
+    #"Invoke Custom Function5" = Table.AddColumn(#"Filtered Hidden Files6", "Transform File (8)", each #"Transform File (8)"([Content])),
+    #"Filtered Hidden Files7" = Table.SelectRows(#"Invoke Custom Function5", each [Attributes]?[Hidden]? <> true),
+    #"Invoke Custom Function6" = Table.AddColumn(#"Filtered Hidden Files7", "Transform File (9)", each #"Transform File (9)"([Content])),
+    #"Removed Other Columns1" = Table.SelectColumns(#"Invoke Custom Function6", {"Transform File (9)"}),
+    #"Expanded Table Column1" = Table.ExpandTableColumn(#"Removed Other Columns1", "Transform File (9)", Table.ColumnNames(#"Transform File (9)"(#"Sample File (9)"))),
+    #"Changed Type" = Table.TransformColumnTypes(#"Expanded Table Column1",{{"Day", type date}, {"Daily Total (Block orders)", Int64.Type}, {"Daily Total (Block Order Transactions)", Int64.Type}})
+in
+    #"Changed Type"

@@ -1,0 +1,5 @@
+vsftpd_anaymous_enable: tru
+connect from ports true
+listen true
+local enable false
+

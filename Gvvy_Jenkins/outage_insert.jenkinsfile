@@ -1,0 +1,175 @@
+#!groovy
+
+import java.net.URLEncoder
+import java.text.SimpleDateFormat
+
+
+prodEnv = [
+    dpuHost: ['proddpu.srv.energy']
+]
+
+simuEnv = [
+    dpuHost: ['simudpu.srv.energy']
+]
+
+cuteEnv = [
+    dpuHost: ['testdpu.srv.energy']
+]
+
+
+def addOutage(dpuHost, env) {
+    def folderPath = "/home/m7dpu/ebsm/"
+    echo("Adding line for ${action} action to ${environment}")
+    sh(
+        script: """\
+            ssh -o 'StrictHostKeyChecking=no' 'ansible@${dpuHost}' <<EOF
+                sudo -iu m7dpu
+                java -Duser.timezone=UTC -cp /home/m7dpu/ebsm/properties:/home/m7dpu/ebsm/ebsm-etl.jar com.deutscheboerse.energy.ebsm.gnrl.MaintenanceOutageTime  ${action} ${env} ${DATE} ${type} ${START_TIME} ${END_TIME} ${comment}
+            EOF
+           
+        """.stripIndent()
+    )
+}
+
+def isExternal() {
+    return env.JOB_NAME == 'Operations/01-Common/SLA_KPI/support/insert_outages'
+}
+
+def isBizOps() {
+    return env.JOB_NAME == 'Operations/01-Common/SLA_KPI/insert_outages'
+}
+
+
+def bizopsEnvs = [
+    'ELTS_PROD', 'HUPX_PROD', 'PLPX_PROD', 'XRPM_PROD', 'XSOP_PROD', 'XEER_PROD', 'ELTS_ASIM', 'ELTS_XSIM'
+]
+
+def interalEnvs = [
+    'SHRD_SYT1'
+]
+
+// Defined during run
+def envs = null
+if (isBizOps()) {
+    envs = bizopsEnvs 
+} else if (isExternal()) {
+    envs = bizopsEnvs
+} else {
+    envs = interalEnvs
+}
+
+def agentLabel = isExternal() || isBizOps() ? 'englobauto' : 'entestauto1'
+
+
+
+pipeline {
+    agent { label 'englobauto' }
+   
+    parameters {
+        choice(
+                name: 'environment',
+                choices: envs,
+                description: 'environment'
+        )
+        choice(
+                name: 'action',
+                choices: ['check', 'insert', 'delete', 'update_jenkins_job'],
+                description: 'select mode'
+        )
+        choice(
+                name: 'type',
+                choices: ['out', 'mtc', 'hf', 'dos'],
+                description: 'out: outage mtc:maintenance hf: hotfix dos:DDOS'
+        )
+        string(name: 'DATE', description: 'Please enter todays DATE, example: 2022-08-30  PLEASE FOLLOW THE PATTERN!')
+        string(name: 'START_TIME', defaultValue: '', description: 'start time in CET in format HH:mm:ss, example: 10:00:00 PLEASE FOLLOW THE PATTERN!')
+        string(name: 'END_TIME', defaultValue: '', description: 'end time in CET in format HH:mm:ss, example: 10:30:00 PLEASE FOLLOW THE PATTERN!')
+        string(name: 'comment', description: 'description of the outage, example: 6.13 Release.')
+
+    }
+    stages {
+        stage('Set build meta') {
+            steps {
+                script {
+                    if (params.action == 'update_jenkins_job') {
+                        currentBuild.displayName = "#${BUILD_NUMBER} update_jenkins_job"
+                        currentBuild.result = 'ABORTED'
+                        error("This was done deliberately to update the build parameters.")
+                    }
+
+                    currentBuild.displayName = "#${BUILD_NUMBER} ${params.environment} ${params.action} ${params.username}"
+                }
+            }
+        }
+
+        stage('Script execution') {
+            steps {
+                script {
+                    if ( environment == 'ELTS_PROD'){
+                        for (dpuHost in prodEnv.dpuHost) {
+                            addOutage(
+                                dpuHost, 'cxxp 1520'
+                            )
+                        }
+
+                    } else if ( environment == 'HUPX_PROD'){
+                        for (dpuHost in prodEnv.dpuHost) {
+                            addOutage(
+                                dpuHost, 'cxhu 1400'
+                            )
+
+                        }
+
+                    } else if ( environment == 'PLPX_PROD'){
+                        for (dpuHost in prodEnv.dpuHost) {
+                            addOutage(
+                                dpuHost, 'cxpl 1700'
+                            )
+
+                        }
+                        
+                    } else if ( environment == 'XRPM_PROD'){
+                        for (dpuHost in prodEnv.dpuHost) {
+                            addOutage(
+                                dpuHost, 'cxrp 1800'
+                            )
+
+                        }
+                        
+                    } else if ( environment == 'XSOP_PROD'){
+                        for (dpuHost in prodEnv.dpuHost) {
+                            addOutage(
+                                dpuHost, 'cxsp 1600'
+                            )
+
+                        }
+                        
+                    } else if ( environment == 'XEER_PROD'){
+                        for (dpuHost in prodEnv.dpuHost) {
+                            addOutage(
+                                dpuHost, 'euap 63'
+                            )
+
+                        }
+                        
+                    } else if ( environment == 'ELTS_ASIM'){
+                        for (dpuHost in simuEnv.dpuHost) {
+                            addOutage(
+                                dpuHost, 'cxxp 1503'
+                            )
+
+                        }
+                        
+                    } else if ( environment == 'ELTS_XSIM'){
+                        for (dpuHost in simuEnv.dpuHost) {
+                            addOutage(
+                                dpuHost, 'cxxp 1509'
+                            )
+
+                        }                      
+                    }
+                } 
+            }
+        }
+    }
+}

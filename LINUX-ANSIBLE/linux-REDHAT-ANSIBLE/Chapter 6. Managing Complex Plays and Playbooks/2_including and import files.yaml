@@ -1,0 +1,111 @@
+Review the contents of the tasks/environment.yml file. The file contains tasks for package installation and service administration.
+
+---
+  - name: Install the {{ package }} package
+    yum:
+      name: "{{ package }}"
+      state: latest
+  - name: Start the {{ service }} service
+    service:
+      name: "{{ service }}"
+      enabled: true
+      state: started
+
+
+      
+Review the contents of the tasks/firewall.yml file. The file contains tasks for installation, administration, and configuration of firewall software.
+
+---
+  - name: Install the firewall
+    yum:
+      name: "{{ firewall_pkg }}"
+      state: latest
+
+  - name: Start the firewall
+    service:
+      name: "{{ firewall_svc }}"
+      enabled: true
+      state: started
+
+  - name: Open the port for {{ rule }}
+    firewalld:
+      service: "{{ item }}"
+      immediate: true
+      permanent: true
+      state: enabled
+    loop: "{{ rule }}"
+
+
+
+
+Review the contents of the tasks/placeholder.yml file. This file contains a task for populating a placeholder web content file.
+
+---
+  - name: Create placeholder file
+    copy:
+      content: "{{ ansible_facts['fqdn'] }} has been customized using Ansible.\n"
+      dest: "{{ file }}"
+
+
+
+
+
+
+Review the contents of the test.yml file in the plays subdirectory. This file contains a play which tests connections to a web service.
+
+---
+- name: Test web service
+  hosts: localhost
+  become: no
+  tasks:
+    - name: connect to internet web server
+      uri:
+        url: "{{ url }}"
+        status_code: 200
+
+
+
+
+
+
+MAIN PLAY:
+
+---
+- name: Configure web server
+  hosts: servera.lab.example.com
+
+  tasks:
+    - name: Include the environment task file and set the variables
+      include_tasks: tasks/environment.yml
+      vars:
+        package: httpd
+        service: httpd
+
+    - name: Import the firewall task file and set the variables
+      import_tasks: tasks/firewall.yml
+      vars:
+        firewall_pkg: firewalld
+        firewall_svc: firewalld
+        rule:
+          - http
+          - https
+
+    - name: Import the placeholder task file and set the variable
+      import_tasks: tasks/placeholder.yml
+      vars:
+        file: /var/www/html/index.html
+
+- name: Import test play file and set the variable
+  import_playbook: plays/test.yml
+  vars:
+    url: 'http://servera.lab.example.com'
+
+
+
+
+
+
+
+
+
+    

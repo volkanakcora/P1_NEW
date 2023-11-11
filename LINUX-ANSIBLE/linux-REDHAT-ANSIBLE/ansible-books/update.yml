@@ -1,0 +1,11 @@
+---
+- name: update all packages
+  hosts: localhost
+  tasks:
+     - name: upgrade
+       yum:
+         name: 
+           - httpd
+           - mod_ssl
+           - httpd-tools
+         state: latest

@@ -1,0 +1,150 @@
+#!groovy
+
+
+def gatherFacts(){
+    def playbook= "playbooks/gather_local_fatcs.yml"
+    def ansible = "ansible-playbook '$playbook' -l '$envSelected' --become --become-user=root"
+    def output = "/tmp/software_versions.json"
+    echo("Gathering the facts from $envSelected")
+    sh(
+        script: """\
+            pwd
+            ${ansible}
+            cat ${output}
+        """.stripIndent()
+    )
+}
+
+def copyFacts(){
+    def host = 'englobkpi1'
+    def output = "/tmp/software_versions.json"
+    def destination = "/tmp/json"
+    echo(" Copying facts of ${environment} to respective host")
+    sh(
+        script: """\
+            scp ${output} @${host}:${destination}
+        """.stripIndent()
+    )
+}
+
+def deployFacts(){
+    echo("Deploying gatherfacts to ${environment}")
+    sh(
+        script: """\
+            ansible-playbook playbooks/${component}.yml --limit 'xb-xbid-${environment}*' --tags custom_facts --diff <<EOF
+            EOF
+        """.stripIndent()
+    )
+}
+
+def downloadRepo(){
+    def deploymentRepo = 'git@github.deutsche-boerse.de:dev/energy.automation.deployments.git'
+        git(
+            branch: 'gather',
+            url: deploymentRepo,
+            credentialsId: 'ff4c895e-1043-458e-be44-195fb4d1b1b2',  // energygithub ssh
+        )
+}
+
+
+def parametersEnv = [
+    'prod', 'simu', 'update_jenkins_job'
+]
+
+def componentsPlaybooks = [
+    'filebeat', 'telegraf', 'deploy_xbcor', 'deploy_xbcmi', 'deploy_xbcmm', 'deploy_xbsmc', 'deploy_xbsmi', 'deploy_xbenq',
+    'deploy_xbsmi', 'deploy_xbams', 'deploy_xbpmi-archiver', 'deploy_xbrabbitmq-instance', 'deploy_xbhaproxy', 'deploy_etcd',
+    'deploy_xinetd', 'deploy_patroni', 'pg_watch2', 'deploy_xbapache-cmi', 'deploy_xbapache-cmm', 'deploy_xbapache-ctp', 
+    'deploy_xbapache-cmm', 'deploy_xbapache-ctp', 'deploy_xbapache-enq', 'deploy_xbapache-rep', 'deploy_xbapache-smi'
+
+]
+
+envs = parametersEnv
+components = componentsPlaybooks
+
+node { wrap([$class: 'BuildUser']) { deploy_user_id = env.BUILD_USER != null ? env.BUILD_USER : 'pipeline' } }
+
+pipeline {
+    agent { label 'englobauto' }
+
+
+    triggers{
+        parameterizedCron('''
+            0 7 * * 1 %gatherFacts=true;envSelected=xbsimu*:xbprod*
+        ''')
+    }
+
+    parameters {
+        booleanParam(
+                name: 'gatherFacts',
+                description: 'Use gatherFacts option only in case you want to gather fatcs'
+        )
+
+        choice(
+                name: 'environment',
+                choices: envs,
+                description: 'environment, use only when you want to deploy'
+        )
+
+        choice(
+                name: 'component',
+                choices: components,
+                description: "deploying gather facts scripts to the respective component. 'select only when you want to deploy, and make sure you also selected deploy parameter!!'"
+        )
+
+        booleanParam(
+                name: 'deploy',
+                description: 'Use deploy options only in case you want to deploy'
+        )
+
+        string(
+                name: 'envSelected',
+                description: 'Env Prefix. Example: xbsimupdb*'
+        )
+    }
+
+
+    stages {
+        stage('Set build meta') {
+            steps {
+                script {
+                    if (params.environment == 'update_jenkins_job') {
+                        currentBuild.displayName = "#${BUILD_NUMBER} update_jenkins_job"
+                        currentBuild.result = 'ABORTED'
+                        error("This was done deliberately to update the build parameters.")
+                    }
+
+                    currentBuild.displayName = "#${BUILD_NUMBER} ${params.environment}"
+                }
+            }
+        }
+
+        stage('Download the Ansible Reporsitory'){
+            steps{
+                script{
+                    downloadRepo()
+                }
+            }
+        }
+
+        stage('Collect the facts'){
+            when { equals expected: true, actual: params.gatherFacts}
+            steps{
+                script{
+                    gatherFacts()
+                    copyFacts()
+                }
+            }
+        }
+
+        stage("Deploy the facts"){
+            when { equals expected: true , actual: params.deploy}
+            steps{
+                script{
+                    deployFacts()
+                }
+            }
+        }
+    }
+}
+

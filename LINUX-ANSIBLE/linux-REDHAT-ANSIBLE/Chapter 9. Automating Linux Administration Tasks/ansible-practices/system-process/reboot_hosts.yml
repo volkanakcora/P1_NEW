@@ -1,0 +1,33 @@
+---
+- name: Reboot hosts
+  hosts: webservers
+  become: true
+
+
+  tasks:
+     - name: hosts are rebooted
+       reboot:
+
+
+0 10 * * * test -x /xbid/xbid-simu-db-archiver1/db_archive_all.sh && /xbid/xbid-simu-db-archiver1/db_archive_all.sh > /dev/null
+
+
+- import_tasks: crontab_dbarchiver.yml                                                                                                       │
+  tags: [ deploy ] 
+
+
+
+
+---                                                                                                                                                                                                                                                             
+- name: Recurring cron job                                                                                                                    
+  tasks:                                                                                                                                      
+    - name: Crontab file exists                                                                                                               
+      cron:                                                                                                                                   
+        name: Trigger dbarchiving                                                                                                             
+        minute: "0"                                                                                                                           
+        hour: 10                                                                                                                              
+        weekday: *                                                                                                                            
+        user: tomcat                                                                                                                          
+        job: test -x /xbid/xbid-simu-db-archiver1/db_archive_all.sh && /xbid/xbid-simu-db-archiver1/db_archive_all.sh > /dev/null             
+        cron_file: dbarchivercron                                                                                                             
+        state: present  

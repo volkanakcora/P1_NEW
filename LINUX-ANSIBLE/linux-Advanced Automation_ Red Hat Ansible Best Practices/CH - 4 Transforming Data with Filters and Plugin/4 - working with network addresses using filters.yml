@@ -1,0 +1,59 @@
+Fact name Description
+ansible_facts['dns']['nameservers']   The DNS nameservers used for name resolution by the managed host.
+ansible_facts['domain'] The domain for the managed host.
+ansible_facts['all_ipv4_addresses'] All the IPv4 addresses configured on the managed host.
+ansible_facts['all_ipv6_addresses'] All the IPv6 addresses configured on the managed host.
+ansible_facts['fqdn'] The fully-qualified domain name (DNS name) for the managed host.
+ansible_facts['hostname'] The unqualified hostname, the string in  the FQDN before the first period.
+
+An example playbook using these facts would be:
+---
+- name: Set up web servers
+  hosts: web_servers
+  become: true
+  tasks:
+- name: Ensure httpd is installed
+  yum:
+  name: httpd
+  state: installed
+- name: Start and enable webserver
+  service:
+  name: httpd
+  state: started
+  enabled: yes
+- name: Notify root of server provisioning
+  mail:
+    subject: System {{ ansible_facts['hostname'] }} has been successfully
+  provisioned.
+
+
+
+  If the value is a list, then the filter returns the valid IP addresses and not the invalid ones. If all of
+the items are invalid, it returns an empty list.
+{{ my_hosts_list | ipaddr }}
+
+
+
+
+if my_network has the value
+10.0.0.1/23 then the following Jinja2 expression will output the variable-length subnet mask
+(VLSN) 255.255.254.0:
+
+{{ my_network | ipaddr('netmask') }}
+The ipaddr filter accepts the following options:  check the docs
+
+
+
+Collecting Network Information with Plug-ins:
+
+In its simplest form, the dig lookup queries the DNS server configured in the controller for the A
+record of the provided fully-qualified domain name (FQDN).
+
+"{{ lookup('dig', 'example.com') }}"
+
+To obtain a different type of record, provide an additional qtype parameter to the lookup, or
+append a slash (/) and the record type to the FQDN. The following examples obtain the same MX
+record from the example.com domain.:
+
+"{{ lookup('dig', 'example.com', 'qtype=MX') }}"
+"{{ lookup('dig', 'example.com/MX') }}"

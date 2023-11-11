@@ -1,0 +1,103 @@
+When working with a large or complex playbook, you may want to run only a subset of its plays
+or tasks. Apply tags to specific resources that you may want to skip or run. A tag is a text label on
+an Ansible resource like a play or task. To tag a resource, use the tags keyword on the resource,
+followed by a list of the tags to apply.
+
+
+When running a playbook with ansible-playbook, use the --tags option to filter the playbook
+
+tag a task:
+
+tasks:
+- name: Ensure that packages are installed
+  yum:
+    name: "{{ packages }}"
+    state: installed
+  tags:
+  - install
+
+## TAG
+tag a whole play:
+
+Tag an entire play. Use the tags directive at the play level.
+- name: Setup web services
+  hosts: webservers
+  tags:
+    - setup
+
+
+## IN THE TASK --CALL
+When including a task file in a playbook, the task can be tagged, thus allowing administrators to
+set a global tag for the tasks loaded by include_tasks:
+
+tasks:
+- name: Include common web services tasks
+  include_tasks: common.yml
+  tags:
+    - webproxy
+    - webserver
+
+
+### in ROLE SECTION -- CALL: 
+
+Tag a role in the roles section. All the tasks in the role are associated with this tag. In this
+example the role databases has a list of two tags, production and staging.
+roles:
+- { role: databases, tags: ['production', 'staging'] }
+
+
+
+##### TAGIN A BLOCK
+
+---
+- name: Setup httpd service
+  tasks:
+  - name: Notify start of process
+  debug:
+  msg: Beginning httpd setup
+  - block:
+    - name: Ensure httpd packages are installed
+    yum:
+      name:
+        - httpd
+        - php
+        - git
+        - php-mysqlnd
+      state: present
+    - name: Ensure SELinux allows httpd connections to a remote database
+      seboolean:
+        name: httpd_can_network_connect_db
+        state: true
+        persistent: true
+    - name: Ensure httpd service is started and enabled
+      service:
+        name: httpd
+        state: started
+        enabled: true
+  tags:
+  - webserver
+
+
+# EXAMPLES
+
+[user@demo ~]$ ansible-playbook main.yml --tags webserver
+
+[user@demo ~]$ ansible-playbook main.yml --tags install,setup
+
+[user@demo ~]$ ansible-playbook main.yml --skip-tags webserver
+
+
+### SPECIAL TAGS
+
+Ansible has a special tag that can be assigned in a playbook: always. A resource tagged always will always run  - - The only exception is when it is explicitly skipped, using the --skip-tags always option.
+
+There are three additional special tags:
+
+• The tagged tag will run any resource with an explicit tag.
+
+• The untagged tag will run any resource that does not have an explicit tag, and exclude all
+tagged resources.
+
+• The all tag will include all tasks in the play, whether they have a tag. This is the default behavior
+of Ansible.
+

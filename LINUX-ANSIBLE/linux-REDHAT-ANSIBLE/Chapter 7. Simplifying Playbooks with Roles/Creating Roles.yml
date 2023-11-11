@@ -1,0 +1,149 @@
+'Creating Roles'
+
+'The Role Creation Process'
+
+Creating roles in Ansible requires no special development tools. Creating and using a role is a three step process:
+
+Create the role directory structure.
+
+Define the role content.
+
+Use the role in a playbook.
+
+
+#Creating the Role Directory Structure
+
+'By default, Ansible looks for roles in a subdirectory called roles in the directory containing your Ansible Playbook. This allows you to 
+store roles with the playbook and other supporting files.
+
+If Ansible cannot find the role there, it looks at the directories specified by the Ansible configuration setting roles_path, in order. 
+This variable contains a colon-separated list of directories to search. The default value of this variable is:
+'
+~/.ansible/roles:/usr/share/ansible/roles:/etc/ansible/roles
+
+
+
+'Each role has its own directory with a standardized directory structure. For example, the following directory structure contains the files that define the motd role.'
+
+
+#[user@host ~]$ tree roles/
+roles/
+└── motd
+    ├── defaults
+    │   └── main.yml
+    ├── files
+    ├── handlers
+    ├── meta
+    │   └── main.yml
+    ├── README.md
+    ├── tasks
+    │   └── main.yml
+    └── templates
+        └── motd.j2
+
+
+#Creating a Role Skeleton
+
+'The ansible-galaxy command line tool (covered in more detail later in this course) is used to manage Ansible roles, including the creation of new roles. You can run ansible-galaxy init to create the directory structure for a new role. Specify the name of the role as an argument 
+to the command, which creates a subdirectory for the new role in the current working directory.'
+
+
+#[user@host playbook-project]$ cd roles
+#[user@host roles]$ ansible-galaxy init my_new_role
+
+- my_new_role was created successfully
+
+#[user@host roles]$ ls my_new_role/
+
+defaults  files  handlers  meta  README.md  tasks  templates  tests  vars
+
+
+
+#[user@host ~]$ cat roles/motd/tasks/main.yml
+
+
+---
+# tasks file for motd
+
+- name: deliver motd file
+  template:
+    src: motd.j2
+    dest: /etc/motd
+    owner: root
+    group: root
+    mode: 0444
+
+
+'The following command displays the contents of the motd.j2 template of the motd role. It references Ansible facts and a system_owner 
+variable.':
+
+[[[
+[user@host ~]$ cat roles/motd/templates/motd.j2
+This is the system {{ ansible_facts['hostname'] }}.
+
+Todays date is: {{ ansible_facts['date_time']['date'] }}.
+
+Only use this system with permission.
+You can ask {{ system_owner }} for access.
+]]]
+
+
+
+The role defines a default value for the system_owner variable. The defaults/main.yml file in the roles directory structure is where this 
+value is set.
+
+The following defaults/main.yml file sets the system_owner variable to user@host.example.com. This will be the email address that
+is written in the /etc/motd file of managed hosts that this role is applied to.
+
+#[user@host ~]$ cat roles/motd/defaults/main.yml
+---
+system_owner: user@host.example.com
+
+
+
+
+
+
+
+
+                                                        'Defining Role Dependencies'
+
+'The following is a sample meta/main.yml file.'
+
+---
+dependencies:
+  - role: apache
+    port: 8080
+  - role: postgres
+    dbname: serverlist
+    admin_user: felix                                                       
+
+                                                        'Using the Role in a Playbook'
+
+#[user@host ~]$ cat use-motd-role.yml
+---
+- name: use motd role playbook
+  hosts: remote.example.com
+  remote_user: devops
+  become: true
+  roles:
+    - motd                                                   
+
+
+'When the playbook is executed, tasks performed because of a role can be identified by the role name prefix. The following sample output 
+illustrates this with the motd : prefix in the task name:'
+
+#[user@host ~]$ ansible-playbook -i inventory use-motd-role.yml
+
+
+                                                            'Changing a Roles Behavior with Variables'
+
+The value of any variable defined in a roles defaults directory will be overwritten if that same variable is defined:
+
+in an inventory file, either as a host variable or a group variable.
+
+in a YAML file under the group_vars or host_vars directories of a playbook project
+
+as a variable nested in the vars keyword of a play
+
+as a variable when including the role in roles keyword of a play                                                           

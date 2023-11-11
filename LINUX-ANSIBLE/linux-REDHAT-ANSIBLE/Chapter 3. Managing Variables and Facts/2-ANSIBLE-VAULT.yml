@@ -1,0 +1,124 @@
+Creating an Encrypted File:
+To create a new encrypted file, use the ansible-vault create filename command. The command prompts for the new vault password and then opens a 
+file using the default editor, vi. You can set and export the EDITOR environment variable to specify a different default editor by setting and 
+exporting. For example, to set the default editor to nano, export EDITOR=nano.
+
+#[student@demo ~]$ ansible-vault create secret.yml
+
+'New Vault password: redhat
+Confirm New Vault password: redhat
+'
+
+Instead of entering the vault password through standard input, you can use a vault password file to store the vault password. 
+You need to carefully protect this file using file permissions and other means.
+
+#[student@demo ~]$ ansible-vault create --vault-password-file=vault-pass secret.yml
+
+
+Viewing an Encrypted File:
+You can use the ansible-vault view filename command to view an Ansible Vault-encrypted file without opening it for editing.
+
+#[student@demo ~]$ ansible-vault view secret1.yml
+'Vault password: secret
+my_secret: "yJJvPqhsiusmmPPZdnjndkdnYNDjdj782meUZcw"'
+
+
+Editing an Existing Encrypted File:
+To edit an existing encrypted file, Ansible Vault provides the ansible-vault edit filename command. This command decrypts the file to a 
+temporary file and allows you to edit it. When saved, it copies the content and removes the temporary file.
+
+#[student@demo ~]$ ansible-vault edit secret.yml
+'Vault password: redhat
+'
+
+
+
+
+Encrypting an Existing File:
+To encrypt a file that already exists, use the ansible-vault encrypt filename command. This command can take the names of multiple files to be encrypted as arguments.
+
+#[student@demo ~]$ ansible-vault encrypt secret1.yml secret2.yml
+'New Vault password: redhat
+Confirm New Vault password: redhat
+Encryption successful'
+
+Decrypting an Existing File:
+An existing encrypted file can be permanently decrypted by using the ansible-vault decrypt filename command. When decrypting a single file, 
+you can use the --output option to save the decrypted file under a different name.
+
+#[student@demo ~]$ ansible-vault decrypt secret1.yml --output=secret1-decrypted.yml
+'Vault password: redhat
+Decryption successful'
+
+
+Changing the Password of an Encrypted File:
+You can use the ansible-vault rekey filename command to change the password of an encrypted file. This command can rekey multiple data files at once. It prompts for the original password and then the new password.
+
+#[student@demo ~]$ ansible-vault rekey secret.yml
+'Vault password: redhat
+New Vault password: RedHat
+Confirm New Vault password: RedHat
+Rekey successful'
+
+When using a vault password file, use the --new-vault-password-file option:
+
+#[student@demo ~]$ ansible-vault rekey  --new-vault-password-file=NEW_VAULT_PASSWORD_FILE secret.yml
+
+
+
+
+
+
+
+PLAYBOOKS AND ANSIBLE VAULTS:
+
+To run a playbook that accesses files encrypted with Ansible Vault, you need to provide the encryption password to the ansible-playbook command
+
+#[student@demo ~]$ ansible-playbook --vault-id @prompt site.yml
+Vault password (default): redhat
+
+OR -- ask.vault-pass
+
+OR  #[student@demo ~]$ ansible-playbook --vault-password-file=vault-pw-file site.yml
+
+
+
+
+
+[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[ EXERCISE ]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+
+
+MAIN FILE: 
+
+---
+- name: create user accounts for all our servers
+  hosts: devservers
+  become: True
+  remote_user: devops
+  vars_files:
+    - secret.yml
+  tasks:
+    - name: Creating user from secret.yml
+      user:
+        name: "{{ username }}"
+        password: "{{ pwhash }}"
+
+
+
+Create a password file named vault-pass to use for the playbook execution instead of asking for a password. The file must contain the 
+plain text redhat as the vault password. Change the permissions of the file to 0600.
+
+#[student@workstation data-secret]$ echo 'redhat' > vault-pass
+#[student@workstation data-secret]$ chmod 0600 vault-pass
+
+
+
+
+#[student@workstation data-secret]$ ansible-playbook --vault-password-file=vault-pass create_users.yml
+
+
+Use the ansible-playbook --syntax-check command to verify the syntax of the create_users.yml playbook. Use the --ask-vault-pass option to 
+prompt for the vault password, which decrypts secret.yml. Resolve any syntax errors before you continue.
+
+#[student@workstation data-secret]$ ansible-playbook --syntax-check --ask-vault-pass create_users.yml

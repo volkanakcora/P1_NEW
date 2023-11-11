@@ -1,0 +1,39 @@
+'Outcomes'
+
+You should be able to:
+
+Create Ansible roles that use variables, files, templates, tasks, and handlers to configure a development web server.
+
+Use a role that is hosted in a remote repository in a playbook.
+
+Use a Red Hat Enterprise Linux system role in a playbook.
+
+
+!!! Procedure 7.5. Instructions
+
+Your organization must provide a single web server to host development code for all web developers. You are tasked with writing a:
+playbook to configure this development web server:
+
+The development web server must satisfy several requirements:
+
+#The development server configuration matches the production server configuration. The production server is configured using an Ansible role, developed by the organization's infrastructure team.
+
+#Each developer is given a directory on the development server to host code and content. Each developer's content is accessed using an assigned, nonstandard port.
+
+#SELinux is set to enforcing and targeted.
+
+
+
+Your Playbook will:
+
+Use a role to configure directories and ports for each developer on the web server. You must write this role.
+
+This role has a dependency on a role written by the organization to configure Apache. 
+You should define the dependency using version v1.4 of the organizational role. 
+The URL of the dependency's repository is: git@workstation.lab.example.com:infra/apache
+
+Use the rhel-system-roles.selinux role to configure SELinux for the nonstandard HTTP ports used by your web server. You will be provided 
+with a selinux.yml variable file that can be installed as a group_vars file to pass the correct settings to the role.
+
+
+

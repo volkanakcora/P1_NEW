@@ -1,0 +1,10 @@
+---
+# tasks file for my_new_role
+- name: deliver motd file
+  template: 
+        src: motd.j2
+        dest: /etc/motd
+        owner: root
+        owner: root
+        mode: 0444
+

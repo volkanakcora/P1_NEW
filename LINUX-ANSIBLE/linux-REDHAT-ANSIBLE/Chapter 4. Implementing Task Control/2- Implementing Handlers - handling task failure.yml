@@ -1,0 +1,295 @@
+Implementing Handlers:
+
+
+Ansible Handlers:
+
+Ansible modules are designed to be idempotent. This means that in a properly written playbook, the playbook and its tasks can be 
+run multiple times without changing the managed host unless they need to make a change to get the managed host to the desired state.
+
+However, sometimes when a task does make a change to the system, a further task may need to be run. For example, a change to a 
+service's configuration file may then require that the service be reloaded so that the changed configuration takes effect.
+
+[[[EXAMPLE]]]
+Handlers can be considered as inactive tasks that only get triggered when explicitly invoked using a notify statement. 
+The following snippet shows how the Apache server is only restarted by the restart apache handler when a configuration file is 
+updated and notifies it:
+
+
+tasks:
+  - name: copy demo.example.conf configuration template
+    template:
+      src: /var/lib/templates/demo.example.conf.template
+      dest: /etc/httpd/conf.d/demo.example.conf
+    notify:
+      - restart apache     ---> notify that task to be triggered
+
+handlers:
+  - name: restart apache
+    service:
+      name: httpd
+      state: restarted
+
+
+
+
+Ansible treats the notify statement as an array and iterates over the handler names:
+
+tasks:
+  - name: copy demo.example.conf configuration template
+    template:
+      src: /var/lib/templates/demo.example.conf.template
+      dest: /etc/httpd/conf.d/demo.example.conf
+    notify:
+      - restart mysql
+      - restart apache
+
+handlers:
+  - name: restart mysql
+    service:
+      name: mariadb
+      state: restarted
+
+  - name: restart apache
+    service:
+      name: httpd
+      state: restarted
+
+
+
+
+
+
+
+
+
+
+[[[[[[[[[[[[[[[[[[[[        EXAMPLE    ]]]]]]]]]]]]]]]]]]]]
+
+handlers are run only when ansible change something in the task
+---
+- name: MariaDB server is installed
+  hosts: databases
+  vars:
+    db_packages:
+      - mariadb-server
+      - python3-PyMySQL
+    db_service: mariadb
+    resources_url: http://materials.example.com/labs/control-handlers
+    config_file_url: "{{ resources_url }}/my.cnf.standard"
+    config_file_dst: /etc/my.cnf
+  tasks:
+    - name: "{{ db_packages }} packages are installed"
+      yum:
+        name: "{{ db_packages }}"
+        state: present
+      notify:
+        - set db password
+
+    - name: Make sure the database service is running
+      service:
+        name: "{{ db_service }}"
+        state: started
+        enabled: true
+
+    - name: The {{ config_file_dst }} file has been installed
+      get_url:
+        url: "{{ config_file_url }}"
+        dest: "{{ config_file_dst }}"
+        owner: mysql
+        group: mysql
+        force: yes
+      notify:
+        - restart db service
+
+  handlers:
+    - name: restart db service
+      service:
+        name: "{{ db_service }}"
+        state: restarted
+
+    - name: set db password
+      mysql_user:
+        name: root
+        password: redhat
+
+
+
+
+
+
+
+
+
+
+
+[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[  HANDLING TASK FAILURE ]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+
+Ignoring Task Failure:                       -------------------------------------------
+
+By default, if a task fails, the play is aborted. However, this behavior can be overridden by ignoring failed tasks. 
+You can use the ignore_errors keyword in a task to accomplish this.
+
+- name: Latest version of notapkg is installed
+  yum:
+    name: notapkg
+    state: latest
+  ignore_errors: yes
+
+
+
+Forcing Execution of Handlers after Task Failure:          -------------------------------------------
+
+---
+- hosts: all
+  force_handlers: yes
+  tasks:
+    - name: a task which always notifies its handler
+      command: /bin/true
+      notify: restart the database
+
+    - name: a task which fails because the package doesn't exist
+      yum:
+        name: notapkg
+        state: latest
+
+  handlers:
+    - name: restart the database
+      service:
+        name: mariadb
+        state: restarted
+
+
+Specifying Task Failure Conditions:    -------------------------------------------
+
+tasks:
+  - name: Run user creation script
+    shell: /usr/local/bin/create_users.sh
+    register: command_result
+    failed_when: "'Password missing' in command_result.stdout"
+
+!! The fail module can also be used to force a task failure. The above scenario can alternatively be written as two tasks:
+
+tasks:
+  - name: Run user creation script
+    shell: /usr/local/bin/create_users.sh
+    register: command_result
+    ignore_errors: yes
+
+  - name: Report script failure
+    fail:
+      msg: "The password is missing in the output"
+    when: "'Password missing' in command_result.stdout"
+
+
+!! You can use the fail module to provide a clear failure message for the task. This approach also enables delayed failure, 
+!! allowing you to run intermediate tasks to complete or roll back other changes.
+
+
+
+Ansible Blocks and Error Handling:             ------------------------------------------- 
+
+In playbooks, blocks are clauses that logically group tasks, and can be used to control how tasks are executed. For example, a 
+task block can have a when keyword to apply a conditional to multiple tasks:
+
+- name: block example
+  hosts: all
+  tasks:
+    - name: installing and configuring Yum versionlock plugin
+      block:
+      - name: package needed by yum
+        yum:
+          name: yum-plugin-versionlock
+          state: present
+      - name: lock version of tzdata
+        lineinfile:
+          dest: /etc/yum/pluginconf.d/versionlock.list
+          line: tzdata-2016j-1
+          state: present
+      when: ansible_distribution == "RedHat"
+
+
+
+block: Defines the main tasks to run.
+
+rescue: Defines the tasks to run if the tasks defined in the block clause fail.
+
+always: Defines the tasks that will always run independently of the success or failure of tasks defined in the block and rescue clauses.
+
+
+tasks:
+    - name: Upgrade DB
+      block:
+        - name: upgrade the database
+          shell:
+            cmd: /usr/local/lib/upgrade-database
+      rescue:
+        - name: revert the database upgrade
+          shell:
+            cmd: /usr/local/lib/revert-database
+      always:
+        - name: always restart the database
+          service:
+            name: mariadb
+            state: restarted
+
+
+
+
+
+
+
+
+
+[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[   EXERCISE   ]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+ tasks:
+    - name: Attempt to set up a webserver
+      block:
+        - name: Install {{ web_package }} package
+          yum:
+            name: "{{ web_package }}"
+            state: present
+      rescue:
+        - name: Install {{ db_package }} package
+          yum:
+            name: "{{ db_package }}"
+            state: present
+      always:
+        - name: Start {{ db_service }} service
+          service:
+            name: "{{ db_service }}"
+            state: started
+
+
+  
+!!       ignore_errors: yes  YOU CAN ADD THAT IF PLAYBOK SHOULD IGNORE THE EERROR:
+
+  tasks:
+    - name: Install {{ web_package }} package
+      yum:
+        name: "{{ web_package }}"
+        state: present
+      ignore_errors: yes
+
+    - name: Install {{ db_package }} package
+      yum:
+        name: "{{ db_package }}"
+        state: present
+
+
+
+FOR DEBUGGING:
+
+   tasks:
+    - name: Check local time
+      command: date
+      register: command_result
+      changed_when: false
+
+    - name: Print local time
+      debug:
+        var: command_result.stdout
+
+
+

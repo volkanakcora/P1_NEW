@@ -1,0 +1,28 @@
+## LOOK up plugin hostanems and pass are in the csv format, lookup plugin used while ansible playbook is running and to get the passwrod associated to a host
+
+#example
+
+{{ lookup('csvfile', "target1 file= /tmp/credentials.csv delimiter=,") }}
+
+
+##CSV
+-
+  name: Test Connectivity
+  hosts: web_server
+  vars:
+    ansible_ssh_pass: "{{ lookup('csvfile', 'web_server file=credentials.csv delimiter=,') }}"
+  tasks:
+  - name: Ping target host
+    ping:
+           data: "Test"
+
+## INI 
+-
+  name: Test Connectivity
+  hosts: web_server
+  vars:
+    ansible_ssh_pass: "{{ lookup('ini', 'password section=web_server file=credentials.ini') }}"
+  tasks:
+  - name: Ping target host
+    ping:
+           data: "Test"

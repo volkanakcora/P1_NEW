@@ -1,0 +1,86 @@
+My name is {{ my_name}}
+
+#Ansible Playbook
+
+- 
+  name: Test Template playbook
+  host: localhost
+  vars:
+    my_name: Volkan Akcora
+  tasks:
+    - debug:
+           msg: "My name is {{ my_name }}"  
+           msg:  "My name is {{ my_name | upper }}" =>  my name is VOLKAN 
+           msg: "My name is {{ my_name | lower }}" =>  my name is volkan
+           msg:  "My name is {{ my_name | title }}"  =>  my name is Volkan                       
+           msg:    "My name is {{ my_name | replace("volkan", "georger") }}"  =>  my name is george 
+           msg:    "My name is {{ first_name | default("James") }} {{my_name}}"  =>  my name is James Volkan 
+
+
+### FILTER -LIST AND SET
+
+{{ [1,2,3] | min }}  => 1
+{{ [1,2,3] | max }}  => 3
+{{ [1,2,3,2] | unique }}  => 1,2,3
+{{ [1,2,3,4] | union( [4,5] ) }}  => 1,2,3,4,5
+{{ [1,2,3,4] | intersect( [4,5] ) }}  => 4
+{{ 100 | random }}  => Random number
+{{ ["The", "name", "is", "Bond"] | join(" ")}} => The name is Bond
+
+
+## FILTERS - FILE
+{{ "/etc/hosts" | basename }}  => hosts
+{{ "c:\windows\hosts" | win_basename }}  => hosts
+{{ "c:\windows\hosts" | win_splitdrive }}  => ["c:", "\windows\hosts"]
+{{ "c:\windows\hosts" | win_splitdrive | first }}  => "c:"
+{{ "c:\windows\hosts" | win_splitdrive | last }}  => "\windows\hosts"
+
+
+### examples
+
+
+-
+  name: Test Jinja2 Templating
+  hosts: localhost
+  vars:
+    array_of_numbers:
+      - 12
+      - 34
+      - 06
+      - 34
+  tasks:
+  - debug:
+      msg: 'Lowest = {{ array_of_numbers | min }}'
+
+### EXMAPLE UNION FUNCTION
+-
+  name: Install Dependencies
+  hosts: localhost
+  vars:
+    web_dependencies:
+         - python
+         - python-setuptools
+         - python-dev
+         - build-essential
+         - python-pip
+         - python-mysqldb
+    sql_dependencies:
+         - python
+         - python-mysqldb
+  tasks:
+  - name: Install dependencies
+    apt: name='{{ item }}' state=installed
+    with_items: '{{ sql_dependencies | union(web_dependencies) }}'
+
+###  TASK MODFIY THE FILE NAME TO USE A RANDOM NUMBER SUFFIX ANYWHERE FROM 0 TO 1000
+
+-
+  name: Generate random file name
+  hosts: localhost
+  tasks:
+  - name: Install dependencies
+    file:
+      path: /tmp/random_file{{ 1000 | random }}
+      state: touch
+
+

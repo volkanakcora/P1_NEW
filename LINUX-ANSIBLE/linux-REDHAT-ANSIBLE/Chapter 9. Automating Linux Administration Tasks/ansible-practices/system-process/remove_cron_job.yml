@@ -1,0 +1,88 @@
+---
+- name: Remove scheduled cron job
+  hosts: webservers
+  become: true
+
+  tasks:
+     - name: Cron job removed
+       cron:
+         name: Add date and time to a file
+         user: devops
+         cron_file: add-date-time
+         state: absent
+
+
+
+
+
+
+
+##EXAMPLE
+
+- name: Crontab  exists sysengdata  
+  become: true  
+  become_user: kpidpu 
+  cron:                                                                                                                                   
+      name: Trigger dbarchiving sysengdata                                                                                                            
+      minute: "0"                                                                                                                           
+      hour: 8                                                                                                                              
+      user: kpidpu                                                                                                                          
+      job: sudo su - postgres -c "psql -c 'TRUNCATE TABLE sysengdata;' englobkpi"             
+      state: present  
+
+- name: Crontab  exists sysengdatachange
+  become: true  
+  become_user: kpidpu 
+  cron:                                                                                                                                   
+      name: Trigger dbarchiving sysengdatachange                                                                                                           
+      minute: "0"                                                                                                                           
+      hour: 8                                                                                                                              
+      user: kpidpu                                                                                                                          
+      job: sudo su - postgres -c "psql -c 'TRUNCATE TABLE sysengdatachange;' englobkpi"
+      state: present  
+
+- name: Crontab  exists kpidata
+  become: true  
+  become_user: kpidpu 
+  cron:                                                                                                                                   
+      name: Trigger dbarchiving kpidata                                                                                                           
+      minute: "0"                                                                                                                           
+      hour: 8                                                                                                                              
+      user: kpidpu                                                                                                                          
+      job: sudo su - postgres -c "psql -c 'TRUNCATE TABLE kpidata;' englobkpi"
+      state: present  
+
+
+
+
+
+
+
+#REMOVE IT
+
+- name: Crontab  removed sysengdata
+  become: true  
+  become_user: kpidpu 
+  ignore_errors: true
+  cron:                                                                                                                                   
+      name: Trigger dbarchiving sysengdata                                                                                                             
+      user: kpidpu                                                                                                                      
+      state: absent  
+
+- name: Crontab  removed sysengdatachange
+  become: true  
+  become_user: kpidpu 
+  ignore_errors: true
+  cron:                                                                                                                                   
+      name: Trigger dbarchiving sysengdatachange                                                                                                             
+      user: kpidpu                                                                                                                      
+      state: absent  
+
+- name: Crontab  removed kpidata  
+  become: true  
+  become_user: kpidpu 
+  ignore_errors: true
+  cron:                                                                                                                                   
+      name: Trigger dbarchiving kpidata                                                                                                             
+      user: kpidpu                                                                                                                      
+      state: absent  

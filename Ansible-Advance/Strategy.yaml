@@ -1,0 +1,24 @@
+-
+  name: Deploy Web Application
+  strategy: free  # each serve execute their tasks independently
+  hosts: db_and_web_server
+  tasks:
+
+
+
+-
+  name: Deploy Web Application
+  serial: 3 # first executes 3 then rest
+  hosts: db_and_web_server
+  tasks:
+
+
+
+-
+  name: Deploy Web Application
+  hosts: db_and_web_server
+  tasks:
+
+
+ansible.cfg
+forks = 5 # that means ansible will execute 5 server even though you specificy more thatn 5

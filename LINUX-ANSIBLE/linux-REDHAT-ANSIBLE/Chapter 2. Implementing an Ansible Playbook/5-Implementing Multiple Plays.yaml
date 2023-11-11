@@ -1,0 +1,110 @@
+Writing Multiple Plays:
+
+---
+# This is a simple playbook with two plays
+
+- name: first play
+  hosts: web.example.com
+  tasks:
+    - name: first task
+      yum:
+        name: httpd
+        status: present
+
+    - name: second task
+      service:
+        name: httpd
+        enabled: true
+
+- name: second play
+  hosts: database.example.com
+  tasks:
+    - name: first task
+      service:
+        name: mariadb
+        enabled: true
+
+
+
+Remote Users and Privilege Escalation in Plays:
+
+Ansible configuration file, /etc/ansible/ansible.cfg. The user that runs the tasks can be defined by the remote_user keyword. 
+However, if privilege escalation is enabled, other keywords such as become_user can also have an impact.
+
+If the remote user defined in the Ansible configuration for task execution is not suitable, it can be overridden 
+by using the remote_user keyword within a play.
+
+remote_user: remoteuser
+
+
+Privilege Escalation Attributes:
+
+The become boolean keyword can be used to enable or disable privilege escalation regardless of how it is defined in the Ansible 
+configuration file. It can take yes or true to enable privilege escalation, or no or false to disable it.
+
+become: true
+
+---
+
+If privilege escalation is enabled, the become_method keyword can be used to define the privilege escalation method to use during a specific play
+
+become_method: sudo
+
+---
+
+Additionally, with privilege escalation enabled, the become_user keyword can define the user account to use for privilege escalation within 
+the context of a specific play.
+
+become_user: privileged_user
+
+
+---
+
+The following example demonstrates the use of these keywords in a play:
+
+- name: /etc/hosts is up to date
+  hosts: datacenter-west
+  remote_user: automation
+  become: yes
+
+  tasks:
+    - name: server.example.com in /etc/hosts
+      lineinfile:
+        path: /etc/hosts
+        line: '192.0.2.42 server.example.com server'
+        state: present
+
+
+
+[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[ Finding Modules for Tasks ]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+
+#[student@workstation modules]$ ansible-doc -l
+a10_server              Manage A10 Networks ... devices' server object.
+a10_server_axapi3       Manage A10 Networks ... devices
+a10_service_group       Manage A10 Networks ... devices' service groups.
+a10_virtual_server      Manage A10 Networks ... devices' virtual servers.
+
+
+Use the ansible-doc [module name] command to display detailed documentation for a module:
+
+#[student@workstation modules]$ ansible-doc yum
+> YUM    (/usr/lib/python3.6/site-packages/ansible/modules/packaging/os/yum.py)
+
+you might add -s option 
+
+
+
+
+[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[Playbook Syntax Variations]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+There are two ways to write multiline strings. You can use the vertical bar (|):
+
+include_newlines: |          !! You can also write multiline strings using the greater-than (>)
+        Example Company
+        123 Main Street
+        Atlanta, GA 30303
+
+
+
+

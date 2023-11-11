@@ -1,0 +1,21 @@
+## CUSTOM DEBUG MODULE
+
+-
+  name: Debug something
+  hosts: target1
+  tasks:
+    - debug: msg ="this is a test meesage"
+
+### exmaple
+
+-
+  name: Debug something
+  hosts: target1
+  tasks:
+    - custom_debug: msg ="this is a test meesage"
+
+
+## how to see module info=  ansible-doc debug
+
+
+## Ansible Playable

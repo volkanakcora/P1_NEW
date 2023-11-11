@@ -1,0 +1,89 @@
+#### First Data Describe:
+        
+        
+                          count      mean       std  min  25%  50%   75%   max
+order_exe_time_millis  140438.0  8.901772  7.567968  3.0  4.0  5.0  10.0  42.0
+        
+        
+        
+        
+        
+        
+        
+#### Second Data Describe:     
+        
+        
+      count      mean       std  min  25%  50%   75%   max
+0  140438.0  9.101772  7.567968  3.2  4.2  5.2  10.2  42.2
+        
+        
+        
+        
+        
+        
+        
+Confidence Interval for first dataset:
+        
+        
+(8.86219041529503, 8.941352785263222)
+None
+        
+        
+        
+        
+        
+        
+Confidence Interval for second dataset:
+        
+        
+(9.062190415294914, 9.141352785263106)
+None
+        
+        
+        
+        
+        
+        
+#################  OUTLIERS INFORMATION  #################
+#### First Data Describe:
+        
+        
+                         count        mean         std  ...    50%    75%    max
+order_exe_time_millis  27491.0  271.514459  176.395358  ...  256.0  394.0  785.0
+
+[1 rows x 8 columns]
+        
+        
+        
+        
+        
+        
+        
+#### Second Data Describe:     
+        
+        
+     count        mean         std   min    25%    50%    75%    max
+0  27491.0  271.714459  176.395358  50.2  100.2  256.2  394.2  785.2
+        
+        
+        
+        
+        
+        
+        
+Confidence Interval for first dataset:
+        
+        
+(269.42920463696447, 273.59971391819903)
+None
+        
+        
+        
+        
+        
+        
+Confidence Interval for second dataset:
+        
+        
+(269.6292046369644, 273.79971391819896)
+None

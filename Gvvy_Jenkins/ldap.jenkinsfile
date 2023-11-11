@@ -1,0 +1,271 @@
+// === Functions ===
+def isExternal() {
+    return env.JOB_NAME == 'Operations/06-XBID/support/customer_ldap'
+}
+def isBizOps() {
+    return env.JOB_NAME == 'Operations/06-XBID/customer_ldap_bizops'
+}
+
+
+// === Contansts ===
+def internalEnvs = [
+    'syt1',
+    'syt2',
+    'syt3',
+    'perf',
+]
+def externalEnvs = [
+    'ctpa',
+    'ctpb',
+    'ctpc',
+    'ctpd',
+    'ctpe',
+    'ctpf',
+    'ctpg',
+    'ctph',
+    'ctpi',
+    'ctpj',
+    'ctpk',
+    'ctpl',
+    'ctpm',
+    'ctpn',
+    'ctso',
+    'cute',
+    'lipa',
+    'lipb',
+    'simu',
+]
+
+
+// === Vars === 
+def server, dc, vault = null
+if (['syt1', 'syt2', 'syt3', 'perf'].contains(params.env)) {
+    // INTE
+    server = 'xbinteldp1.deutsche-boerse.de'
+    dc = 'dc=energy,dc=test'
+    vault = '/secret/xb/xbid/inte/ldap/xbid-adm'
+} else if (params.env == 'simu') {
+    // SIMU
+    server = 'xbsimuldp1.deutsche-boerse.de'
+    dc = 'dc=energy,dc=test'
+    vault = '/secret/xb/xbid/simu/ldap/xbid-adm'
+} else if (params.env == 'prod') {
+    // PROD
+    server = 'xbprodldp1.deutsche-boerse.de'
+    dc = 'dc=energy,dc=prod'
+    vault = '/secret/xb/xbid/prod/ldap/xbid-adm'
+} else {
+    // CUTS
+    dc = 'dc=energy,dc=test'
+    vault = '/secret/xb/xbid/test/ldap/xbid-adm'
+    server = 'xbtestldp1.deutsche-boerse.de'
+}
+
+
+// Defined during run
+def envs = null
+if (isBizOps()) {
+    envs = internalEnvs + externalEnvs + ['prod']
+} else if (isExternal()) {
+    envs = internalEnvs + externalEnvs
+} else {
+    envs = internalEnvs
+}
+def agentLabel = isExternal() || isBizOps() ? 'englobauto1' : 'entestauto1'
+
+def binddn, password = null;
+def basedn = "ou=${params.env},o=${params.module},${dc}"
+
+pipeline {
+    agent { label agentLabel }
+
+    parameters {
+        choice(name: 'action', description: 'Which action to run', choices: ['update_jenkins_job', 'check', 'unlock', 'reset', 'resetAll'])
+        choice(name: 'env', description: 'Environment the action is performed on', choices: envs)
+        choice(name: 'module', description: 'LDAP tree to use', choices: ['xbid', 'sm'])
+        string(name: 'username', description: 'Which username to check/unlock/reset. Use "all" with check action to list all users')
+        string(name: 'newPassword', description: 'New password for reset/resetAll action', defaultValue: 'xbidTest01!1')
+    }
+
+    stages {
+        stage('Set build meta') {
+            steps {
+                script {
+                    if (params.action == 'update_jenkins_job') {
+                        currentBuild.displayName = "#${BUILD_NUMBER} update_jenkins_job"
+                        currentBuild.result = 'ABORTED'
+                        error("This was done deliberately to update the build parameters.")
+                    }
+
+                    currentBuild.displayName = "#${BUILD_NUMBER} ${params.env} ${params.action} ${params.username}"
+                }
+            }
+        }
+        stage('Get LDAP admin login') {
+            steps {
+                script {
+                    binddn = sh(
+                        script: "/usr/local/sbin/vault read -field=binddn '${vault}'",
+                        returnStdout: true,
+                    )
+                    sh(
+                        script: """\
+                            /usr/local/sbin/vault read -field=password '${vault}' > pass.txt
+                            scp pass.txt ${server}:/tmp/pass.txt
+                            ssh ${server} 'chmod 600 /tmp/pass.txt'
+                            rm pass.txt
+                        """.stripIndent(),
+                    )
+                }
+            }
+        }
+        stage('Action: check') {
+            when { equals expected: 'check', actual: params.action}
+            steps {
+                script {
+                    if (params.username == 'all') {
+                        sh(
+                            script: """\
+                                # Get results
+                                ssh ${server} 'LDAPTLS_REQCERT=never ldapsearch -H 'ldaps://${server}' -D '${binddn}' -y '/tmp/pass.txt' -b '${basedn}' '(!(pwdpolicysubentry=*dnsnoexpnolock*))' uid passwordExpirationTime passwordRetryCount retryCountResetTime pwdpolicysubentry'
+                            """.stripIndent(),
+                        )
+                    } else {
+                        sh(
+                            script: """\
+                                # Get results
+                                ssh ${server} 'LDAPTLS_REQCERT=never ldapsearch -H 'ldaps://${server}' -D '${binddn}' -y '/tmp/pass.txt' -b '${basedn}' 'uid=${params.username}' uid passwordExpirationTime passwordRetryCount retryCountResetTime pwdpolicysubentry'
+                            """.stripIndent(),
+                        )
+                    }
+                }
+            }
+        }
+        stage('Action: unlock') {
+            when { equals expected: 'unlock', actual: params.action}
+            steps {
+                script {
+                    def ldif_file = '/tmp/temp.ldif'
+                    sh(
+                        script: """\
+                            ssh ${server} "
+                            # == BEGIN SSH ==
+                            set -xe
+
+                            # Create the ldif file for unlock
+                            cat <<EOT > ${ldif_file}
+                            dn: uid=${params.username},${basedn}
+                            changetype: modify
+                            replace: passwordRetryCount
+                            passwordRetryCount: 0
+                            EOT
+
+                            # Unlock user
+                            LDAPTLS_REQCERT=never ldapmodify -v -H 'ldaps://${server}' -D '${binddn}' -y '/tmp/pass.txt' -f ${ldif_file}
+
+                            rm ${ldif_file}
+
+                            # == END SSH ==
+                            "
+                        """.stripIndent(),
+                    )
+                }
+            }
+        }
+        stage('Action: reset') {
+            when { equals expected: 'reset', actual: params.action}
+            steps {
+                // 1. Write ./action.ldif to jenkins worker
+                script {
+                    // Generate random number from 1 and 999
+                    def random = Math.abs(new Random().nextInt() % 999) + 1
+                    writeFile(
+                        file: './action.ldif',
+                        text: """\
+                            # First set temporary password
+                            # This is done so we can delete old password from history and set it again
+                            dn: uid=${params.username},${basedn}
+                            changetype: modify
+                            replace: userPassword
+                            userPassword: TempPasswd99!${random}
+
+                            # Remove old password history
+                            dn: uid=${params.username},${basedn}
+                            changetype: modify
+                            delete: passwordHistory
+
+                            # Set new password
+                            dn: uid=${params.username},${basedn}
+                            changetype: modify
+                            replace: userPassword
+                            userPassword: ${params.newPassword}
+                        """.stripIndent(),
+                    )
+                }
+                // 2. Upload ./action.ldif to /tmp/action.ldif on the ldap server
+                sh("scp './action.ldif' '${server}:/tmp/action.ldif'")
+                // 3. Execute and delete the LDIF file
+                sh(
+                    script: """\
+                        ssh '${server}' '
+                        # == BEGIN SSH ==
+                        LDAPTLS_REQCERT=never ldapmodify -c -v -H 'ldaps://${server}' -D '${binddn}' -y '/tmp/pass.txt' -f '/tmp/action.ldif'
+                        export EXIT_CODE=\$?
+                        rm /tmp/action.ldif
+                        exit \$EXIT_CODE
+                        # == END SSH ==
+                        '
+                    """.stripIndent(),
+                )
+            }
+        }
+        stage('Action: resetAll') {
+            when { equals expected: 'resetAll', actual: params.action}
+            steps {
+                script {
+                    if (params.env == 'prod') {
+                        error('Cannot run this action against PROD!')
+                    }
+                    def ldif_file = '/tmp/temp.ldif'
+                    def random = Math.abs(new Random().nextInt() % 999) + 1
+                    sh(
+                        script: """\
+                            ssh ${server} '
+                            # == BEGIN SSH ==
+                            set -xe
+
+                            # Set temporary password so we can delete current password from passwordHistory
+                            LDAPTLS_REQCERT=never ldapsearch -H 'ldaps://${server}' -D '${binddn}' -y '/tmp/pass.txt' -b '${basedn}' '(&(uid=*)(!(uid=xbid-'${env}'-adm))(!(uid=HEALTH_CHECKER)))' dn > ${ldif_file}
+                            sed -i -e '/dn:/ { n; s/.*/changetype: modify\\nreplace: userPassword\\nuserPassword: TempPasswd01!${random}\\n/ }' ${ldif_file}
+                            LDAPTLS_REQCERT=never ldapmodify -v -c -H 'ldaps://${server}' -D '${binddn}' -y '/tmp/pass.txt' -f ${ldif_file} || true
+                            rm ${ldif_file}
+
+                            # Delete passwordHistory
+                            LDAPTLS_REQCERT=never ldapsearch -H 'ldaps://${server}' -D '${binddn}' -y '/tmp/pass.txt' -b '${basedn}' '(&(uid=*)(!(uid=xbid-'${env}'-adm))(!(uid=HEALTH_CHECKER)))' dn > ${ldif_file}
+                            sed -i -e '/dn:/ { n; s/.*/changetype: modify\\ndelete: passwordHistory\\n/ }' ${ldif_file}
+                            LDAPTLS_REQCERT=never ldapmodify -v -c -H 'ldaps://${server}' -D '${binddn}' -y '/tmp/pass.txt' -f ${ldif_file} || true
+                            rm ${ldif_file}
+
+                            # Set new password
+                            LDAPTLS_REQCERT=never ldapsearch -H 'ldaps://${server}' -D '${binddn}' -y '/tmp/pass.txt' -b '${basedn}' '(&(uid=*)(!(uid=xbid-'${env}'-adm))(!(uid=HEALTH_CHECKER)))' dn > ${ldif_file}
+                            sed -i -e '/dn:/ { n; s/.*/changetype: modify\\nreplace: userPassword\\nuserPassword: '${params.newPassword}'\\n/ }' ${ldif_file}
+                            LDAPTLS_REQCERT=never ldapmodify -v -c -H 'ldaps://${server}' -D '${binddn}' -y '/tmp/pass.txt' -f ${ldif_file}
+                            rm ${ldif_file}
+
+                            # == END SSH ==
+                            '
+                        """.stripIndent(),
+                    )
+                    error('Not implemented')
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            sh("ssh ${server} 'rm /tmp/pass.txt /tmp/temp.ldif /tmp/action.ldif || true'")
+            cleanWs()
+        }
+    }
+}

@@ -1,0 +1,16 @@
+---
+- name: Recurring cron job
+  hosts: localhost
+  become: true
+  become_method: sudo
+  tasks:
+    - name: Crontab file exists
+      cron:
+        name: Add date and time to a file
+        minute: "*/2"
+        hour: 9-16
+        weekday: 1-5
+        user: oh856
+        job: df >> /home/oh856/disk_usage
+        cron_file: disk_usage
+        state: present

@@ -1,0 +1,14 @@
+- name: Add new user to the development machine and assign the appropriate groups.
+  user:
+    name: devops_user 
+    shell: /bin/bash
+    groups: sys_admins, developers 
+    append: yes
+
+
+- name: Create a SSH key for user1
+  user:
+    name: user1
+    generate_ssh_key: yes
+    ssh_key_bits: 2048
+    ssh_key_file: .ssh/id_my_rsa

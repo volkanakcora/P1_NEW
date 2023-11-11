@@ -1,0 +1,142 @@
+Ansible Filters:
+
+Ansible applies variable values to playbooks and templates using Jinja2 expressions. For example,
+the following Jinja2 expression replaces the name of the variable enclosed in double curly braces
+with its value:
+
+{{ variable }}
+
+
+#####              Variable Types:
+
+Ansible stores run-time data in variables. The YAML structure or the content of the value defines
+the exact type of data. Some value types include:
+
+Strings (a sequence of characters):
+    my_string: Those are the contents of the string
+
+    string_with_breaks: |
+      This string
+      has several
+
+Numbers (a numeric value):
+    answer: 42
+
+    float_answer: 42.0
+
+Booleans (true/false values):
+
+Dates (ISO-8601 calendar date):
+  my_date_time: 2019-05-30T21:15:32.42+02:00
+  my_simple_date: 2019-05-30
+
+Null (sets the variable to undefined the variable)
+Lists or Arrays (a sorted collection of values):
+  my_list: ['Douglas', 'Marvin', 'Arthur']
+  my_list:
+  - Douglas
+  - Marvin
+  - Arthur
+
+Dictionaries (a collection of key-value pairs):
+  my_dict: { Douglas: Human, Marvin: Robot, Arthur: Human }
+  my_dict:
+    Douglas: Human
+    Marvin: Robot
+    Arthur: Human
+
+
+
+
+######           Processing Data with Filters:
+
+{{ myname | capitalize }}
+
+{{ mynumber | string }}
+
+
+The next example is more complex and shows a complete task. The assert module tests to see
+if expressions are true, and fails if they are not. The Jinja2 expression at the start of the test takes
+the list [ 1, 4, 2, 2 ], and uses the unique filter to remove duplicate elements, and then
+uses the sort filter to sort them. Note that this example uses a filter to manipulate hard-coded
+data instead of the value of a variable.
+
+- name: Test to see if the assertion is true, fail if not
+  assert:
+    that:
+       - "{{ [ 1, 4, 2, 2 ] | unique | sort }} is eq( [ 1, 2, 4 ] )"
+
+
+The output of the sort filter is compared for equality to the expected list, using the eq Jinja2
+test. As both the result and the expected value are equal, the assert module succeeds.
+
+
+
+
+#######   Checking if a Variable is Defined
+
+mandatory:
+Fails and aborts the Ansible Playbook if the variable is not defined with a value.
+{{ my_value | mandatory }}
+
+default:
+If the variable is not defined with a value, then this filter will set it to the value specified in
+parentheses.
+{{ my_value | default(my_default, True) }}   or use dfault(omit) -> that will cause the value to remain undefined
+
+
+###### Performing Mathematical Calculations
+
+
++ Add two numbers
+- Subtract two numbers
+/ Perform floating point division
+// Perform integer division
+% Get the remainder of integer division
+* Multiply two numbers
+** Raise the left number to the power of the right number
+
+
+
+in some cases, you might first need to convert the value to an integer with the int filter, or to a
+float with the float filter. For example, the following Jinja2 expression adds one to the current
+
+hour number, which is collected as a fact and stored as a string, not an integer:
+{{ ( ansible_facts['date_time']['hour'] | int ) + 1 }}
+
+
+There are also a number of filters that can perform a mathematical operation on a number: log,
+pow, root, abs, and round are examples.
+{{ 1764 | root }}
+
+
+Manipulating Lists:
+If the list consists of numbers, you can use max, min or sum to find the largest number, the
+smallest number, and sum of all list items.
+{{ [2, 4, 6, 8, 10, 12] | sum }}
+
+
+
+The random filter returns a random element from the list:
+{{ ['Douglas', 'Marvin', 'Arthur'] | random }}
+
+
+
+Modifying the order of list elements:
+
+- name: reversing and sorting lists
+  assert:
+  that:
+  - "{{ [ 2, 4, 6, 8, 10 ] | reverse | list }} is eq( [ 10, 8, 6, 4, 2] )"
+  - "{{ [ 4, 8, 10, 6, 2 ] | sort | list }} is eq( [ 2, 4, 6, 8, 10 ] )"
+
+
+Operating on lists as sets:
+
+- name: 'unique' leaves unique elements
+  assert:
+  that:
+    - "{{ [ 1, 1, 2, 2, 2, 3, 4, 4 ] | unique | list }} is eq( [ 1, 2, 3, 4 ] )"
+
+
+there are too many different types, please see the documentation for it.

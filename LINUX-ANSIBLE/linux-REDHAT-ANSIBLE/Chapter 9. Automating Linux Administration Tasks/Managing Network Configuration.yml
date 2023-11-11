@@ -1,0 +1,138 @@
+---
+network_provider: nm
+network_connections:
+  - name: ens4
+    type: ethernet
+    ip:
+      address:
+        - 172.25.250.30/24
+
+--------------------------------------------
+
+The following example uses some of the previous options:
+
+network_connections:
+- name: eth0                        1
+   persistent_state: present        2
+   type: ethernet                   3
+   autoconnect: yes                 4
+   mac: 00:00:5e:00:53:5d           5
+   ip:
+     address:
+       - 172.25.250.40/24           6
+   zone: external                   7
+
+
+
+1
+Uses eth0 as the connection name.
+
+2
+
+Makes the connection persistent. This is the default value.
+
+3
+
+Sets the connection type to ethernet.
+
+4
+
+Automatically starts the connection at boot. This is the default value.
+
+5
+
+Restricts the connection usage to a device with that MAC address.
+
+6
+
+Configures the 172.25.250.40/24 IP address for the connection.
+
+7
+
+Configures the external zone as the FirewallD zone of the connection.
+
+--------------------------------------------
+
+
+To use the network system role, you need to specify the role name under the roles clause in your playbook as follows:
+
+- name: NIC Configuration
+  hosts: webservers
+  vars:
+    network_connections:
+      - name: ens4
+        type: ethernet
+        ip:
+          address:
+            - 172.25.250.30/24
+  roles:
+    - rhel-system-roles.network
+
+
+
+--------------------------------------------
+
+The following example configures a static IP configuration for a network connection and device.
+
+- name: NIC configuration
+  nmcli:
+    conn_name: ens4-conn 1
+    ifname: ens4 2
+    type: ethernet 3
+    ip4: 172.25.250.30/24 4
+    gw4: 172.25.250.1 5
+    state: present 6
+1
+
+Configures ens4-conn as the connection name.
+
+2
+
+Binds the ens4-conn connection to the ens4 network interface.
+
+3
+
+Configures the network interface as ethernet.
+
+4
+
+Configures the 172.25.250.30/24 IP address on the interface.
+
+5
+
+Sets the gateway to 172.25.250.1.
+
+6
+
+Makes sure the connection is available.
+
+
+
+
+hostname, as on the task shown below:
+
+- name: Change hostname
+  hostname:
+    name: managedhost1
+
+
+
+The following task shows how to create a FirewallD rule for the http service on the default zone (public). The task configures the rule as permanent, and makes sure it is active.
+
+- name: Enabling http rule
+  firewalld:
+    service: http
+    permanent: yes
+    state: enabled
+
+
+This task configures the eth0 in the external FirewallD zone.
+
+- name: Moving eth0 to external
+  firewalld:
+    zone: external
+    interface: eth0
+    permanent: yes
+    state: enabled
+
+

@@ -1,0 +1,121 @@
+#!groovy
+
+import java.net.URLEncoder
+import java.text.SimpleDateFormat
+
+//#DPUHOSTS
+prodDpu = [
+    dpuHost: 'proddpu.srv.energy'
+]
+
+simuDpu = [
+    dpuHost: 'simudpu.srv.energy'
+]
+
+testDpu = [
+    dpuHost: 'testdpu.srv.energy'
+]
+
+
+
+
+def runCsv(dpuHost) {
+    def destScript = "/home/m7dpu/CSV-SYNC/python.sh"
+    echo("Transferring Performance Values to DB for ${environment}")
+    sh(
+        script: """\
+            ssh -o 'StrictHostKeyChecking=no' 'ansible@${dpuHost}' <<EOF
+                sudo -iu m7dpu
+                ${destScript}
+            EOF
+           
+        """.stripIndent()
+    )
+}
+
+def isExternal() {
+    return env.JOB_NAME == 'Operations/01-Common/SLA_KPI/support/csv_sync'
+}
+
+def isBizOps() {
+    return env.JOB_NAME == 'Operations/01-Common/SLA_KPI/csv_sync'
+}
+
+
+def bizopsEnvs = [
+    'PROD', 'SIMU', 'TEST', 'update_jenkins_job'
+]
+
+def interalEnvs = [
+    'TEST', 'update_jenkins_job'
+]
+
+// // Defined during run
+def envs = null
+if (isBizOps()) {
+    envs = bizopsEnvs 
+} else if (isExternal()) {
+    envs = bizopsEnvs
+ } else {
+     envs = interalEnvs
+}
+
+def agentLabel = isExternal() || isBizOps() ? 'englobauto' : 'entestauto1'
+
+
+
+pipeline {
+    agent { label 'englobauto' }
+
+    triggers{
+        parameterizedCron('''
+            0 10 2 * *  %PROD=true
+            0 10 2 * *  %SIMU=true
+            0 10 2 * *  %TEST=true
+        ''')
+    }
+
+    parameters {
+        choice(
+                name: 'environment',
+                choices: envs,
+                description: 'environment'
+        )       
+    }
+    stages {
+        stage('Set build meta') {
+            steps {
+                script {
+                    if (params.environment == 'update_jenkins_job') {
+                        currentBuild.displayName = "#${BUILD_NUMBER} update_jenkins_job"
+                        currentBuild.result = 'ABORTED'
+                        error("This was done deliberately to update the build parameters.")
+                    }
+
+                    currentBuild.displayName = "#${BUILD_NUMBER} ${params.environment} ${params.action} ${params.username}"
+                }
+            }
+        }
+
+        stage('Script execution') {
+            steps {
+                script {
+                    if ( environment == 'PROD'){
+                        for (env in prodDpu.dpuHost) {
+                            runCsv(env)
+                        }
+
+                    } else if ( environment == 'SIMU'){
+                        for (env in simuDpu.dpuHost) {
+                            runCsv(env)
+                        }
+                    } else if ( environment == 'TEST'){
+                        for (env in testDpu.dpuHost) {
+                            runCsv(env)
+                        }
+                    }
+                } 
+            }
+        }
+    }
+}

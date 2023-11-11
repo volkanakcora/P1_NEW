@@ -1,0 +1,225 @@
+ The following syntax is easier for most people to read:
+
+  - name: Postfix is installed and updated
+    yum:
+      name: postfix
+      state: latest
+    notify: update_postfix
+
+  - name: Postfix is running
+    service:
+      name: postfix
+      state: started
+
+
+Use Existing Modules:
+When writing a new playbook, start with a basic playbook and, if possible, a static inventory. Use debug modules as stubs as you build your design. Once your playbook functions as expected, break up your playbook into smaller, logical components using imports and includes. 
+
+
+Staying Organized:
+
+.
+├── dbservers.yml
+├── inventories/
+│   ├── prod/
+│   │   ├── group_vars/
+│   │   ├── host_vars/
+│   │   └── inventory/
+│   └── stage/
+│       ├── group_vars/
+│       ├── host_vars/
+│       └── inventory/
+├── roles/
+│   └── std_server/
+├── site.yml
+├── storage.yml
+└── webservers.yml
+
+The file site.yml is the master playbook, which includes or imports playbooks that perform specific tasks: 
+dbservers.yml, storage.yml, and webservers.yml. The roles are located in subdirectories in the roles directory, such as std_server.
+
+
+Using Dynamic Inventories:
+
+Use dynamic inventories whenever possible. Dynamic inventories allow central management of your hosts and groups from one central source of 
+truth, and ensure that the inventory is automatically updated. Dynamic inventories are especially powerful in conjunction with cloud providers, 
+containers, and virtual machine management systems. 
+
+
+
+Taking Advantage of Groups:
+
+Hosts can be a member of multiple groups. Consider dividing your hosts into different categories based on different characteristics:
+
+    Geographical: Differentiate hosts from different regions, countries, continents, or data centers.
+
+    Environmental: Differentiate hosts dedicated to different stages of the software life cycle, including development, staging, testing, or production.
+
+    Sites or services: Group hosts that offer or link to a subset of functions, like a specific website, an application, or a subset of features. 
+
+
+Using Roles for Reusable Content:
+
+Roles help you keep your playbooks simple and allow you to save work by reusing common code across projects. 
+If you are writing your own roles, then keep them focused on a particular purpose or function similar to playbooks.
+Make roles generic and configurable through variables, so that you do not need to edit them when you use them with a 
+different set of playbooks. 
+
+
+Use the ansible-galaxy command to initialize your role's directory hierarchy and provide initial
+template files.
+
+Testing Often:
+Test your playbooks and your tasks frequently during the development process, when the tasks
+run, and once the playbooks are in use.
+
+Testing the Results of Tasks:
+
+- Start web server
+service:
+name: httpd
+status: started
+- name: Check web site from web server
+uri:
+url: http://{{ ansible_fqdn }}
+return_content: yes
+register: example_webpage
+failed_when: example_webpage.status != 200
+
+
+Using Block/Rescue to Recover or Rollback:
+
+The block directive is useful for grouping tasks; when used in conjunction with the rescue
+directive, it is helpful when recovering from errors or failures.
+- block:
+    - name: Check web site from web server
+    uri:
+    url: http://{{ ansible_fqdn }}
+    return_content: yes
+    register: example_webpage
+
+failed_when: example_webpage.status != 200
+    rescue:
+    - name: Restart web server
+    service:
+    name: httpd
+    status: restarted
+
+
+Using Test Tools:
+
+ansible-playbook --syntax-check
+
+
+
+
+################### E X A M P L E ######################
+
+1 - ) 
+  'roles/haproxy/defaults/main.yml' file and then add the haproxy_ prefix to all
+
+  variable names. File contents should display as follows:
+  # Log-level for HAProxy logs
+  haproxy_log_level: info
+  # Port exposed to clients
+  haproxy_port: 80
+  # Name for the default backend
+  haproxy_backend_name: app
+  # Port backend is exposed to
+  haproxy_backend_port: 80
+  ...output omitted...
+  # The default is no defined backend servers.
+  haproxy_appservers: []
+
+
+2 - ) 
+  The roles/haproxy/templates/haproxy.cfg.j2 template file references the
+  variables defined in the roles/haproxy/defaults/main.yml file. Update the variable
+  names in this template accordingly.
+
+  global
+  #Send events/messages to rsyslog server.
+  log
+  127.0.0.1:514 local0 {{ haproxy_log_level }}
+  # turn on stats unix socket
+  # required for the ansible haproxy module.
+  stats socket {{ haproxy_socket }} level admin
+
+  frontend main
+  mode http
+  bind *:{{ haproxy_port }}
+  default_backend {{ haproxy_backend_name }}
+
+
+  backend {{ haproxy_backend_name }}
+  balance roundrobin
+  {% for server in haproxy_appservers %}
+  server {{ server.name }} {{ server.ip }}:{{ haproxy_backend_port }}
+  {% endfor %}
+
+
+
+
+
+3 - ) 
+  In your project directory, the appservers.yml file has the correct settings for the
+  haproxy_appservers variable. Correct the variable name and configure it as a group
+  variable for the lbservers group.
+
+  Create the group_vars folder in the project directory. Copy the appservers.yml
+  file from the project directory to the group_vars/lb_servers.yml file.
+
+  [student@workstation development-practices]$ mkdir group_vars
+  [student@workstation development-practices]$ cp -v \
+  > appservers.yml group_vars/lb_servers.yml
+  'appservers.yml' -> 'group_vars/lb_servers.yml'
+
+
+  \Edit the group_vars/lb_servers.yml file and rename the appservers variable
+
+  to haproxy_appservers. When you finish editing, the file displays as follows:
+  haproxy_appservers:
+  - name: serverb.lab.example.com
+  ip: "172.25.250.11"
+  - name: serverc.lab.example.com
+  ip: "172.25.250.12"
+
+
+
+4 - ) 
+
+  Configure web applications hosted in Europe to provide a different message than other
+  locations by overriding a role default with a group variable.
+
+  Add a new inventory group named region_eu to the end of the inventory file.
+
+  [region_eu]
+  serverc.lab.example.com
+
+  Create a groups variable file named group_vars/region_eu.yml. Make sure the
+  name of the file matches the inventory group created in the previous step. This file
+
+  should only contain a single line that defines a webapp_message variable:
+  webapp_message: "Hello from Europe. This is"
+
+
+  Note that this variable applies only to hosts in the region_eu group. All other
+  hosts use a default value for the webapp_message variable, which is defined in the
+  roles/webapp/defaults/main.yml file.
+
+
+5 - ) 
+
+  Test your changes to the Ansible project by running your site.yml playbook:
+  
+  #[student@workstation development-practices]$ ansible-playbook site.yml
+  
+  Validate that serverb.lab.example.com responds with the default content, while
+  
+  serverc.lab.example.com responds with content defined in the region_eu group:
+  
+  #[student@workstation development-practices]$ curl servera; curl servera
+  
+  >This is serverb.lab.example.com. (version v1.0)
+  > Hello from Europe. This is serverc.lab.example.com. (version v1.0)
+

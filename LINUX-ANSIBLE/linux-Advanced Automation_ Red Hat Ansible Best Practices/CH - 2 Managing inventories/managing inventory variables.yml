@@ -1,0 +1,72 @@
+A better approach is to move variable definitions from the inventory file into separate variable
+files, one for each host group. Each variable file is named after a host group, and contains variable
+definitions for the host group:
+[user@demo project]$ tree -F group_vars
+group_vars/
+├── db_servers.yml
+├── lb_servers.yml
+└── web_servers.yml
+
+
+Special Inventory Variables:
+There are a number of variables that you can use to change how Ansible will connect to a host
+listed in the inventory. Some of these are most useful as host-specific variables, but others might
+be relevant to all hosts in a group or in the inventory.
+
+ansible_connection:
+The connection plugin used to access the managed host. By default, ssh is used for all hosts
+except localhost, which uses local.
+ansible_host:
+The actual IP address or fully-qualified domain name to use when connecting to the managed
+host, instead of using the name from the inventory file (inventory_hostname). By default,
+this variable has the same value as the inventory host name.
+ansible_port:
+The port Ansible uses to connect to the managed host. For the (default) SSH connection
+plugin, the value defaults to 22.
+ansible_user:
+Ansible connects to the managed host as this user. Ansible's default behavior is to connect to
+the managed host using the same user name as the user running the Ansible Playbook on the
+control node.
+ansible_become_user:
+Once Ansible has connected to the managed host, it will switch to this user using
+ansible_become_method (which is sudo by default). You might need to provide
+authentication credentials in some way.
+ansible_python_interpreter:
+The path to the Python executable that Ansible should use on the managed host. On Ansible
+2.8 and later, this defaults to auto, which will automatically select a Python interpreter on
+the host running the playbook depending on what operating system it is running, so it is less
+necessary to use this setting compared to older versions of Ansible.
+
+
+####Identifying the Current Host Using Variables
+
+When a play is running, there are a number of variables and facts that can be used to identify the
+name of the current managed host executing a task:
+
+inventory_hostname:
+The name of the managed host currently being processed, taken from the inventory.
+ansible_host:
+The actual IP address or host name that was used to connect to the managed host, as
+previously discussed.
+ansible_facts['hostname']:
+The short (unqualified) host name collected as a fact from the managed host.
+ansible_facts['fqdn']:
+The fully-qualified domain name (FQDN) collected as a fact from the managed host.
+
+
+
+Modify the inventory.yml so that each server follows its naming convention:
+lb_servers:
+  hosts:
+    loadbalancer_1:
+      ansible_host: servera.lab.example.com
+web_servers:
+  children:
+    a_web_servers:
+      hosts:
+        backend_a1:
+          ansible_host: serverb.lab.example.com
+    b_web_servers:
+      hosts:
+        backend_b1:
+          ansible_host: serverc.lab.example.com

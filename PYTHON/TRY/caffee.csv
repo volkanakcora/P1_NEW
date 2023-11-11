@@ -1,0 +1,815 @@
+﻿id,q1,q2,q3,q4a1,q4a2,q5a,q5b,q6a1,q6a2,q6a3,q6a4,q6a5,q6a6,q6a7,q6a8,q6a9,q6a10,q7,q8
+1,1,29,last 3 months,latte_n,cappu_y,very low,low,4,8,4,5,2,8,5,5,4,8,31-50,male
+2,7,76,last 3 months,latte_n,cappu_y,low,very low,3,3,4,4,4,4,8,8,5,3,31-50,male
+3,10,17,last two weeks,latte_n,cappu_n,nethei high nor low,nethei high nor low,3,4,8,4,5,5,3,3,3,5,31-50,male
+4,4,99,last two weeks,latte_n,cappu_n,very low,very low,8,5,8,2,4,5,4,8,5,8,<30,female
+5,4,40,last week,latte_n,cappu_n,low,nethei high nor low,5,4,8,4,4,8,5,4,4,4,51+,male
+6,5,32,last week,latte_n,cappu_n,low,nethei high nor low,8,5,8,3,5,4,4,4,4,4,<30,female
+7,9,3,last month,latte_y,cappu_n,low,very low,4,2,8,4,4,8,5,5,4,8,51+,male
+8,3,23,last two weeks,latte_y,cappu_n,low,very low,4,4,8,8,3,4,5,4,5,4,51+,female
+9,3,37,last two weeks,latte_n,cappu_n,nethei high nor low,low,3,3,8,8,4,4,3,3,4,4,31-50,female
+10,3,92,last two weeks,latte_n,cappu_n,low,low,5,5,4,3,3,3,8,8,4,8,31-50,male
+11,3,89,last month,latte_n,cappu_n,low,low,5,8,8,2,5,5,3,4,3,4,<30,female
+12,1,56,last month,latte_y,cappu_n,low,very low,5,5,8,3,3,5,8,8,3,4,<30,female
+13,7,46,last week,latte_n,cappu_n,nethei high nor low,very low,3,3,3,5,3,5,4,5,4,3,31-50,female
+14,7,76,last week,latte_n,cappu_n,very low,very low,2,4,8,5,4,4,5,5,5,2,31-50,male
+15,3,20,last week,latte_n,cappu_n,low,low,5,5,4,4,4,4,8,3,5,3,<30,male
+16,3,97,last week,latte_n,cappu_y,low,nethei high nor low,2,4,3,4,5,5,5,5,4,3,31-50,female
+17,8,63,last two weeks,latte_n,cappu_y,nethei high nor low,high,3,2,5,4,5,4,4,2,5,8,51+,female
+18,1,69,last month,latte_n,cappu_n,low,high,5,5,3,3,4,5,4,3,3,4,31-50,female
+19,16,83,last week,latte_n,cappu_n,low,nethei high nor low,8,2,8,8,4,4,2,4,5,5,31-50,male
+20,1,54,last week,latte_n,cappu_y,low,low,5,5,4,5,3,5,5,5,8,4,31-50,male
+21,5,51,last month,latte_n,cappu_n,nethei high nor low,nethei high nor low,5,8,3,8,4,5,3,4,4,8,51+,female
+22,13,62,last two weeks,latte_y,cappu_n,low,low,8,5,8,4,3,5,3,8,3,8,31-50,male
+23,4,100,last month,latte_n,cappu_n,low,nethei high nor low,8,3,8,8,5,5,8,3,8,5,31-50,male
+24,5,98,last month,latte_n,cappu_y,low,low,8,8,4,5,5,3,8,8,5,3,<30,male
+25,5,2,last two weeks,latte_y,cappu_n,low,low,4,4,3,5,4,4,5,5,8,4,31-50,female
+26,5,9,last month,latte_y,cappu_n,low,nethei high nor low,4,5,3,1,8,4,3,3,1,5,51+,female
+27,1,7,last two weeks,latte_n,cappu_y,low,low,4,4,4,8,4,4,4,5,5,8,<30,male
+28,7,94,last month,latte_n,cappu_n,nethei high nor low,low,4,4,5,3,8,8,3,4,4,5,31-50,male
+29,3,35,last week,latte_n,cappu_n,low,low,4,4,3,4,3,5,4,4,3,4,<30,female
+30,3,19,last week,latte_n,cappu_n,low,low,4,4,2,5,4,4,5,5,5,3,31-50,female
+31,4,66,last month,latte_n,cappu_n,very low,very low,5,8,8,5,5,4,4,8,5,4,51+,female
+32,3,72,last two weeks,latte_n,cappu_n,low,low,5,5,4,4,5,4,4,8,3,4,51+,male
+33,1,72,last week,latte_n,cappu_n,low,low,3,2,4,4,3,5,8,5,5,4,31-50,male
+34,10,60,last week,latte_y,cappu_n,low,low,5,5,2,3,3,5,4,4,4,4,31-50,female
+35,4,33,last two weeks,latte_y,cappu_n,low,low,2,5,3,4,4,8,5,4,4,3,31-50,male
+36,9,76,last 3 months,latte_n,cappu_n,low,low,3,3,8,4,8,5,5,4,4,5,31-50,female
+37,3,3,last two weeks,latte_n,cappu_n,nethei high nor low,low,4,5,3,5,8,4,4,4,5,8,<30,female
+38,1,43,last 3 months,latte_y,cappu_n,low,very low,8,4,5,4,5,5,5,8,2,4,51+,male
+39,16,65,last month,latte_n,cappu_n,low,very low,5,5,2,3,8,4,2,3,2,5,31-50,male
+40,5,44,last 3 months,latte_n,cappu_n,low,low,5,5,4,4,8,5,4,4,4,4,51+,male
+41,1,56,last two weeks,latte_n,cappu_y,low,very low,3,4,3,5,4,5,4,4,5,3,51+,male
+42,3,55,last month,latte_n,cappu_y,low,low,5,4,3,3,2,8,4,5,4,4,31-50,male
+43,1,50,last two weeks,latte_n,cappu_n,low,low,5,4,3,4,3,4,3,3,4,4,31-50,male
+44,3,11,last two weeks,latte_n,cappu_y,very low,very low,4,5,3,4,2,4,4,3,8,3,<30,male
+45,9,80,last two weeks,latte_n,cappu_n,low,low,8,3,5,3,5,8,4,3,5,8,<30,male
+46,1,62,last two weeks,latte_n,cappu_n,very low,low,3,4,5,4,4,8,3,4,8,5,51+,male
+47,3,8,last two weeks,latte_n,cappu_n,very low,very low,3,8,8,2,5,8,3,3,3,5,31-50,male
+48,13,98,last month,latte_n,cappu_y,low,very low,4,4,4,4,4,4,8,3,4,5,<30,female
+49,3,35,last week,latte_y,cappu_n,low,high,8,3,5,8,5,5,4,8,4,5,31-50,male
+50,9,68,last 3 months,latte_y,cappu_n,low,very low,3,4,8,8,5,3,5,4,4,2,31-50,male
+51,3,51,last two weeks,latte_n,cappu_n,nethei high nor low,low,5,5,8,3,5,4,4,4,4,8,31-50,male
+52,3,97,last week,latte_n,cappu_n,low,low,4,3,4,4,8,4,5,5,5,4,51+,male
+53,3,23,last week,latte_n,cappu_n,low,very low,8,8,3,4,3,5,3,3,3,3,<30,female
+54,2,95,last two weeks,latte_n,cappu_n,low,low,4,3,8,5,5,5,4,5,5,8,51+,female
+55,3,79,last two weeks,latte_n,cappu_y,low,nethei high nor low,8,5,8,3,3,4,8,5,4,4,<30,female
+56,3,93,last 3 months,latte_y,cappu_n,low,very low,4,4,5,4,5,5,5,3,2,4,31-50,male
+57,1,7,last two weeks,latte_n,cappu_y,low,low,4,4,3,4,4,3,5,5,5,8,<30,female
+58,1,91,last 3 months,latte_n,cappu_n,very low,low,3,4,3,5,4,4,5,8,5,4,51+,female
+59,13,57,last two weeks,latte_n,cappu_n,low,very low,4,4,4,5,5,5,4,4,8,4,31-50,female
+60,1,31,last two weeks,latte_n,cappu_n,very low,very low,3,2,4,5,8,5,5,5,4,3,31-50,male
+61,1,69,last month,latte_n,cappu_y,low,low,4,8,5,8,8,5,8,3,4,4,31-50,male
+62,3,58,last 3 months,latte_n,cappu_n,low,very low,4,5,3,5,4,5,8,5,5,4,51+,female
+63,2,78,last 3 months,latte_n,cappu_n,low,low,3,8,3,5,4,8,5,5,8,4,<30,male
+64,4,35,last 3 months,latte_y,cappu_n,low,low,2,3,5,8,8,5,3,4,4,5,31-50,male
+65,11,48,last week,latte_n,cappu_n,low,nethei high nor low,3,8,8,4,8,4,8,1,3,5,31-50,male
+66,7,6,last month,latte_n,cappu_n,very low,very low,8,4,8,5,5,4,5,5,8,4,51+,female
+67,1,20,last week,latte_y,cappu_n,very low,very low,2,4,5,4,5,4,4,4,4,5,31-50,male
+68,5,95,last 3 months,latte_n,cappu_n,low,nethei high nor low,4,3,2,4,5,5,5,4,5,5,31-50,male
+69,13,7,last week,latte_n,cappu_n,very low,low,4,3,5,4,4,5,5,5,5,5,31-50,male
+70,31,35,last two weeks,latte_n,cappu_y,low,very low,3,3,5,3,5,8,4,3,4,8,51+,female
+71,16,75,last week,latte_n,cappu_n,low,very low,5,4,2,3,4,5,4,8,4,4,<30,male
+72,2,67,last month,latte_y,cappu_n,low,very low,5,4,5,8,8,8,2,3,4,5,<30,male
+73,3,63,last two weeks,latte_n,cappu_n,low,very low,5,8,3,2,8,3,4,4,4,4,<30,female
+74,5,99,last two weeks,latte_n,cappu_n,low,low,2,3,8,5,4,8,5,4,4,5,31-50,female
+75,3,97,last month,latte_n,cappu_y,low,low,2,4,3,5,4,4,4,8,5,4,31-50,male
+76,1,62,last week,latte_n,cappu_n,low,low,5,4,2,5,4,4,5,4,8,3,<30,male
+77,9,98,last month,latte_n,cappu_n,very low,very low,5,8,2,4,4,5,4,4,4,4,31-50,male
+78,5,61,last week,latte_n,cappu_n,low,nethei high nor low,4,5,4,8,2,5,8,8,5,4,31-50,female
+79,3,57,last two weeks,latte_y,cappu_n,low,low,3,4,3,5,3,4,5,5,8,8,31-50,male
+80,1,63,last two weeks,latte_n,cappu_n,low,low,5,5,4,8,3,5,4,3,3,3,51+,female
+81,1,36,last week,latte_n,cappu_n,very low,low,4,4,4,8,5,4,5,4,8,5,31-50,male
+82,3,76,last two weeks,latte_n,cappu_n,low,nethei high nor low,2,4,8,4,5,5,5,4,3,8,31-50,male
+83,5,6,last two weeks,latte_n,cappu_y,low,nethei high nor low,5,5,2,3,3,8,4,2,4,3,<30,female
+84,1,64,last week,latte_n,cappu_n,low,nethei high nor low,4,4,8,5,3,4,8,5,5,4,<30,male
+85,4,82,last two weeks,latte_n,cappu_n,low,very low,3,3,8,4,8,5,3,3,4,8,31-50,female
+86,6,95,last month,latte_y,cappu_n,low,nethei high nor low,4,4,8,3,8,5,5,8,4,8,51+,female
+87,2,67,last 3 months,latte_n,cappu_y,very low,very low,5,8,2,4,5,8,3,8,4,8,<30,male
+88,2,38,last month,latte_n,cappu_n,low,very low,4,8,3,5,5,3,5,4,5,3,31-50,male
+89,3,95,last two weeks,latte_y,cappu_n,low,nethei high nor low,4,4,4,4,5,4,3,5,4,4,31-50,male
+90,5,29,last month,latte_n,cappu_n,low,low,3,2,5,3,5,4,5,4,3,4,31-50,male
+91,7,43,last month,latte_n,cappu_n,very low,very low,5,4,3,3,4,5,4,4,3,8,31-50,female
+92,9,74,last week,latte_n,cappu_n,low,low,8,5,4,4,4,5,5,4,8,4,31-50,male
+93,1,70,last two weeks,latte_n,cappu_y,low,low,3,4,8,5,3,5,4,4,4,4,51+,male
+94,7,80,last two weeks,latte_n,cappu_n,low,very low,3,5,3,4,3,4,5,8,8,4,<30,male
+95,5,93,last two weeks,latte_n,cappu_n,nethei high nor low,nethei high nor low,2,4,2,4,2,4,5,5,8,8,31-50,male
+96,7,93,last two weeks,latte_n,cappu_n,nethei high nor low,nethei high nor low,3,4,3,3,4,4,8,8,8,3,51+,male
+97,13,3,last month,latte_y,cappu_n,low,high,4,4,5,4,2,4,5,4,8,4,31-50,male
+98,16,5,last two weeks,latte_n,cappu_y,low,nethei high nor low,5,5,2,2,3,4,3,4,4,4,51+,male
+99,3,11,last two weeks,latte_n,cappu_y,low,low,4,3,5,5,4,5,5,4,5,4,<30,female
+100,7,49,last two weeks,latte_n,cappu_n,low,low,4,3,5,3,8,8,5,3,2,4,31-50,male
+101,4,62,last week,latte_n,cappu_n,low,very low,2,4,8,4,8,5,4,4,4,5,<30,male
+102,7,46,last two weeks,latte_n,cappu_n,low,low,4,4,5,3,5,8,3,5,5,8,31-50,female
+103,16,48,last week,latte_n,cappu_n,low,nethei high nor low,3,4,5,2,8,5,2,5,3,5,<30,male
+104,25,90,last 3 months,latte_n,cappu_n,low,very low,3,3,2,5,3,4,8,5,5,4,31-50,male
+105,7,28,last week,latte_y,cappu_n,very low,nethei high nor low,3,3,2,8,4,8,5,5,8,2,51+,male
+106,4,53,last week,latte_y,cappu_n,very low,low,3,5,8,3,5,5,4,4,4,4,31-50,male
+107,4,0,last 3 months,latte_n,cappu_n,low,very low,3,4,8,8,3,5,8,4,5,3,51+,male
+108,5,59,last week,latte_n,cappu_n,low,very low,3,3,2,8,5,5,8,8,5,4,51+,male
+109,9,43,last week,latte_n,cappu_y,nethei high nor low,nethei high nor low,8,4,5,3,8,5,4,4,5,8,31-50,female
+110,3,43,last two weeks,latte_n,cappu_n,very low,low,3,5,3,5,3,4,5,5,4,4,51+,male
+111,10,67,last two weeks,latte_n,cappu_y,low,nethei high nor low,8,4,8,8,4,5,5,5,5,4,51+,female
+112,13,48,last week,latte_n,cappu_n,low,very low,5,5,3,2,5,4,4,4,5,4,<30,female
+113,7,94,last two weeks,latte_n,cappu_n,nethei high nor low,low,4,4,3,4,4,5,4,4,8,4,<30,male
+114,9,54,last week,latte_n,cappu_n,low,high,5,5,2,3,4,3,4,3,3,4,51+,female
+115,7,85,last two weeks,latte_n,cappu_n,very low,low,2,4,3,5,8,4,4,8,5,8,31-50,male
+116,1,62,last week,latte_n,cappu_n,low,low,4,4,3,5,8,5,5,4,5,4,31-50,female
+117,4,34,last 3 months,latte_n,cappu_n,very low,very low,4,3,1,4,3,4,5,8,8,4,51+,female
+118,3,100,last week,latte_n,cappu_n,low,nethei high nor low,5,4,5,4,5,5,3,4,5,8,31-50,male
+119,2,53,last week,latte_n,cappu_n,low,very low,2,2,3,8,4,5,5,5,5,8,51+,male
+120,29,44,last week,latte_n,cappu_n,low,very low,5,4,2,4,4,8,4,4,8,3,31-50,male
+121,1,23,last 3 months,latte_n,cappu_n,very low,very low,2,3,1,5,4,5,8,5,5,8,<30,female
+122,1,97,last two weeks,latte_n,cappu_n,low,very low,4,8,5,4,4,5,4,8,4,5,31-50,female
+123,5,2,last two weeks,latte_n,cappu_y,nethei high nor low,high,1,2,3,5,4,4,5,5,4,4,51+,male
+124,4,86,last month,latte_n,cappu_n,low,high,4,5,4,5,8,4,5,5,5,3,51+,male
+125,5,64,last week,latte_n,cappu_n,low,low,3,8,3,5,3,5,5,5,4,3,<30,male
+126,10,41,last 3 months,latte_n,cappu_n,nethei high nor low,very high,4,3,2,4,5,4,5,4,5,3,<30,female
+127,2,53,last two weeks,latte_n,cappu_n,low,very low,8,4,4,5,4,5,4,4,3,4,31-50,male
+128,6,67,last 3 months,latte_n,cappu_n,low,nethei high nor low,4,5,3,3,4,5,5,8,4,5,31-50,female
+129,7,90,last two weeks,latte_n,cappu_y,low,low,3,3,8,5,2,8,8,5,5,3,<30,male
+130,1,87,last 3 months,latte_n,cappu_n,low,very low,5,8,3,5,4,4,5,5,5,3,51+,female
+131,1,83,last week,latte_n,cappu_n,low,nethei high nor low,4,3,3,5,3,5,4,5,8,2,<30,male
+132,2,98,last 3 months,latte_n,cappu_y,low,very low,8,3,2,4,4,4,5,4,5,2,<30,female
+133,17,50,last two weeks,latte_y,cappu_n,nethei high nor low,nethei high nor low,8,5,4,4,4,4,4,3,3,4,<30,male
+134,2,100,last week,latte_n,cappu_y,low,nethei high nor low,4,4,4,5,5,8,5,5,8,4,<30,female
+135,7,4,last week,latte_n,cappu_n,low,nethei high nor low,8,8,2,4,4,4,5,5,8,5,<30,female
+136,10,32,last two weeks,latte_n,cappu_n,very low,very low,8,4,5,8,5,8,3,4,3,4,31-50,female
+137,4,4,last 3 months,latte_n,cappu_n,low,low,4,5,8,3,5,5,4,4,8,5,31-50,male
+138,1,4,last two weeks,latte_n,cappu_y,low,high,5,3,4,2,5,5,8,8,8,4,31-50,male
+139,1,98,last two weeks,latte_n,cappu_n,very low,very low,4,4,5,2,4,5,4,4,4,5,31-50,female
+140,3,74,last week,latte_n,cappu_n,low,low,3,5,5,3,5,5,3,5,8,5,31-50,female
+141,7,16,last two weeks,latte_n,cappu_y,low,nethei high nor low,4,5,4,4,3,3,5,5,8,8,51+,female
+142,7,16,last week,latte_n,cappu_n,nethei high nor low,high,3,4,2,5,4,4,5,5,8,8,31-50,male
+143,9,33,last two weeks,latte_n,cappu_n,low,low,8,4,3,3,4,5,3,4,3,5,51+,male
+144,7,66,last two weeks,latte_n,cappu_n,nethei high nor low,low,5,4,3,5,3,4,5,5,5,4,<30,female
+145,3,13,last month,latte_n,cappu_n,very low,low,3,4,4,5,2,4,5,5,8,4,51+,male
+146,3,92,last two weeks,latte_n,cappu_n,low,very low,3,4,5,4,5,5,8,4,4,4,31-50,male
+147,1,76,last week,latte_n,cappu_n,low,low,4,1,2,5,5,4,5,5,8,3,<30,male
+148,5,10,last two weeks,latte_n,cappu_n,very low,nethei high nor low,3,4,5,4,4,5,8,8,4,8,<30,male
+149,6,77,last month,latte_n,cappu_n,low,low,4,4,5,4,5,4,8,8,8,8,31-50,male
+150,7,92,last two weeks,latte_y,cappu_n,very low,very low,5,4,3,5,4,4,5,2,4,5,<30,male
+151,10,71,last month,latte_n,cappu_n,very low,very low,3,4,4,8,3,4,5,5,5,5,31-50,female
+152,10,4,last week,latte_y,cappu_n,low,very low,3,4,4,4,4,4,4,5,8,4,<30,female
+153,2,11,last two weeks,latte_y,cappu_n,nethei high nor low,nethei high nor low,4,4,4,4,5,4,8,4,5,5,<30,male
+154,1,66,last two weeks,latte_n,cappu_n,very low,very low,8,5,3,4,3,5,4,3,3,2,<30,female
+155,1,12,last week,latte_n,cappu_y,low,low,4,4,4,5,3,4,8,5,5,3,51+,female
+156,1,15,last month,latte_n,cappu_n,low,very low,5,4,2,4,2,5,8,4,8,4,31-50,female
+157,3,30,last week,latte_n,cappu_n,low,low,8,4,3,5,5,5,4,5,5,3,31-50,male
+158,2,58,last 3 months,latte_n,cappu_y,low,very low,4,3,4,3,8,8,3,4,4,5,31-50,male
+159,6,76,last two weeks,latte_n,cappu_n,low,low,4,4,8,3,5,8,5,3,3,5,31-50,male
+160,2,24,last week,latte_n,cappu_y,low,nethei high nor low,5,4,3,5,3,4,5,5,5,3,31-50,male
+161,3,50,last month,latte_n,cappu_n,low,low,5,5,4,8,3,5,4,8,3,5,<30,male
+162,6,86,last month,latte_y,cappu_n,low,low,8,5,1,2,4,5,4,3,5,8,<30,male
+163,5,11,last month,latte_n,cappu_n,low,very low,8,3,8,5,4,5,4,8,5,5,31-50,male
+164,1,24,last two weeks,latte_n,cappu_y,low,very low,8,5,2,2,4,8,1,3,3,3,31-50,male
+165,1,41,last two weeks,latte_n,cappu_n,nethei high nor low,high,4,3,3,4,8,5,5,8,5,3,31-50,male
+166,5,43,last 3 months,latte_y,cappu_n,low,low,5,4,5,3,4,4,3,8,4,5,51+,male
+167,7,72,last week,latte_n,cappu_n,low,low,8,3,3,8,4,5,8,5,8,4,31-50,male
+168,4,81,last month,latte_n,cappu_y,very low,very low,8,4,3,3,3,4,3,4,4,4,31-50,male
+169,5,24,last two weeks,latte_y,cappu_n,low,low,3,4,4,4,4,4,5,5,8,2,<30,male
+170,1,22,last week,latte_n,cappu_y,low,nethei high nor low,4,3,4,4,4,5,4,5,5,3,31-50,female
+171,1,13,last 3 months,latte_n,cappu_n,nethei high nor low,nethei high nor low,3,5,3,4,8,3,5,5,8,3,31-50,female
+172,4,69,last two weeks,latte_n,cappu_y,low,low,5,4,2,4,8,4,5,8,5,4,51+,female
+173,17,44,last 3 months,latte_n,cappu_n,low,very low,4,4,4,1,5,8,4,2,4,8,31-50,male
+174,7,10,last week,latte_n,cappu_n,low,very low,3,3,4,5,8,4,5,5,5,4,<30,male
+175,7,82,last month,latte_n,cappu_n,low,very low,8,8,2,4,3,5,3,3,3,4,31-50,male
+176,1,84,last 3 months,latte_n,cappu_y,nethei high nor low,low,3,4,8,4,4,8,3,3,3,5,51+,male
+177,1,72,last month,latte_y,cappu_n,low,very low,4,4,3,5,4,4,5,3,5,3,51+,male
+178,10,88,last month,latte_n,cappu_n,low,very low,5,5,4,4,4,4,8,8,4,3,31-50,male
+179,5,78,last two weeks,latte_n,cappu_n,low,low,4,3,4,5,3,4,5,4,5,2,51+,male
+180,7,71,last week,latte_n,cappu_n,very low,very low,8,4,5,8,5,4,5,4,4,5,51+,female
+181,1,86,last two weeks,latte_n,cappu_y,nethei high nor low,low,4,8,3,5,4,4,8,5,5,2,31-50,male
+182,5,43,last month,latte_n,cappu_n,low,very low,5,3,2,4,2,5,8,5,8,4,51+,male
+183,1,55,last two weeks,latte_n,cappu_n,low,low,8,5,2,4,4,8,3,4,8,5,31-50,male
+184,4,26,last two weeks,latte_y,cappu_n,low,very low,3,8,4,5,3,8,5,4,8,4,51+,male
+185,25,2,last two weeks,latte_n,cappu_n,low,nethei high nor low,4,5,2,4,4,4,3,4,3,8,31-50,female
+186,8,95,last week,latte_n,cappu_n,low,nethei high nor low,4,8,4,5,3,4,5,5,5,8,31-50,female
+187,25,52,last month,latte_n,cappu_n,low,low,4,4,4,4,4,5,5,5,5,3,31-50,male
+188,7,68,last week,latte_y,cappu_n,very low,very low,4,4,3,4,3,4,4,5,4,8,<30,male
+189,1,71,last two weeks,latte_n,cappu_n,low,low,4,2,3,4,3,4,8,5,8,4,51+,male
+190,5,6,last two weeks,latte_n,cappu_n,low,nethei high nor low,8,8,3,3,3,5,4,4,4,4,31-50,female
+191,1,3,last month,latte_n,cappu_y,low,high,4,8,8,5,5,5,3,4,3,4,31-50,male
+192,2,2,last 3 months,latte_n,cappu_n,low,low,4,4,4,3,8,5,3,4,4,5,51+,female
+193,1,73,last week,latte_n,cappu_y,low,very low,3,8,5,4,5,5,4,8,5,4,51+,female
+194,3,83,last two weeks,latte_n,cappu_y,low,high,8,5,5,8,3,8,4,5,4,4,31-50,male
+195,1,4,last two weeks,latte_n,cappu_n,very low,very low,5,5,4,3,4,5,3,3,3,2,31-50,male
+196,5,74,last week,latte_n,cappu_n,low,low,4,4,3,5,2,4,5,5,5,3,31-50,male
+197,7,55,last month,latte_y,cappu_n,low,very low,1,8,5,4,5,5,8,4,3,8,51+,female
+198,1,40,last 3 months,latte_n,cappu_y,low,nethei high nor low,5,4,3,4,4,4,2,3,3,4,31-50,female
+199,3,58,last month,latte_n,cappu_n,low,nethei high nor low,5,8,5,8,5,8,3,4,4,8,<30,male
+200,1,35,last week,latte_n,cappu_y,low,low,3,8,8,8,4,4,8,4,4,8,51+,male
+201,3,26,last month,latte_n,cappu_n,low,very high,8,5,4,5,5,5,4,4,5,4,<30,male
+202,3,40,last 3 months,latte_n,cappu_n,low,very low,3,3,5,3,4,4,2,4,4,5,51+,female
+203,1,11,last month,latte_y,cappu_n,low,very low,4,4,5,4,8,5,4,4,3,8,<30,female
+204,1,56,last week,latte_n,cappu_y,low,nethei high nor low,4,4,3,8,1,3,5,5,5,3,31-50,female
+205,5,25,last two weeks,latte_n,cappu_n,low,low,5,8,2,3,4,5,8,4,3,3,51+,male
+206,4,7,last week,latte_n,cappu_n,very low,very low,3,5,2,4,3,8,5,5,8,4,51+,female
+207,1,91,last two weeks,latte_y,cappu_n,low,very low,8,4,8,3,8,4,3,3,5,4,31-50,male
+208,17,15,last month,latte_n,cappu_n,nethei high nor low,nethei high nor low,4,3,4,5,5,4,8,8,5,4,<30,female
+209,16,7,last 3 months,latte_n,cappu_n,low,low,4,4,2,5,3,5,5,5,8,4,51+,male
+210,7,97,last week,latte_n,cappu_n,low,nethei high nor low,8,4,3,5,3,4,3,4,2,3,31-50,female
+211,1,20,last month,latte_n,cappu_y,very low,low,8,5,4,4,5,4,5,8,5,8,51+,male
+212,4,18,last 3 months,latte_n,cappu_n,low,low,4,4,3,5,4,3,5,5,5,4,51+,male
+213,1,94,last week,latte_n,cappu_n,very low,high,2,4,8,1,5,4,3,8,4,5,31-50,male
+214,6,2,last two weeks,latte_n,cappu_y,low,very low,5,4,4,2,5,5,4,4,4,3,<30,male
+215,7,13,last 3 months,latte_n,cappu_n,low,low,4,8,3,5,4,4,5,8,8,5,31-50,female
+216,3,87,last two weeks,latte_n,cappu_n,low,low,5,5,2,4,3,4,3,3,4,3,<30,male
+217,5,68,last two weeks,latte_n,cappu_n,low,nethei high nor low,4,8,4,5,8,4,5,8,5,4,51+,female
+218,5,92,last month,latte_n,cappu_n,low,low,8,5,1,2,4,8,8,8,4,4,<30,female
+219,1,18,last 3 months,latte_y,cappu_n,low,very low,4,4,5,3,8,8,1,2,8,5,31-50,male
+220,6,100,last month,latte_n,cappu_n,nethei high nor low,nethei high nor low,5,5,3,1,4,8,4,2,8,4,51+,male
+221,1,83,last week,latte_y,cappu_n,low,very low,4,4,4,5,3,8,5,5,5,4,31-50,female
+222,1,91,last 3 months,latte_n,cappu_n,low,very low,8,5,2,5,8,5,5,4,5,2,<30,male
+223,11,63,last two weeks,latte_n,cappu_n,low,low,8,8,4,4,4,5,3,3,4,8,<30,female
+224,1,50,last 3 months,latte_n,cappu_n,low,nethei high nor low,5,5,4,8,5,4,4,3,3,5,51+,female
+225,6,99,last two weeks,latte_n,cappu_n,low,very low,5,5,3,5,5,5,3,4,3,8,51+,male
+226,16,85,last week,latte_n,cappu_n,nethei high nor low,low,5,5,3,8,4,5,4,8,2,4,31-50,male
+227,7,30,last month,latte_n,cappu_n,low,very low,4,4,4,3,5,5,3,4,4,5,51+,female
+228,5,69,last two weeks,latte_n,cappu_n,low,high,5,4,3,4,4,3,4,5,8,4,51+,female
+229,1,99,last two weeks,latte_n,cappu_n,low,low,4,8,8,3,5,5,4,4,3,5,31-50,female
+230,1,15,last two weeks,latte_n,cappu_n,low,high,5,5,2,2,8,5,8,4,4,3,<30,female
+231,16,73,last month,latte_n,cappu_n,low,very low,3,3,8,5,5,4,3,5,8,4,31-50,male
+232,3,88,last week,latte_y,cappu_n,low,nethei high nor low,8,4,3,4,4,5,4,5,3,3,31-50,female
+233,2,1,last week,latte_n,cappu_y,nethei high nor low,nethei high nor low,3,3,5,4,5,4,4,3,5,4,31-50,female
+234,6,8,last two weeks,latte_n,cappu_n,very low,low,2,4,5,3,8,5,5,3,5,5,<30,female
+235,5,61,last week,latte_n,cappu_y,low,nethei high nor low,4,3,5,5,4,4,3,4,4,5,31-50,male
+236,3,95,last 3 months,latte_n,cappu_n,low,nethei high nor low,4,8,5,1,8,5,4,4,3,4,31-50,male
+237,3,24,last month,latte_n,cappu_n,very low,low,8,8,5,3,5,4,1,5,3,5,31-50,female
+238,4,0,last 3 months,latte_n,cappu_y,very low,very low,3,5,3,5,3,4,5,5,8,4,31-50,female
+239,3,21,last two weeks,latte_y,cappu_n,low,low,3,4,3,4,4,4,4,4,5,5,51+,male
+240,2,99,last month,latte_n,cappu_y,low,low,5,5,3,3,4,8,4,4,8,5,<30,female
+241,5,98,last two weeks,latte_n,cappu_y,low,very low,5,4,1,5,5,4,5,5,4,3,51+,male
+242,1,49,last week,latte_n,cappu_n,very low,very low,3,4,2,5,8,4,8,8,5,4,31-50,female
+243,1,96,last week,latte_n,cappu_n,very low,low,4,8,5,4,8,4,3,3,4,5,31-50,female
+244,1,10,last two weeks,latte_n,cappu_n,very low,very low,4,3,4,5,4,4,8,8,4,4,51+,male
+245,4,50,last 3 months,latte_n,cappu_y,very low,very low,5,5,4,3,5,5,8,3,8,4,31-50,female
+246,1,13,last two weeks,latte_n,cappu_n,low,low,1,3,3,4,4,3,5,8,5,4,51+,female
+247,7,29,last week,latte_n,cappu_n,low,very low,3,8,3,5,5,5,5,5,4,8,31-50,female
+248,2,7,last week,latte_n,cappu_n,low,low,4,5,3,8,3,4,4,4,4,4,51+,female
+249,1,71,last month,latte_y,cappu_n,very low,very low,8,5,5,4,5,4,3,3,8,8,<30,female
+250,5,82,last week,latte_n,cappu_y,low,low,3,4,8,4,5,8,8,3,4,8,31-50,female
+251,4,82,last month,latte_n,cappu_n,low,low,8,4,4,8,4,4,5,4,5,4,51+,male
+252,11,23,last 3 months,latte_n,cappu_n,low,very low,3,4,3,4,4,5,5,8,8,2,<30,male
+253,17,22,last two weeks,latte_n,cappu_y,low,very low,4,4,5,3,8,5,2,2,4,4,31-50,male
+254,2,37,last week,latte_n,cappu_n,low,low,5,4,3,8,4,4,3,2,4,8,31-50,male
+255,2,92,last 3 months,latte_n,cappu_n,low,low,4,3,3,8,8,4,8,5,5,3,51+,female
+256,1,60,last week,latte_n,cappu_y,low,very low,3,8,5,4,5,4,3,4,4,5,31-50,female
+257,3,43,last month,latte_n,cappu_y,low,nethei high nor low,8,4,2,3,4,5,2,8,2,4,51+,male
+258,2,64,last 3 months,latte_n,cappu_y,low,nethei high nor low,3,3,1,5,4,4,5,8,5,8,31-50,male
+259,13,85,last two weeks,latte_y,cappu_n,low,nethei high nor low,5,3,3,3,8,5,8,3,4,4,31-50,male
+260,1,95,last week,latte_n,cappu_n,very low,very low,5,3,1,4,4,3,8,5,5,3,<30,female
+261,3,65,last two weeks,latte_n,cappu_y,low,very low,5,4,2,1,3,5,4,3,4,3,<30,male
+262,1,77,last month,latte_n,cappu_y,low,low,5,4,4,5,4,4,5,5,5,3,51+,male
+263,4,1,last month,latte_y,cappu_n,very low,very low,5,5,8,1,5,4,1,3,2,4,31-50,female
+264,5,3,last two weeks,latte_y,cappu_n,low,nethei high nor low,8,5,4,4,4,5,3,4,8,5,<30,female
+265,7,98,last month,latte_n,cappu_n,low,low,4,8,5,5,5,5,4,4,3,5,31-50,male
+266,13,10,last week,latte_y,cappu_n,nethei high nor low,low,4,3,4,5,2,5,4,5,5,3,<30,male
+267,2,45,last week,latte_n,cappu_n,low,high,3,4,8,4,5,5,5,5,5,3,31-50,male
+268,1,59,last 3 months,latte_n,cappu_n,low,very low,3,8,4,8,4,5,8,8,5,5,31-50,male
+269,1,34,last month,latte_n,cappu_n,low,nethei high nor low,5,5,3,3,4,5,4,3,3,4,<30,male
+270,2,100,last two weeks,latte_n,cappu_n,low,nethei high nor low,2,4,4,4,5,4,4,8,3,4,51+,male
+271,1,46,last 3 months,latte_n,cappu_n,low,very high,1,4,8,4,8,8,4,4,3,5,31-50,female
+272,3,5,last month,latte_n,cappu_y,low,nethei high nor low,4,8,8,5,4,8,8,8,5,4,31-50,female
+273,1,89,last week,latte_n,cappu_n,low,low,3,4,2,4,8,5,4,5,5,4,31-50,female
+274,1,40,last week,latte_n,cappu_n,nethei high nor low,nethei high nor low,5,5,3,4,3,4,4,8,4,4,31-50,male
+275,1,69,last month,latte_n,cappu_y,low,very low,4,3,8,3,8,5,5,4,8,4,31-50,female
+276,4,87,last 3 months,latte_n,cappu_n,low,low,8,5,5,4,5,5,8,4,5,5,31-50,male
+277,6,62,last month,latte_y,cappu_n,low,very low,5,4,3,2,8,4,3,4,2,4,31-50,female
+278,11,14,last 3 months,latte_n,cappu_n,low,very low,4,5,3,5,2,4,5,5,5,4,31-50,male
+279,3,99,last week,latte_n,cappu_y,low,nethei high nor low,4,4,4,5,5,4,4,4,4,4,31-50,male
+280,4,25,last week,latte_n,cappu_n,very low,nethei high nor low,4,4,3,3,3,5,5,4,5,4,31-50,male
+281,13,100,last 3 months,latte_n,cappu_n,low,low,5,5,3,4,3,5,5,4,2,3,<30,male
+282,5,81,last month,latte_n,cappu_y,low,very low,3,4,3,5,4,5,5,5,8,8,51+,male
+283,5,67,last week,latte_n,cappu_y,very low,very low,1,3,3,5,3,4,5,5,4,3,51+,male
+284,19,35,last two weeks,latte_n,cappu_y,nethei high nor low,low,2,4,5,4,8,5,3,5,5,5,31-50,female
+285,10,93,last two weeks,latte_y,cappu_n,very low,very low,5,8,1,4,4,5,4,5,8,3,51+,female
+286,7,95,last two weeks,latte_n,cappu_y,low,nethei high nor low,5,5,3,2,4,5,8,4,4,5,<30,male
+287,3,14,last week,latte_n,cappu_n,very low,very low,8,5,3,3,4,5,3,8,8,8,<30,male
+288,5,32,last month,latte_y,cappu_n,low,very low,4,4,5,4,5,5,2,4,5,4,31-50,female
+289,7,99,last two weeks,latte_n,cappu_n,very low,very low,4,4,4,3,8,8,4,3,4,3,51+,male
+290,5,99,last month,latte_n,cappu_n,low,very low,5,5,3,5,4,5,4,5,4,4,51+,male
+291,7,83,last week,latte_n,cappu_y,very low,very low,5,5,3,4,5,4,8,5,3,8,31-50,male
+292,5,100,last 3 months,latte_y,cappu_n,low,low,3,4,4,2,5,5,4,3,5,4,<30,female
+293,13,65,last month,latte_n,cappu_n,low,nethei high nor low,4,5,4,4,4,4,5,5,5,2,31-50,male
+294,1,17,last 3 months,latte_n,cappu_n,low,very low,8,4,5,4,4,5,8,8,4,4,<30,male
+295,1,2,last month,latte_n,cappu_n,low,low,5,4,3,3,4,4,4,3,8,4,51+,male
+296,1,75,last 3 months,latte_y,cappu_n,low,nethei high nor low,8,5,3,2,5,4,3,3,4,4,51+,female
+297,10,11,last 3 months,latte_n,cappu_n,low,low,4,4,8,5,5,5,3,4,8,4,31-50,male
+298,3,97,last month,latte_n,cappu_n,very low,very low,5,4,3,2,4,5,5,5,3,4,<30,male
+299,5,98,last month,latte_n,cappu_y,low,low,4,4,3,5,3,5,4,4,5,8,51+,female
+300,11,70,last week,latte_n,cappu_n,low,low,8,4,5,8,5,5,8,4,8,4,31-50,female
+301,3,45,last two weeks,latte_y,cappu_n,low,low,1,3,4,5,4,4,5,4,5,4,31-50,male
+302,4,23,last 3 months,latte_n,cappu_n,low,nethei high nor low,5,4,1,4,4,5,4,4,3,5,31-50,male
+303,1,57,last two weeks,latte_n,cappu_n,very low,very low,3,4,4,5,3,5,4,5,5,4,51+,female
+304,3,93,last month,latte_n,cappu_n,very low,low,4,8,3,4,4,5,8,5,8,4,31-50,female
+305,3,76,last 3 months,latte_y,cappu_n,nethei high nor low,nethei high nor low,3,4,4,4,4,4,8,5,8,2,<30,male
+306,2,45,last two weeks,latte_y,cappu_n,low,nethei high nor low,4,4,3,5,8,5,5,8,8,4,31-50,male
+307,13,94,last 3 months,latte_n,cappu_n,nethei high nor low,nethei high nor low,3,4,5,3,5,5,4,8,4,5,31-50,male
+308,13,4,last month,latte_n,cappu_n,low,very low,8,5,2,3,4,5,3,4,3,4,<30,female
+309,9,45,last month,latte_n,cappu_n,nethei high nor low,low,3,4,3,5,5,5,8,4,5,8,31-50,male
+310,4,35,last 3 months,latte_n,cappu_n,very low,very low,8,4,8,3,5,5,4,3,4,5,31-50,female
+311,19,75,last week,latte_n,cappu_n,low,low,5,5,1,4,4,5,3,3,4,4,31-50,male
+312,1,16,last month,latte_n,cappu_n,high,very high,3,4,3,8,3,4,8,8,5,3,31-50,female
+313,7,99,last week,latte_n,cappu_y,low,low,3,5,5,2,8,8,4,5,4,5,31-50,male
+314,1,78,last week,latte_n,cappu_n,nethei high nor low,nethei high nor low,5,8,1,2,4,4,3,5,3,4,31-50,female
+315,1,88,last week,latte_n,cappu_n,very low,nethei high nor low,8,3,4,4,2,5,5,5,5,4,31-50,male
+316,9,48,last two weeks,latte_y,cappu_n,very low,low,5,8,8,8,5,4,4,5,3,5,31-50,male
+317,2,66,last 3 months,latte_n,cappu_y,low,very low,3,8,3,5,4,4,5,4,8,4,51+,male
+318,4,24,last 3 months,latte_n,cappu_n,nethei high nor low,low,4,4,8,4,3,4,5,5,5,3,31-50,male
+319,2,50,last week,latte_n,cappu_y,low,nethei high nor low,4,8,2,3,4,5,4,4,2,4,31-50,male
+320,17,88,last month,latte_n,cappu_n,very low,very low,4,4,8,4,4,5,4,3,4,4,<30,male
+321,1,56,last 3 months,latte_n,cappu_n,low,low,4,4,3,5,3,5,8,4,4,4,<30,male
+322,1,100,last week,latte_n,cappu_n,low,very low,4,3,5,5,8,8,2,5,5,4,<30,male
+323,2,62,last two weeks,latte_n,cappu_n,low,low,8,4,2,8,3,4,5,5,5,8,31-50,female
+324,3,98,last 3 months,latte_n,cappu_y,low,nethei high nor low,5,4,3,5,4,4,5,5,8,3,31-50,male
+325,1,0,last week,latte_n,cappu_n,low,very low,3,3,3,5,5,4,8,5,5,3,51+,male
+326,5,100,last 3 months,latte_n,cappu_n,very low,very low,8,8,1,3,4,5,4,8,5,5,<30,female
+327,9,92,last month,latte_y,cappu_n,low,very low,2,3,3,5,2,4,5,4,5,2,51+,male
+328,3,47,last week,latte_n,cappu_y,low,very low,4,3,3,5,4,8,5,5,8,4,51+,male
+329,3,15,last week,latte_n,cappu_n,low,very low,3,4,2,4,3,5,5,5,8,3,31-50,male
+330,3,93,last month,latte_n,cappu_n,low,low,5,5,3,3,5,4,8,4,5,3,31-50,male
+331,5,48,last month,latte_n,cappu_n,low,nethei high nor low,3,3,5,2,5,5,4,4,4,5,51+,female
+332,4,97,last week,latte_y,cappu_n,low,low,5,8,4,5,4,4,8,8,5,8,51+,male
+333,4,21,last two weeks,latte_n,cappu_n,nethei high nor low,very low,8,4,3,4,3,5,4,3,3,8,31-50,female
+334,2,39,last week,latte_n,cappu_n,low,very low,3,3,2,4,4,4,5,4,8,4,<30,female
+335,5,9,last month,latte_y,cappu_n,low,nethei high nor low,2,3,3,4,4,4,8,5,5,3,51+,male
+336,7,91,last 3 months,latte_n,cappu_y,low,very low,4,4,3,5,4,4,4,5,3,3,31-50,male
+337,4,4,last month,latte_n,cappu_n,low,very low,5,4,3,8,8,5,5,5,4,8,51+,male
+338,2,90,last week,latte_n,cappu_y,nethei high nor low,low,4,5,8,4,8,4,3,3,3,4,<30,male
+339,3,59,last two weeks,latte_n,cappu_n,very low,low,4,5,1,4,3,4,2,4,4,4,<30,female
+340,5,1,last month,latte_n,cappu_n,nethei high nor low,nethei high nor low,8,4,3,5,4,2,5,4,8,5,<30,male
+341,3,8,last two weeks,latte_n,cappu_n,low,very low,4,3,5,3,8,4,2,3,4,4,31-50,female
+342,9,87,last week,latte_n,cappu_n,very low,very low,4,4,5,3,5,8,8,2,8,8,31-50,male
+343,4,89,last 3 months,latte_n,cappu_n,nethei high nor low,low,8,3,5,2,8,5,4,4,4,4,<30,male
+344,2,98,last two weeks,latte_n,cappu_n,low,nethei high nor low,8,5,8,3,8,8,4,2,5,3,<30,male
+345,2,99,last 3 months,latte_y,cappu_n,very low,very low,1,3,3,5,8,5,8,5,8,4,31-50,male
+346,3,7,last month,latte_n,cappu_y,low,low,8,5,8,5,4,4,5,8,5,4,<30,female
+347,1,68,last month,latte_n,cappu_n,low,very low,4,4,2,8,4,3,8,5,4,4,51+,female
+348,2,93,last week,latte_n,cappu_y,low,low,4,5,3,3,3,5,3,3,4,5,<30,female
+349,3,34,last two weeks,latte_n,cappu_y,very low,very low,5,5,2,3,3,5,4,4,4,4,<30,male
+350,1,80,last week,latte_n,cappu_n,very low,very low,5,2,8,5,5,4,4,4,4,8,31-50,male
+351,1,67,last 3 months,latte_n,cappu_n,low,very low,5,4,3,8,2,5,2,4,4,3,31-50,male
+352,3,89,last two weeks,latte_n,cappu_n,low,high,5,4,2,2,2,8,4,4,4,5,<30,female
+353,3,31,last 3 months,latte_y,cappu_n,low,nethei high nor low,4,8,5,8,5,5,4,4,8,5,<30,male
+354,1,29,last week,latte_n,cappu_n,low,nethei high nor low,4,5,8,5,3,5,4,4,5,4,31-50,female
+355,2,73,last week,latte_n,cappu_n,very low,very low,2,8,5,4,5,8,4,4,4,5,<30,female
+356,5,49,last week,latte_n,cappu_n,low,nethei high nor low,4,4,5,3,5,4,5,3,5,5,31-50,male
+357,1,42,last week,latte_n,cappu_n,low,low,5,8,1,4,8,5,5,5,5,4,<30,male
+358,10,40,last 3 months,latte_y,cappu_n,low,low,5,3,5,4,5,4,3,1,5,4,31-50,male
+359,6,96,last two weeks,latte_y,cappu_n,low,low,8,8,1,5,4,8,5,5,4,3,51+,male
+360,7,8,last month,latte_y,cappu_n,very low,high,3,5,8,8,4,4,4,8,5,3,51+,male
+361,4,39,last week,latte_y,cappu_n,low,very low,5,5,3,2,3,4,3,3,3,5,31-50,female
+362,5,98,last week,latte_n,cappu_n,low,very low,8,5,4,3,4,5,8,4,3,8,<30,female
+363,4,73,last week,latte_n,cappu_y,low,nethei high nor low,8,3,4,1,5,5,4,4,4,5,<30,female
+364,3,16,last two weeks,latte_n,cappu_y,low,very low,5,5,8,4,1,4,4,4,8,4,<30,female
+365,1,16,last month,latte_n,cappu_n,low,low,5,5,8,8,2,5,4,4,4,5,31-50,female
+366,1,24,last month,latte_n,cappu_n,low,low,3,5,4,5,4,4,4,5,5,4,51+,female
+367,13,61,last week,latte_n,cappu_n,nethei high nor low,high,5,5,2,1,3,4,8,3,4,4,<30,female
+368,6,55,last week,latte_n,cappu_y,low,high,2,4,3,5,4,4,5,4,5,4,31-50,female
+369,13,76,last two weeks,latte_n,cappu_n,very low,nethei high nor low,5,4,8,2,4,5,3,4,3,4,31-50,female
+370,1,2,last two weeks,latte_n,cappu_n,low,nethei high nor low,1,4,5,2,5,4,8,3,5,8,51+,female
+371,1,51,last two weeks,latte_n,cappu_n,low,nethei high nor low,8,4,4,4,5,5,5,5,5,4,31-50,male
+372,7,77,last month,latte_n,cappu_n,low,low,4,5,8,4,4,4,3,4,5,3,51+,female
+373,7,4,last two weeks,latte_n,cappu_n,low,low,4,5,4,2,4,5,2,3,5,5,51+,female
+374,1,54,last week,latte_n,cappu_n,very low,very low,4,3,4,4,4,5,5,4,5,4,<30,male
+375,7,92,last month,latte_n,cappu_n,very low,high,5,5,3,8,3,4,3,4,2,4,<30,female
+376,4,27,last week,latte_n,cappu_y,low,low,5,8,5,2,5,8,3,4,4,4,<30,male
+377,1,80,last two weeks,latte_n,cappu_n,nethei high nor low,low,8,4,4,4,5,5,4,3,4,8,<30,male
+378,3,3,last two weeks,latte_n,cappu_y,low,nethei high nor low,3,3,5,3,5,8,5,5,4,8,51+,female
+379,1,12,last week,latte_n,cappu_n,very low,low,3,4,8,4,3,8,5,4,5,4,31-50,male
+380,3,93,last week,latte_n,cappu_n,low,low,5,5,2,5,4,4,5,5,5,8,<30,male
+381,4,11,last two weeks,latte_y,cappu_n,low,very low,3,2,5,5,8,5,4,4,4,5,51+,female
+382,1,13,last 3 months,latte_n,cappu_n,low,low,5,5,4,3,8,4,8,4,4,4,51+,male
+383,22,69,last two weeks,latte_n,cappu_y,very low,nethei high nor low,8,2,3,5,4,3,4,5,5,4,<30,male
+384,4,85,last two weeks,latte_n,cappu_y,low,nethei high nor low,8,4,5,5,5,5,4,4,3,8,51+,male
+385,1,34,last 3 months,latte_n,cappu_n,low,very low,4,5,3,4,4,4,8,2,4,4,<30,female
+386,5,31,last week,latte_n,cappu_n,low,very low,4,5,8,4,4,4,4,3,5,5,<30,female
+387,1,89,last 3 months,latte_y,cappu_n,low,nethei high nor low,4,4,8,4,8,4,5,5,5,4,51+,male
+388,1,97,last week,latte_n,cappu_y,low,very low,3,5,8,4,5,5,3,4,4,5,31-50,female
+389,3,70,last week,latte_n,cappu_n,low,very low,5,5,3,3,5,5,2,3,4,4,51+,male
+390,2,93,last two weeks,latte_n,cappu_y,low,very low,4,5,3,8,3,5,3,4,8,5,31-50,female
+391,1,89,last two weeks,latte_n,cappu_n,low,nethei high nor low,8,3,3,3,3,5,8,5,5,4,31-50,female
+392,13,97,last week,latte_n,cappu_n,very low,very low,8,4,2,8,4,5,2,4,4,4,<30,female
+393,5,40,last month,latte_n,cappu_y,low,low,3,3,4,5,3,5,5,4,8,2,51+,male
+394,7,70,last month,latte_n,cappu_n,low,nethei high nor low,5,5,5,3,5,8,4,3,5,4,31-50,male
+395,1,88,last month,latte_n,cappu_n,low,nethei high nor low,4,5,3,5,4,5,4,4,8,3,<30,male
+396,10,61,last two weeks,latte_n,cappu_n,low,nethei high nor low,5,8,3,3,4,4,8,3,1,4,31-50,male
+397,1,3,last two weeks,latte_y,cappu_n,low,very low,5,5,4,4,5,4,5,4,4,3,<30,female
+398,7,97,last two weeks,latte_n,cappu_n,low,low,3,5,4,3,5,5,3,4,4,4,31-50,male
+399,7,92,last two weeks,latte_n,cappu_y,low,very low,3,2,4,5,8,5,4,4,5,8,<30,female
+400,2,62,last week,latte_n,cappu_n,low,low,4,4,8,4,1,5,4,5,5,4,51+,male
+401,5,54,last two weeks,latte_n,cappu_y,nethei high nor low,high,5,5,1,3,4,5,5,4,3,4,31-50,male
+402,1,1,last week,latte_n,cappu_n,low,very low,4,4,3,4,2,4,5,8,8,8,51+,male
+403,7,51,last week,latte_n,cappu_n,very low,very low,8,5,3,4,4,4,4,5,5,4,31-50,male
+404,17,89,last two weeks,latte_n,cappu_y,low,very low,4,8,5,3,3,8,3,3,8,4,31-50,female
+405,1,31,last month,latte_n,cappu_y,nethei high nor low,low,8,4,3,8,5,4,5,5,5,3,31-50,female
+406,1,11,last week,latte_n,cappu_n,low,low,3,8,8,3,4,4,4,4,5,4,31-50,male
+407,4,68,last month,latte_n,cappu_n,low,high,8,8,4,3,5,8,2,4,4,4,31-50,female
+408,1,17,last two weeks,latte_n,cappu_n,very low,very low,4,4,8,4,8,8,8,4,3,4,31-50,male
+409,7,59,last month,latte_n,cappu_y,nethei high nor low,very high,8,4,4,2,8,4,8,4,3,4,31-50,male
+410,3,94,last two weeks,latte_n,cappu_n,low,low,3,4,4,8,3,4,4,4,4,4,31-50,male
+411,1,39,last two weeks,latte_y,cappu_n,low,low,4,4,2,4,4,5,5,5,8,3,51+,male
+412,5,12,last week,latte_n,cappu_n,low,low,5,4,8,2,5,4,3,3,3,5,51+,male
+413,7,25,last 3 months,latte_n,cappu_n,low,very low,4,4,2,8,5,4,5,5,5,4,31-50,male
+414,1,5,last week,latte_n,cappu_n,low,low,4,2,3,4,4,4,5,5,4,4,51+,male
+415,5,58,last week,latte_n,cappu_n,low,very low,4,3,5,5,5,4,8,2,4,8,31-50,male
+416,4,42,last month,latte_n,cappu_n,low,low,5,4,4,4,3,4,3,3,3,8,51+,male
+417,2,34,last week,latte_n,cappu_n,low,low,5,5,4,3,3,3,4,5,4,3,<30,male
+418,3,85,last month,latte_y,cappu_n,low,nethei high nor low,4,5,5,2,8,5,3,4,4,5,31-50,male
+419,5,86,last week,latte_n,cappu_n,low,low,3,5,2,4,3,5,5,5,5,8,31-50,female
+420,1,97,last week,latte_n,cappu_n,nethei high nor low,nethei high nor low,3,3,3,8,3,5,4,5,4,3,31-50,male
+421,19,79,last month,latte_n,cappu_n,low,very low,2,4,5,3,5,5,8,4,4,3,<30,male
+422,5,69,last week,latte_y,cappu_n,low,nethei high nor low,4,4,5,8,4,4,8,4,8,2,<30,male
+423,1,36,last two weeks,latte_n,cappu_n,low,nethei high nor low,2,4,3,4,5,5,5,5,4,8,51+,male
+424,1,100,last two weeks,latte_n,cappu_n,low,nethei high nor low,3,8,8,5,4,4,5,4,8,4,31-50,male
+425,7,59,last month,latte_n,cappu_n,low,nethei high nor low,4,4,3,4,3,5,5,4,5,3,31-50,female
+426,5,88,last two weeks,latte_n,cappu_y,low,very low,4,2,4,8,2,4,3,8,8,4,<30,female
+427,2,36,last two weeks,latte_n,cappu_n,very low,low,5,5,8,5,3,8,8,5,8,4,51+,male
+428,1,68,last 3 months,latte_n,cappu_y,low,low,5,8,3,4,4,5,3,4,4,3,51+,male
+429,11,84,last week,latte_n,cappu_n,very low,very low,5,4,4,4,5,5,3,3,3,5,31-50,female
+430,5,84,last week,latte_y,cappu_n,low,very low,3,3,8,8,5,5,3,3,4,8,31-50,male
+431,21,75,last week,latte_n,cappu_y,low,low,4,4,4,5,5,3,5,8,5,8,31-50,female
+432,6,29,last week,latte_n,cappu_n,very low,very low,4,4,5,4,5,4,3,4,3,8,31-50,male
+433,5,72,last 3 months,latte_n,cappu_n,low,nethei high nor low,2,4,4,4,8,4,4,4,4,4,31-50,female
+434,2,66,last two weeks,latte_n,cappu_n,very low,low,4,4,4,8,8,4,4,5,5,4,51+,female
+435,5,19,last week,latte_n,cappu_n,nethei high nor low,very high,4,8,5,3,8,8,3,4,4,8,<30,male
+436,9,17,last month,latte_y,cappu_n,low,low,4,4,3,4,3,5,4,4,3,4,51+,male
+437,4,21,last two weeks,latte_n,cappu_y,low,very low,4,4,8,5,8,4,8,5,5,3,51+,female
+438,7,60,last two weeks,latte_n,cappu_n,low,nethei high nor low,8,4,4,4,5,5,2,3,4,5,31-50,female
+439,2,71,last two weeks,latte_n,cappu_y,low,nethei high nor low,4,4,4,5,5,4,5,5,5,3,31-50,female
+440,3,0,last two weeks,latte_n,cappu_n,very low,nethei high nor low,3,1,8,3,5,5,2,4,4,5,31-50,male
+441,3,79,last week,latte_n,cappu_n,low,low,5,5,2,3,3,5,4,4,4,4,51+,female
+442,6,90,last 3 months,latte_n,cappu_n,low,nethei high nor low,4,8,3,2,4,5,3,3,2,4,31-50,female
+443,4,99,last two weeks,latte_n,cappu_n,low,low,3,3,3,8,5,4,8,5,5,4,31-50,female
+444,4,32,last two weeks,latte_n,cappu_y,very low,very low,5,5,2,3,5,4,2,2,8,4,<30,male
+445,1,86,last month,latte_y,cappu_n,low,low,4,4,8,8,4,5,8,5,4,2,51+,male
+446,1,50,last week,latte_n,cappu_n,low,nethei high nor low,4,4,5,3,8,5,2,3,3,5,51+,male
+447,3,80,last 3 months,latte_n,cappu_n,nethei high nor low,nethei high nor low,8,4,8,4,5,5,5,8,4,5,31-50,male
+448,4,100,last 3 months,latte_n,cappu_y,very low,low,8,4,3,5,4,5,4,4,5,3,51+,male
+449,2,6,last two weeks,latte_y,cappu_n,low,nethei high nor low,3,3,3,5,2,4,5,5,5,8,51+,male
+450,3,98,last week,latte_n,cappu_n,low,low,3,3,3,5,3,4,5,4,5,4,<30,male
+451,5,71,last two weeks,latte_y,cappu_n,nethei high nor low,low,4,8,3,4,2,4,4,3,3,8,31-50,male
+452,3,43,last 3 months,latte_y,cappu_n,low,nethei high nor low,8,4,4,2,4,4,4,3,5,5,51+,male
+453,7,76,last month,latte_n,cappu_n,nethei high nor low,nethei high nor low,3,4,8,5,3,4,4,8,5,3,31-50,male
+454,13,5,last two weeks,latte_y,cappu_n,low,very low,5,5,8,2,4,8,3,3,3,4,<30,male
+455,13,33,last two weeks,latte_n,cappu_n,low,nethei high nor low,2,3,4,5,4,8,8,8,5,4,51+,female
+456,5,97,last two weeks,latte_n,cappu_n,low,nethei high nor low,8,5,3,3,3,4,4,2,3,4,31-50,female
+457,5,97,last month,latte_n,cappu_n,very low,low,8,5,1,4,5,3,4,8,3,3,31-50,male
+458,5,97,last week,latte_n,cappu_n,nethei high nor low,low,3,4,5,3,8,4,4,4,5,5,51+,female
+459,1,94,last 3 months,latte_n,cappu_n,low,low,4,3,8,3,5,4,4,8,5,8,31-50,male
+460,4,85,last month,latte_y,cappu_n,low,nethei high nor low,4,8,5,4,8,8,3,3,3,8,<30,female
+461,13,95,last two weeks,latte_n,cappu_n,nethei high nor low,low,4,3,3,5,5,5,4,8,5,4,31-50,male
+462,2,4,last week,latte_n,cappu_n,low,low,3,5,5,4,8,4,4,8,5,5,<30,female
+463,2,85,last two weeks,latte_n,cappu_n,low,very low,4,4,5,4,5,5,5,3,2,4,31-50,male
+464,4,84,last month,latte_n,cappu_y,nethei high nor low,high,4,4,8,4,4,3,5,5,5,2,51+,male
+465,1,88,last week,latte_n,cappu_n,low,low,3,8,3,8,4,4,5,8,5,8,51+,male
+466,3,90,last two weeks,latte_n,cappu_n,very low,very low,4,4,8,8,3,8,5,5,5,2,31-50,male
+467,3,98,last week,latte_y,cappu_n,low,high,3,2,4,5,5,5,5,5,8,3,31-50,female
+468,3,90,last two weeks,latte_n,cappu_n,low,low,4,8,5,3,8,5,5,8,4,4,31-50,female
+469,5,68,last month,latte_n,cappu_n,very low,low,4,4,5,4,5,8,5,4,4,5,31-50,female
+470,4,16,last week,latte_y,cappu_n,very low,very low,3,8,5,3,8,5,3,4,5,5,31-50,male
+471,3,24,last month,latte_n,cappu_n,nethei high nor low,high,4,4,4,3,8,5,3,4,3,5,<30,female
+472,3,40,last 3 months,latte_n,cappu_y,low,high,3,4,8,8,5,4,4,1,3,5,31-50,male
+473,4,99,last two weeks,latte_y,cappu_n,nethei high nor low,low,5,4,3,5,8,4,5,5,5,4,51+,female
+474,13,75,last month,latte_n,cappu_n,low,very low,4,5,8,4,3,4,4,4,3,4,<30,male
+475,1,89,last two weeks,latte_n,cappu_n,very low,nethei high nor low,4,3,8,4,5,5,5,4,5,5,51+,female
+476,3,58,last week,latte_y,cappu_n,low,low,5,4,4,1,4,5,3,4,4,5,31-50,male
+477,3,20,last week,latte_n,cappu_n,low,very low,4,4,3,3,3,5,3,3,4,3,31-50,male
+478,4,92,last 3 months,latte_n,cappu_n,very low,very low,4,3,2,5,4,4,8,5,8,3,31-50,female
+479,16,94,last two weeks,latte_n,cappu_n,low,low,5,4,5,3,5,8,2,3,8,5,31-50,male
+480,7,8,last week,latte_n,cappu_n,low,low,3,4,5,3,5,3,4,4,5,5,31-50,male
+481,13,86,last week,latte_n,cappu_n,low,low,2,3,8,3,5,4,4,3,2,5,51+,female
+482,1,87,last 3 months,latte_n,cappu_y,low,low,2,4,5,4,5,5,2,4,4,5,31-50,female
+483,7,70,last week,latte_n,cappu_n,low,nethei high nor low,8,5,1,3,4,4,4,3,2,3,51+,female
+484,1,71,last week,latte_y,cappu_n,low,nethei high nor low,4,5,2,5,4,5,5,5,8,3,31-50,female
+485,4,47,last two weeks,latte_n,cappu_y,low,low,5,8,4,8,2,5,5,8,3,4,<30,male
+486,1,44,last 3 months,latte_n,cappu_n,low,very low,3,4,3,8,8,4,5,5,8,4,51+,female
+487,2,99,last two weeks,latte_n,cappu_n,low,low,8,4,4,5,3,5,8,5,8,2,51+,male
+488,6,70,last week,latte_n,cappu_n,low,low,4,4,4,4,5,4,5,4,8,5,<30,male
+489,1,14,last week,latte_n,cappu_n,low,very low,4,5,3,8,4,5,5,5,8,3,31-50,male
+490,4,10,last two weeks,latte_n,cappu_y,low,low,8,4,2,4,3,8,5,4,5,3,31-50,male
+491,13,49,last week,latte_n,cappu_y,low,low,5,5,3,3,4,4,5,4,8,4,31-50,female
+492,3,14,last two weeks,latte_y,cappu_n,low,very low,3,8,2,5,4,5,5,4,5,4,31-50,male
+493,4,81,last 3 months,latte_n,cappu_n,very low,very low,5,8,4,8,8,5,5,3,3,8,<30,male
+494,5,37,last 3 months,latte_y,cappu_n,low,low,5,4,8,4,5,5,3,4,4,4,<30,female
+495,13,29,last month,latte_n,cappu_y,low,nethei high nor low,4,4,3,5,5,3,5,4,5,8,31-50,male
+496,1,47,last two weeks,latte_n,cappu_n,low,very low,4,4,4,4,5,4,3,5,4,8,31-50,male
+497,4,100,last week,latte_n,cappu_n,nethei high nor low,nethei high nor low,5,8,3,3,4,4,5,4,8,3,<30,female
+498,9,37,last month,latte_n,cappu_y,very low,very low,5,4,8,3,4,5,4,4,3,3,<30,female
+499,1,32,last two weeks,latte_n,cappu_n,low,low,5,8,4,1,4,8,3,3,5,5,51+,male
+500,3,80,last week,latte_n,cappu_n,low,nethei high nor low,3,4,3,5,3,5,4,4,4,4,51+,male
+501,7,56,last two weeks,latte_n,cappu_n,low,low,3,8,5,3,5,8,3,4,3,5,31-50,female
+502,3,16,last 3 months,latte_n,cappu_n,low,low,2,4,2,4,2,4,5,5,5,3,31-50,female
+503,3,13,last week,latte_n,cappu_n,low,low,5,5,3,3,4,4,5,5,4,4,31-50,female
+504,1,53,last week,latte_n,cappu_n,low,low,5,8,5,2,2,4,3,2,4,4,<30,female
+505,9,5,last month,latte_n,cappu_n,very low,low,3,3,5,2,5,4,3,4,4,5,31-50,female
+506,4,21,last month,latte_n,cappu_n,low,very low,4,3,5,5,8,5,5,4,5,4,51+,female
+507,1,6,last week,latte_y,cappu_n,very low,very low,5,4,2,3,4,3,5,3,1,3,31-50,female
+508,1,78,last week,latte_n,cappu_n,nethei high nor low,high,2,4,4,5,5,5,8,5,4,8,31-50,female
+509,5,39,last week,latte_n,cappu_n,low,very low,4,4,3,5,3,5,5,5,5,4,51+,female
+510,4,99,last week,latte_n,cappu_n,very low,low,3,8,5,2,8,5,2,5,3,8,51+,female
+511,3,8,last week,latte_y,cappu_n,low,nethei high nor low,3,3,2,5,3,4,8,5,5,4,31-50,male
+512,13,82,last two weeks,latte_n,cappu_y,low,low,3,3,5,3,5,5,4,8,5,8,<30,male
+513,7,85,last week,latte_n,cappu_y,low,nethei high nor low,5,8,3,3,4,4,4,4,4,3,<30,male
+514,4,63,last month,latte_n,cappu_n,low,very low,8,4,4,4,4,5,4,2,4,4,<30,female
+515,1,85,last two weeks,latte_n,cappu_n,low,very low,8,3,2,5,8,8,8,8,5,4,51+,male
+516,7,8,last week,latte_y,cappu_n,very low,very low,3,4,4,5,4,8,5,5,8,5,<30,male
+517,5,27,last month,latte_n,cappu_y,low,very low,5,5,3,4,8,4,4,4,2,4,51+,female
+518,2,72,last two weeks,latte_n,cappu_n,low,very low,5,5,2,3,4,5,3,3,8,4,<30,male
+519,7,88,last month,latte_n,cappu_n,low,very low,4,4,5,8,8,8,4,4,8,5,51+,female
+520,9,92,last week,latte_y,cappu_n,low,very low,8,4,3,4,4,5,8,4,5,8,<30,female
+521,7,98,last month,latte_n,cappu_n,low,nethei high nor low,5,5,8,3,4,3,4,8,3,4,31-50,female
+522,1,93,last month,latte_n,cappu_n,low,low,4,5,8,4,4,8,1,3,3,5,<30,male
+523,5,21,last week,latte_n,cappu_n,low,nethei high nor low,4,4,3,8,2,5,8,4,5,4,31-50,male
+524,5,51,last month,latte_n,cappu_n,nethei high nor low,nethei high nor low,5,4,1,3,4,4,3,8,5,4,31-50,male
+525,2,2,last 3 months,latte_n,cappu_n,very low,very low,8,5,3,4,8,5,3,4,5,4,51+,male
+526,5,37,last month,latte_n,cappu_n,low,low,4,4,3,3,8,5,4,5,8,5,31-50,male
+527,7,85,last two weeks,latte_y,cappu_n,low,very low,8,5,8,2,4,5,3,3,3,4,<30,female
+528,4,3,last month,latte_n,cappu_y,low,nethei high nor low,2,8,1,5,4,5,8,5,5,5,31-50,male
+529,7,67,last week,latte_n,cappu_n,low,low,4,4,5,4,8,5,4,4,4,5,31-50,male
+530,1,5,last week,latte_n,cappu_n,low,very low,1,2,3,5,4,4,5,5,4,4,31-50,female
+531,3,79,last 3 months,latte_y,cappu_n,very low,very low,5,8,4,3,4,4,3,4,3,4,51+,female
+532,1,89,last two weeks,latte_n,cappu_n,low,nethei high nor low,3,3,5,3,8,5,3,4,3,5,31-50,male
+533,13,13,last month,latte_n,cappu_n,nethei high nor low,very high,4,3,8,4,5,4,5,4,5,3,<30,female
+534,1,79,last 3 months,latte_n,cappu_n,nethei high nor low,nethei high nor low,4,3,4,8,3,5,5,5,4,3,31-50,male
+535,7,28,last week,latte_n,cappu_y,low,nethei high nor low,4,5,3,3,4,5,5,3,4,8,51+,male
+536,13,100,last 3 months,latte_n,cappu_n,low,low,3,3,4,3,4,4,4,5,5,4,31-50,male
+537,10,85,last week,latte_n,cappu_n,low,nethei high nor low,8,3,3,5,4,4,8,5,5,3,31-50,male
+538,2,33,last two weeks,latte_n,cappu_n,low,very low,4,2,5,3,5,5,3,4,5,4,31-50,male
+539,7,81,last two weeks,latte_n,cappu_n,low,low,8,8,2,4,4,4,5,4,5,2,31-50,male
+540,4,82,last week,latte_n,cappu_n,low,low,4,4,4,5,4,4,8,4,5,3,31-50,female
+541,5,46,last two weeks,latte_y,cappu_n,low,nethei high nor low,5,5,4,4,5,8,8,4,3,8,<30,male
+542,1,15,last two weeks,latte_y,cappu_n,nethei high nor low,low,3,3,8,2,5,4,4,4,5,8,31-50,female
+543,7,46,last month,latte_n,cappu_y,low,very low,3,4,3,5,3,5,8,5,4,2,31-50,female
+544,7,73,last week,latte_n,cappu_n,low,low,5,8,4,3,4,4,4,4,4,4,<30,male
+545,9,90,last two weeks,latte_y,cappu_n,very low,low,8,5,3,8,4,5,4,3,4,3,51+,female
+546,5,42,last 3 months,latte_y,cappu_n,low,nethei high nor low,5,8,4,2,3,5,3,8,4,4,<30,male
+547,3,10,last week,latte_n,cappu_n,low,low,3,5,8,3,5,8,8,8,3,5,31-50,female
+548,1,51,last month,latte_n,cappu_n,nethei high nor low,low,4,4,5,2,5,4,4,8,5,5,31-50,female
+549,4,77,last two weeks,latte_n,cappu_n,nethei high nor low,nethei high nor low,3,8,4,3,5,4,4,4,5,8,31-50,male
+550,5,71,last month,latte_y,cappu_n,low,low,5,3,5,3,5,5,4,4,4,8,<30,female
+551,2,42,last month,latte_n,cappu_n,low,very low,8,4,3,5,3,4,5,5,5,4,<30,male
+552,7,34,last week,latte_n,cappu_n,nethei high nor low,nethei high nor low,5,5,4,8,2,4,4,4,3,4,<30,female
+553,1,78,last two weeks,latte_n,cappu_y,nethei high nor low,nethei high nor low,5,5,2,4,4,8,5,4,3,4,51+,male
+554,9,88,last two weeks,latte_y,cappu_n,nethei high nor low,nethei high nor low,4,1,2,5,5,4,5,5,8,3,31-50,female
+555,13,75,last two weeks,latte_n,cappu_n,low,very low,5,8,3,4,3,8,4,4,3,3,31-50,female
+556,3,67,last 3 months,latte_n,cappu_n,low,nethei high nor low,4,8,3,5,4,4,4,8,8,5,51+,male
+557,1,100,last 3 months,latte_n,cappu_n,low,low,5,4,3,5,8,4,5,2,4,5,51+,female
+558,3,5,last week,latte_n,cappu_n,low,low,5,5,3,5,3,4,3,3,3,5,<30,female
+559,3,76,last week,latte_n,cappu_n,low,high,3,4,4,4,4,4,4,5,5,4,<30,male
+560,5,50,last week,latte_n,cappu_n,low,nethei high nor low,8,5,4,3,5,4,4,3,8,5,<30,female
+561,9,84,last month,latte_n,cappu_y,very low,very low,2,4,3,5,3,8,5,4,5,1,31-50,male
+562,1,71,last month,latte_n,cappu_n,low,very low,8,5,4,4,3,4,3,3,8,4,31-50,female
+563,5,31,last two weeks,latte_n,cappu_n,low,low,4,3,2,5,2,5,5,5,5,3,31-50,male
+564,5,46,last month,latte_n,cappu_n,nethei high nor low,very low,2,4,3,5,5,5,4,5,5,3,51+,female
+565,7,86,last two weeks,latte_n,cappu_n,nethei high nor low,low,4,3,4,3,5,8,8,8,4,5,31-50,female
+566,1,49,last 3 months,latte_n,cappu_n,very low,nethei high nor low,4,4,3,5,4,8,8,4,4,5,31-50,male
+567,1,73,last week,latte_n,cappu_y,low,low,5,3,5,4,5,4,3,4,4,5,<30,male
+568,9,80,last two weeks,latte_n,cappu_n,low,nethei high nor low,3,4,5,5,3,8,5,5,5,4,51+,female
+569,5,24,last two weeks,latte_n,cappu_n,low,very low,8,4,2,8,8,8,8,4,8,4,51+,female
+570,4,39,last week,latte_y,cappu_n,very low,low,5,8,4,5,3,5,4,4,4,4,<30,female
+571,4,87,last two weeks,latte_n,cappu_y,low,very low,5,5,1,4,4,4,4,4,8,3,51+,female
+572,10,90,last week,latte_n,cappu_n,low,nethei high nor low,4,3,8,4,4,5,5,5,5,3,51+,male
+573,3,97,last 3 months,latte_n,cappu_y,low,nethei high nor low,5,4,5,3,4,4,3,4,4,5,<30,female
+574,3,43,last week,latte_n,cappu_n,low,low,3,3,5,4,5,5,5,4,8,5,31-50,female
+575,7,39,last 3 months,latte_n,cappu_n,low,very low,5,3,5,3,5,4,3,4,5,5,31-50,female
+576,7,64,last two weeks,latte_n,cappu_y,low,low,3,4,4,4,4,4,5,5,8,2,31-50,female
+577,5,15,last week,latte_y,cappu_n,nethei high nor low,nethei high nor low,4,3,4,8,4,5,4,5,5,3,51+,male
+578,1,34,last two weeks,latte_n,cappu_n,low,very low,5,8,3,2,3,3,4,4,3,8,<30,female
+579,1,82,last two weeks,latte_n,cappu_n,very low,very low,5,4,4,2,8,4,4,3,4,5,<30,female
+580,3,1,last two weeks,latte_n,cappu_n,low,nethei high nor low,5,5,2,1,4,8,4,2,4,5,31-50,female
+581,5,36,last week,latte_n,cappu_n,low,very low,3,3,4,5,8,4,5,5,5,8,51+,female
+582,10,78,last two weeks,latte_n,cappu_n,low,nethei high nor low,8,4,2,5,3,5,5,4,5,3,51+,male
+583,6,99,last month,latte_n,cappu_n,low,low,3,4,2,8,3,5,8,4,4,8,31-50,male
+584,3,65,last week,latte_n,cappu_y,low,low,4,4,3,5,4,4,5,3,5,3,31-50,male
+585,1,3,last two weeks,latte_n,cappu_n,low,nethei high nor low,5,5,8,4,8,8,8,4,4,3,51+,female
+586,1,99,last 3 months,latte_n,cappu_n,low,very low,3,8,8,4,5,5,3,3,4,8,31-50,male
+587,4,30,last week,latte_y,cappu_n,low,nethei high nor low,8,8,3,5,4,3,8,5,5,4,51+,female
+588,3,24,last month,latte_n,cappu_y,low,high,4,3,3,5,4,4,5,5,5,2,31-50,male
+589,3,95,last two weeks,latte_n,cappu_y,low,nethei high nor low,8,4,2,2,1,5,5,5,8,5,51+,male
+590,9,96,last week,latte_n,cappu_n,nethei high nor low,high,8,8,8,4,8,5,8,4,4,8,51+,female
+591,2,89,last two weeks,latte_n,cappu_y,nethei high nor low,low,3,5,4,5,3,5,5,4,8,4,31-50,male
+592,2,75,last week,latte_n,cappu_n,low,nethei high nor low,2,5,4,4,8,4,3,4,4,4,31-50,male
+593,1,58,last two weeks,latte_n,cappu_y,low,very low,8,5,4,4,3,4,8,8,4,5,31-50,female
+594,5,31,last week,latte_n,cappu_n,very low,very low,4,4,8,2,8,8,4,3,8,5,31-50,female
+595,1,56,last 3 months,latte_y,cappu_n,low,nethei high nor low,4,4,5,3,5,5,2,4,3,5,31-50,female
+596,1,54,last week,latte_n,cappu_y,low,low,5,4,3,3,3,4,1,4,4,4,31-50,female
+597,5,31,last two weeks,latte_y,cappu_n,low,very low,4,5,4,5,3,8,5,5,5,4,31-50,male
+598,9,17,last month,latte_n,cappu_n,low,very low,8,4,4,8,3,5,5,5,4,3,31-50,female
+599,5,41,last week,latte_n,cappu_n,low,nethei high nor low,4,4,1,5,4,4,5,5,5,4,31-50,female
+600,2,45,last week,latte_n,cappu_n,nethei high nor low,very low,5,5,3,3,4,5,4,3,5,4,31-50,female
+601,5,31,last two weeks,latte_n,cappu_n,very low,low,4,4,5,5,3,4,5,8,5,4,<30,female
+602,5,21,last two weeks,latte_n,cappu_y,low,low,5,5,4,3,8,5,3,3,3,2,51+,female
+603,1,35,last week,latte_y,cappu_n,low,low,4,3,8,4,4,5,4,4,4,8,31-50,male
+604,5,9,last two weeks,latte_n,cappu_n,low,very low,1,3,5,4,5,5,4,4,3,8,31-50,female
+605,7,31,last 3 months,latte_n,cappu_y,low,high,3,3,3,8,4,4,4,4,5,8,<30,male
+606,7,0,last week,latte_n,cappu_y,low,low,3,5,8,5,5,4,5,5,5,4,51+,male
+607,1,99,last week,latte_y,cappu_n,low,low,3,4,4,5,3,3,5,5,5,4,51+,male
+608,4,61,last week,latte_n,cappu_n,nethei high nor low,nethei high nor low,8,5,4,5,5,5,4,4,5,8,51+,male
+609,9,73,last week,latte_n,cappu_y,low,nethei high nor low,5,5,2,3,2,8,2,4,4,4,31-50,female
+610,17,84,last two weeks,latte_n,cappu_y,low,very low,4,5,3,5,5,4,5,5,4,4,31-50,male
+611,3,99,last week,latte_n,cappu_n,low,low,8,4,3,5,1,3,5,5,5,3,<30,female
+612,9,49,last 3 months,latte_n,cappu_n,very low,very low,4,4,1,5,4,5,5,5,5,3,31-50,male
+613,6,3,last month,latte_n,cappu_n,low,very low,3,5,2,4,8,3,5,5,4,4,<30,male
+614,1,20,last month,latte_n,cappu_n,nethei high nor low,low,8,5,8,3,4,4,3,3,5,8,31-50,male
+615,7,41,last week,latte_n,cappu_y,nethei high nor low,high,4,3,5,3,8,4,5,5,8,5,31-50,female
+616,3,67,last 3 months,latte_n,cappu_y,very low,very low,5,8,2,3,3,5,4,4,3,5,<30,male
+617,3,80,last month,latte_n,cappu_n,low,low,5,3,3,8,3,4,4,5,4,3,31-50,male
+618,1,53,last week,latte_n,cappu_n,low,low,5,5,8,2,5,4,4,8,4,4,<30,male
+619,13,51,last week,latte_y,cappu_n,low,very low,5,5,2,3,8,4,3,8,3,4,<30,female
+620,1,46,last week,latte_n,cappu_n,very low,very low,2,4,8,4,4,3,5,4,5,4,<30,female
+621,3,88,last two weeks,latte_y,cappu_n,low,low,4,8,4,8,4,5,8,5,5,3,51+,male
+622,1,9,last week,latte_n,cappu_y,low,very low,4,3,5,8,5,5,4,4,5,8,31-50,female
+623,1,48,last month,latte_n,cappu_n,low,low,4,5,2,5,3,4,4,4,5,2,31-50,female
+624,9,92,last month,latte_n,cappu_y,low,low,8,5,4,8,3,5,4,4,3,5,31-50,female
+625,1,19,last week,latte_n,cappu_n,low,very low,3,4,4,2,5,8,8,8,4,5,31-50,female
+626,15,69,last week,latte_n,cappu_y,low,low,5,5,3,3,5,8,1,2,4,5,51+,male
+627,7,70,last 3 months,latte_n,cappu_n,low,very low,4,4,4,8,4,8,5,4,4,4,<30,male
+628,4,67,last two weeks,latte_n,cappu_n,low,very low,8,5,8,3,3,8,8,4,4,4,31-50,female
+629,1,70,last month,latte_n,cappu_n,low,very low,8,5,5,8,5,5,4,8,4,4,51+,female
+630,1,1,last 3 months,latte_y,cappu_n,low,nethei high nor low,4,4,4,5,4,5,8,5,8,3,31-50,female
+631,3,18,last 3 months,latte_n,cappu_y,low,low,4,4,4,8,5,4,5,4,5,4,<30,male
+632,1,7,last week,latte_n,cappu_y,low,low,4,4,8,5,8,5,3,4,4,8,31-50,male
+633,1,71,last 3 months,latte_y,cappu_n,low,very low,4,4,5,4,5,5,8,4,3,4,51+,male
+634,5,31,last 3 months,latte_n,cappu_n,nethei high nor low,low,4,4,2,5,4,4,8,5,5,8,51+,male
+635,7,6,last two weeks,latte_n,cappu_n,low,very low,5,4,3,4,4,3,8,5,8,4,31-50,male
+636,3,0,last 3 months,latte_n,cappu_n,low,nethei high nor low,8,5,4,3,3,5,4,4,2,5,51+,female
+637,10,95,last two weeks,latte_n,cappu_y,low,low,4,4,5,2,5,5,3,4,4,4,<30,male
+638,3,65,last week,latte_n,cappu_n,low,low,8,3,8,5,5,4,3,5,4,4,<30,male
+639,13,67,last month,latte_n,cappu_n,low,low,5,2,5,4,5,5,4,5,3,4,31-50,male
+640,3,43,last week,latte_n,cappu_n,low,very low,8,3,8,8,5,4,4,3,5,4,31-50,female
+641,5,100,last week,latte_y,cappu_n,very low,nethei high nor low,2,4,5,3,8,5,5,3,5,5,31-50,female
+642,5,95,last 3 months,latte_n,cappu_n,low,very low,4,3,5,5,4,4,3,4,4,5,51+,male
+643,7,72,last 3 months,latte_n,cappu_n,low,low,4,3,8,1,8,5,4,4,3,4,31-50,male
+644,1,74,last two weeks,latte_n,cappu_y,low,nethei high nor low,3,3,5,3,5,4,1,5,3,8,<30,male
+645,5,62,last two weeks,latte_n,cappu_n,low,high,5,5,3,3,8,5,4,4,5,4,<30,female
+646,9,56,last week,latte_n,cappu_n,low,very low,3,4,5,8,8,4,2,3,4,8,<30,male
+647,1,50,last two weeks,latte_n,cappu_y,low,low,3,4,4,8,4,5,5,5,5,8,31-50,female
+648,3,1,last week,latte_n,cappu_n,low,low,8,5,8,4,5,4,3,4,3,4,51+,male
+649,1,52,last 3 months,latte_n,cappu_y,low,low,3,4,2,5,3,4,8,5,5,4,31-50,female
+650,1,89,last 3 months,latte_n,cappu_n,low,very low,4,4,3,5,4,4,4,4,8,4,51+,female
+651,2,66,last two weeks,latte_n,cappu_n,very low,very low,4,3,4,5,4,4,8,8,4,8,51+,female
+652,11,11,last 3 months,latte_n,cappu_n,low,very low,4,4,4,5,5,5,4,4,5,4,<30,female
+653,7,49,last 3 months,latte_n,cappu_n,low,low,1,3,5,3,5,4,8,3,4,5,31-50,male
+654,1,19,last two weeks,latte_n,cappu_n,low,low,5,5,8,3,5,5,3,4,3,4,31-50,male
+655,7,24,last 3 months,latte_n,cappu_n,very low,very low,4,5,3,4,3,4,4,4,4,8,51+,male
+656,9,98,last week,latte_n,cappu_n,low,high,5,4,5,5,5,4,5,4,4,2,51+,male
+657,2,63,last week,latte_n,cappu_y,low,very low,8,4,4,5,3,4,8,4,5,3,31-50,male
+658,3,50,last two weeks,latte_y,cappu_n,low,low,4,4,4,8,4,4,8,4,5,4,51+,male
+659,3,98,last week,latte_y,cappu_n,low,nethei high nor low,3,4,3,4,4,5,5,4,4,8,51+,female
+660,9,41,last month,latte_n,cappu_n,low,very low,4,4,3,4,5,5,4,4,5,3,<30,male
+661,9,94,last month,latte_n,cappu_n,low,very low,5,4,3,4,4,4,3,8,4,8,<30,female
+662,4,53,last month,latte_n,cappu_y,low,low,4,8,5,5,5,4,5,4,4,8,31-50,male
+663,3,100,last two weeks,latte_n,cappu_n,low,low,3,4,2,5,3,4,4,5,5,4,51+,male
+664,11,12,last month,latte_n,cappu_n,low,very low,5,4,2,3,4,5,2,4,2,4,<30,female
+665,7,1,last month,latte_n,cappu_n,low,very low,3,3,1,5,4,4,5,5,5,4,51+,female
+666,3,74,last 3 months,latte_n,cappu_n,low,low,8,1,3,4,5,5,5,4,5,3,51+,male
+667,3,75,last two weeks,latte_y,cappu_n,low,nethei high nor low,5,3,8,3,5,4,5,8,8,5,31-50,male
+668,7,94,last week,latte_n,cappu_n,nethei high nor low,very low,8,8,3,4,3,5,5,5,5,2,51+,male
+669,3,54,last 3 months,latte_y,cappu_n,low,low,8,5,3,4,8,8,3,4,4,8,31-50,female
+670,1,85,last 3 months,latte_y,cappu_n,low,low,3,4,4,4,5,4,8,4,8,8,<30,male
+671,5,40,last two weeks,latte_n,cappu_y,low,very low,8,5,8,5,4,5,5,5,5,4,51+,male
+672,4,100,last two weeks,latte_n,cappu_n,low,very low,4,4,2,8,3,5,8,5,4,4,31-50,male
+673,3,76,last week,latte_n,cappu_n,very low,very low,4,2,8,4,4,5,3,4,4,4,<30,female
+674,13,47,last month,latte_y,cappu_n,very low,very low,4,5,2,3,5,5,4,4,8,8,51+,male
+675,6,73,last two weeks,latte_n,cappu_n,very low,very low,5,8,3,8,4,8,5,2,3,5,<30,male
+676,1,89,last week,latte_n,cappu_y,low,low,5,8,3,3,4,5,4,3,3,4,31-50,male
+677,13,16,last two weeks,latte_n,cappu_n,very low,nethei high nor low,2,4,1,5,4,3,5,4,4,3,31-50,female
+678,1,11,last month,latte_n,cappu_n,nethei high nor low,high,4,5,4,4,4,8,4,4,3,5,31-50,female
+679,2,32,last week,latte_n,cappu_n,low,low,4,4,8,4,5,8,4,5,4,5,51+,male
+680,7,74,last week,latte_n,cappu_y,very low,low,3,4,2,4,4,8,4,8,5,4,31-50,male
+681,3,92,last two weeks,latte_n,cappu_y,low,nethei high nor low,8,4,4,5,3,4,5,5,5,4,51+,male
+682,5,72,last week,latte_n,cappu_n,nethei high nor low,nethei high nor low,4,3,4,4,8,5,8,5,4,3,31-50,male
+683,1,6,last two weeks,latte_n,cappu_n,low,low,4,5,5,4,5,5,5,4,5,5,51+,male
+684,9,23,last two weeks,latte_n,cappu_n,low,low,5,8,3,2,5,4,3,4,2,4,<30,female
+685,5,100,last week,latte_n,cappu_n,low,high,4,5,8,5,2,4,5,5,8,4,31-50,male
+686,3,13,last week,latte_y,cappu_n,low,very low,4,4,8,8,3,4,8,5,5,8,<30,female
+687,5,47,last week,latte_n,cappu_n,very low,very low,2,3,3,4,8,5,8,5,8,3,51+,male
+688,1,71,last week,latte_n,cappu_n,nethei high nor low,nethei high nor low,8,4,3,5,3,8,8,5,4,2,<30,female
+689,1,79,last two weeks,latte_y,cappu_n,low,very low,3,4,5,4,5,5,4,5,5,5,51+,male
+690,10,39,last week,latte_n,cappu_y,low,low,1,3,3,5,3,4,5,5,4,3,<30,male
+691,1,80,last two weeks,latte_y,cappu_n,low,low,2,5,4,5,4,5,5,5,8,4,<30,male
+692,7,55,last two weeks,latte_n,cappu_n,low,very low,8,4,4,4,5,8,4,4,8,4,31-50,female
+693,3,24,last two weeks,latte_n,cappu_n,low,very low,3,4,3,8,4,4,4,5,5,5,51+,male
+694,2,26,last week,latte_n,cappu_y,very low,low,4,4,3,4,3,5,5,4,5,2,51+,female
+695,2,81,last two weeks,latte_n,cappu_y,low,low,4,4,2,5,8,5,8,5,5,3,51+,male
+696,1,89,last month,latte_n,cappu_n,low,very low,3,3,4,4,4,4,5,8,8,3,<30,male
+697,4,97,last two weeks,latte_n,cappu_n,low,low,8,8,3,4,4,5,3,4,3,5,31-50,male
+698,3,93,last month,latte_n,cappu_y,low,low,5,5,3,4,5,4,4,5,3,3,31-50,female
+699,7,92,last week,latte_y,cappu_n,low,nethei high nor low,3,4,1,4,4,5,5,4,8,3,31-50,female
+700,5,77,last 3 months,latte_n,cappu_y,low,very low,4,5,4,4,4,8,5,5,5,2,31-50,male
+701,1,16,last month,latte_n,cappu_n,low,very low,3,4,3,5,3,5,8,4,5,2,<30,female
+702,9,77,last month,latte_y,cappu_n,low,very low,3,2,8,4,5,8,4,3,5,5,51+,male
+703,7,48,last two weeks,latte_n,cappu_y,low,high,4,4,4,4,5,4,5,5,5,3,51+,male
+704,6,77,last week,latte_y,cappu_n,low,low,8,4,8,5,5,5,3,4,4,4,51+,male
+705,5,95,last 3 months,latte_y,cappu_n,low,very low,5,8,3,2,4,8,5,8,3,8,31-50,male
+706,1,91,last week,latte_n,cappu_y,low,very low,5,5,2,4,3,5,8,8,4,8,51+,female
+707,10,24,last month,latte_n,cappu_n,low,very low,4,4,8,5,4,4,5,5,8,8,31-50,male
+708,1,44,last week,latte_n,cappu_y,low,low,8,2,5,8,5,4,4,2,4,5,31-50,male
+709,3,61,last week,latte_y,cappu_n,low,low,4,8,4,4,5,5,4,4,4,8,51+,male
+710,4,73,last week,latte_y,cappu_n,low,low,5,5,3,3,3,8,3,4,4,5,31-50,male
+711,13,90,last week,latte_y,cappu_n,very low,very low,4,3,5,1,8,5,5,8,4,5,51+,female
+712,3,32,last 3 months,latte_n,cappu_n,low,very low,4,5,4,3,4,5,8,4,5,3,31-50,female
+713,3,89,last two weeks,latte_n,cappu_n,nethei high nor low,nethei high nor low,5,5,3,4,4,5,3,5,5,4,31-50,female
+714,10,17,last month,latte_y,cappu_n,low,very low,3,5,3,5,8,4,5,5,5,8,51+,male
+715,1,21,last month,latte_n,cappu_n,low,low,4,4,1,4,8,4,4,8,8,4,51+,female
+716,3,50,last week,latte_n,cappu_n,low,low,5,5,3,3,5,5,3,3,4,2,<30,male
+717,19,93,last month,latte_y,cappu_n,low,very low,2,4,8,8,8,5,4,3,4,5,31-50,male
+718,4,95,last week,latte_n,cappu_y,nethei high nor low,high,4,8,8,4,5,5,3,3,4,5,51+,male
+719,1,24,last month,latte_n,cappu_n,low,low,5,8,3,2,3,4,5,5,4,3,31-50,male
+720,4,9,last week,latte_n,cappu_n,low,low,3,5,8,4,5,3,5,8,5,4,51+,male
+721,4,89,last month,latte_y,cappu_n,low,low,4,5,8,2,5,4,3,5,4,5,<30,female
+722,1,99,last week,latte_n,cappu_n,very low,very low,4,3,4,4,2,5,5,8,5,4,51+,male
+723,4,3,last month,latte_n,cappu_n,nethei high nor low,low,5,4,4,5,4,4,5,8,4,3,51+,male
+724,5,14,last two weeks,latte_n,cappu_n,low,nethei high nor low,3,5,3,5,8,4,5,4,8,4,<30,male
+725,3,7,last month,latte_n,cappu_n,low,low,5,5,1,3,3,4,4,3,4,3,51+,male
+726,2,51,last 3 months,latte_n,cappu_n,low,very low,1,5,1,5,4,8,5,8,4,4,31-50,male
+727,3,53,last week,latte_y,cappu_n,low,very low,4,4,8,4,4,5,4,3,4,4,31-50,male
+728,4,81,last week,latte_n,cappu_n,very low,low,8,3,3,8,3,5,5,8,5,4,51+,female
+729,1,86,last week,latte_n,cappu_n,nethei high nor low,high,8,5,3,5,5,8,2,5,5,4,<30,female
+730,9,63,last month,latte_n,cappu_n,low,very low,3,4,2,4,8,4,5,5,5,3,31-50,male
+731,13,7,last week,latte_n,cappu_n,low,very low,8,8,2,3,4,4,3,5,8,4,<30,female
+732,5,98,last two weeks,latte_n,cappu_n,low,nethei high nor low,4,4,3,4,5,4,5,4,4,4,31-50,male
+733,4,11,last week,latte_y,cappu_n,low,very low,8,8,8,3,4,8,8,4,5,5,31-50,female
+734,1,87,last week,latte_n,cappu_n,nethei high nor low,low,2,3,3,5,2,4,5,4,5,2,51+,male
+735,1,55,last week,latte_n,cappu_n,low,very low,4,8,5,4,5,5,3,4,5,5,51+,female
+736,3,65,last month,latte_y,cappu_n,low,very low,5,5,2,3,3,5,4,4,3,8,51+,male
+737,1,36,last week,latte_n,cappu_y,low,low,4,5,3,5,5,4,8,5,8,2,51+,female
+738,1,99,last week,latte_n,cappu_n,very low,very low,3,3,8,4,3,5,8,8,5,4,<30,female
+739,4,3,last month,latte_n,cappu_n,low,very low,5,3,4,5,4,4,8,4,5,3,51+,male
+740,1,85,last month,latte_y,cappu_n,nethei high nor low,very high,8,4,3,4,3,5,4,3,3,5,51+,male
+741,1,100,last two weeks,latte_n,cappu_n,low,low,5,4,2,1,4,5,3,3,5,5,51+,female
+742,19,36,last two weeks,latte_n,cappu_y,low,low,4,4,8,2,4,4,4,4,4,8,31-50,male
+743,13,8,last week,latte_n,cappu_n,nethei high nor low,nethei high nor low,3,2,3,8,4,3,5,8,8,3,31-50,female
+744,1,97,last week,latte_n,cappu_n,low,nethei high nor low,5,4,5,3,5,5,3,5,3,8,<30,female
+745,4,2,last two weeks,latte_n,cappu_n,very low,very low,3,4,5,4,5,4,8,3,4,5,31-50,male
+746,1,82,last week,latte_n,cappu_n,low,low,2,4,8,8,3,4,4,5,5,3,<30,male
+747,5,75,last week,latte_n,cappu_n,very low,low,5,5,3,3,4,3,4,8,5,5,<30,female
+748,11,99,last week,latte_n,cappu_n,low,high,4,3,8,3,8,4,2,3,4,4,31-50,male
+749,9,84,last week,latte_n,cappu_n,very low,nethei high nor low,8,5,8,3,8,4,3,2,3,5,51+,female
+750,3,45,last week,latte_n,cappu_n,low,very low,4,8,3,4,5,5,8,5,5,8,31-50,female
+751,5,32,last 3 months,latte_n,cappu_n,low,low,5,5,3,3,3,4,4,2,5,3,<30,male
+752,1,16,last week,latte_n,cappu_n,low,very low,4,4,3,4,5,5,8,4,4,5,31-50,male
+753,5,74,last two weeks,latte_n,cappu_n,very low,very low,3,4,5,4,5,5,3,5,4,8,51+,female
+754,3,59,last week,latte_y,cappu_n,low,low,4,4,2,5,4,3,8,5,4,4,31-50,female
+755,5,60,last week,latte_n,cappu_n,low,very low,3,8,3,4,3,5,8,4,8,4,31-50,male
+756,5,23,last week,latte_y,cappu_n,low,nethei high nor low,4,4,5,3,5,5,4,4,4,5,51+,male
+757,1,88,last week,latte_n,cappu_n,low,nethei high nor low,8,4,3,5,4,4,8,4,4,4,31-50,female
+758,3,8,last 3 months,latte_n,cappu_n,low,very low,5,4,8,3,2,8,2,8,4,3,<30,male
+759,7,36,last week,latte_y,cappu_n,low,very low,5,4,2,8,2,5,4,8,4,5,31-50,male
+760,13,80,last month,latte_n,cappu_n,low,low,4,4,8,5,4,4,5,5,5,4,51+,female
+761,5,94,last month,latte_n,cappu_n,low,low,4,5,5,4,5,5,3,3,4,5,31-50,female
+762,10,10,last week,latte_n,cappu_n,nethei high nor low,very low,2,4,5,4,5,5,4,4,4,5,31-50,male
+763,4,6,last week,latte_n,cappu_n,low,nethei high nor low,4,4,3,5,4,4,8,4,8,4,51+,male
+764,10,63,last two weeks,latte_n,cappu_y,low,low,5,8,8,4,4,5,5,5,5,4,<30,female
+765,7,73,last week,latte_y,cappu_n,low,low,5,4,8,5,3,8,5,3,8,3,31-50,male
+766,4,7,last month,latte_y,cappu_n,nethei high nor low,very low,8,5,2,3,4,5,8,4,1,4,31-50,female
+767,1,99,last week,latte_y,cappu_n,very low,low,3,5,4,5,4,8,8,8,5,3,51+,female
+768,6,33,last week,latte_n,cappu_n,low,low,4,4,5,2,8,4,3,3,4,8,51+,male
+769,7,39,last month,latte_n,cappu_n,low,low,5,4,8,3,5,5,4,4,4,5,31-50,male
+770,4,82,last week,latte_n,cappu_n,low,low,8,5,1,1,4,5,4,4,4,5,<30,male
+771,3,21,last 3 months,latte_n,cappu_n,low,very low,4,5,4,5,1,4,5,5,4,3,51+,male
+772,1,99,last month,latte_n,cappu_n,low,very low,8,8,8,2,8,5,4,4,4,5,31-50,female
+773,9,73,last month,latte_n,cappu_n,low,low,3,5,8,3,5,5,3,4,4,5,31-50,male
+774,9,83,last two weeks,latte_n,cappu_n,low,very low,5,5,2,1,3,8,3,3,4,4,31-50,male
+775,3,86,last week,latte_n,cappu_n,low,low,2,4,3,5,4,4,5,4,5,4,<30,female
+776,21,95,last month,latte_n,cappu_n,very low,very low,3,3,5,2,5,5,3,4,8,5,31-50,female
+777,1,50,last month,latte_n,cappu_n,low,very low,1,4,5,2,5,4,5,3,5,4,31-50,female
+778,5,20,last month,latte_y,cappu_n,low,very low,4,4,4,8,5,5,5,5,5,4,51+,female
+779,2,80,last two weeks,latte_n,cappu_n,very low,very low,3,4,2,5,4,4,5,5,8,2,51+,male
+780,7,16,last month,latte_n,cappu_n,low,low,4,5,2,8,3,4,8,4,5,4,31-50,male
+781,7,72,last two weeks,latte_n,cappu_n,low,low,4,3,8,2,5,5,4,3,8,5,31-50,male
+782,3,100,last month,latte_n,cappu_n,low,low,5,5,8,1,3,4,8,4,2,4,51+,male
+783,1,7,last two weeks,latte_n,cappu_n,low,high,5,2,5,2,5,4,3,4,4,4,<30,male
+784,7,59,last two weeks,latte_n,cappu_n,low,nethei high nor low,4,3,4,5,8,5,5,4,8,3,31-50,female
+785,5,67,last two weeks,latte_n,cappu_n,nethei high nor low,nethei high nor low,3,4,4,5,4,5,8,8,8,4,51+,male
+786,1,100,last two weeks,latte_n,cappu_n,low,nethei high nor low,3,4,3,4,8,4,5,4,5,8,51+,female
+787,1,56,last 3 months,latte_n,cappu_n,very low,very low,8,5,4,3,5,5,3,5,4,5,51+,male
+788,4,68,last week,latte_y,cappu_n,low,very low,4,4,3,5,5,8,4,4,4,4,31-50,female
+789,10,93,last 3 months,latte_n,cappu_n,low,low,4,4,4,4,8,3,5,5,5,3,51+,male
+790,1,75,last month,latte_n,cappu_n,low,low,4,2,3,8,4,3,4,5,5,4,31-50,male
+791,4,10,last week,latte_n,cappu_n,nethei high nor low,low,4,4,2,8,3,4,5,5,4,5,51+,female
+792,6,93,last week,latte_n,cappu_n,very low,low,4,5,8,4,4,4,3,2,4,8,<30,male
+793,3,92,last week,latte_n,cappu_n,very low,low,8,5,3,8,3,4,4,8,4,4,31-50,male
+794,1,82,last two weeks,latte_y,cappu_n,low,low,4,4,4,4,4,4,8,5,5,4,<30,male
+795,9,18,last month,latte_n,cappu_n,nethei high nor low,nethei high nor low,4,5,5,5,3,8,5,8,8,4,31-50,female
+796,2,5,last week,latte_n,cappu_n,low,nethei high nor low,4,4,3,5,8,5,4,4,5,4,51+,female
+797,1,48,last week,latte_n,cappu_n,very low,low,3,4,5,3,5,5,3,4,5,5,<30,male
+798,1,68,last month,latte_y,cappu_n,low,very low,3,3,5,2,4,5,5,4,4,5,31-50,male
+799,1,79,last two weeks,latte_n,cappu_n,very low,very low,8,4,2,3,4,5,2,4,4,4,<30,male
+800,4,70,last week,latte_y,cappu_n,low,nethei high nor low,3,3,5,4,5,5,4,3,3,8,31-50,male
+801,1,100,last month,latte_n,cappu_n,low,nethei high nor low,5,5,8,3,5,8,4,3,5,8,31-50,female
+802,1,36,last two weeks,latte_n,cappu_y,low,low,8,4,5,4,5,8,3,3,4,5,31-50,male
+803,1,39,last month,latte_n,cappu_y,low,very low,3,8,8,5,4,4,8,4,4,4,51+,male
+804,4,14,last month,latte_y,cappu_n,low,nethei high nor low,4,4,8,4,8,4,5,4,4,4,<30,female
+805,1,23,last month,latte_n,cappu_n,low,nethei high nor low,3,5,4,3,5,5,3,4,4,4,51+,male
+806,7,20,last two weeks,latte_y,cappu_n,low,low,5,4,4,4,4,5,2,3,3,4,31-50,male
+807,7,8,last month,latte_y,cappu_n,very low,very low,4,4,8,4,1,5,4,5,5,4,31-50,female
+808,11,23,last week,latte_y,cappu_n,very low,very low,5,8,1,3,4,5,5,4,3,4,<30,female
+809,10,47,last 3 months,latte_n,cappu_n,low,very low,8,4,3,4,2,4,5,8,8,4,31-50,female
+810,3,16,last 3 months,latte_n,cappu_n,very low,very low,4,4,5,8,8,5,4,5,5,4,51+,male
+811,1,100,last two weeks,latte_n,cappu_n,very low,very low,2,8,8,4,8,5,5,8,5,3,51+,male
+812,3,18,last 3 months,latte_n,cappu_n,low,low,3,4,3,5,5,4,5,5,5,3,<30,female
+813,10,61,last 3 months,latte_n,cappu_n,low,very low,3,5,8,3,4,4,4,4,8,4,<30,female
+814,6,12,last 3 months,latte_n,cappu_n,low,low,5,4,8,5,5,5,4,5,5,8,51+,male

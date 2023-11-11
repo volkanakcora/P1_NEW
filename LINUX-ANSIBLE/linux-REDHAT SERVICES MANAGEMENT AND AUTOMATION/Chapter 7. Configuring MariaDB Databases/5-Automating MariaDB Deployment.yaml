@@ -1,0 +1,253 @@
+!!!!!!                 Automating MariaDB Deployment
+
+!! Deploying MariaDB with Ansible  !!
+
+Installing MariaDB Server:
+
+Install the mariadb-server package with the yum Ansible module. The mariadb-server package includes the necessary client software.
+
+- name: Install mariadb-server package
+  yum:
+    name: mariadb-server
+    state: present
+
+
+
+# ALTERNATIVE 
+As an alternative, you can use the dnf Ansible module to install a particular AppStream module for MariaDB:
+
+- name: Use MariaDB 10.3 AppStream module
+  dnf:
+    name: '@mariadb:10.3/server'
+    state: present
+
+
+
+Use the Ansible service module to enable and start the mariadb service:
+
+- name: Enable and start mariadb
+  service:
+    name: mariadb
+    state: started
+    enabled: yes
+
+
+Use the Ansible firewalld module to open ports for the MariaDB database server:
+
+- name: Firewall permits mysql service
+  firewalld:
+    service: mysql
+    permanent: true
+    state: enabled
+    immediate: yes
+
+
+Installing MariaDB Client:
+
+Install the mariadb package with the yum Ansible module to install the client without the server.
+
+- name: Install mariadb client package
+  yum:
+    name: mariadb
+    state: present
+
+
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1 Configuring MariaDB Security with Ansible
+
+MariaDB server installs with a default login_user of root and no password. To secure the root user's account as part of an idempotent play, 
+you must create a task to assign a password to the root user. Then, a second task must copy a .my.cnf file containing the root user's credentials 
+to the root user's home directory on the MariaDB server's host. Subsequent runs of the playbook will then succeed by reading the new credentials from 
+the file and not resetting the default root user.
+
+
+Satisfying Ansible Prerequisites:
+
+For the mysql_user and mysql_db Ansible modules to work on your managed hosts, you need to make sure that the python3-PyMySQL or 
+python2-PyMySQL package is installed on the managed host, depending on which version of Python that Ansible is using on that host.
+
+- name: Make sure mysql_user module prereqs are installed
+  yum:
+    name: python3-PyMySQL
+    state: present
+
+
+Updating the MariaDB Root Account:
+
+Use the mysql_user Ansible module to add or remove a user from a MySQL database. In the following playbook task, a password is assigned to the MariaDB 
+root user account=
+
+- name: Assign password to MariaDB root user
+  mysql_user:
+    name: root
+    host_all: yes
+    update_password: always
+    password: root_password
+  no_log: yes
+
+
+The second playbook task uses the copy Ansible module to copy the root user's credentials file, files/my.cnf, to /root/.my.cnf on the MariaDB server host.
+
+- name: Authentication credentials copied to root home directory
+  copy:
+    src: files/my.cnf
+    dest: /root/.my.cnf
+
+
+Removing Anonymous User Accounts:
+Use the mysql_user Ansible module to remove any anonymous user accounts.
+
+- name: Remove anonymous user accounts
+  mysql_user:
+    name: ''
+    host_all: yes
+    state: absent
+
+
+
+Removing the Test Database:
+Some older MariaDB installations may include an insecure test database provided for demonstration and experimentation purposes. 
+You can use the mysql_db Ansible module to make sure that it is removed from the database server.
+
+- name: Remove test database
+  mysql_db:
+    name: test
+    state: absent
+
+
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  Managing MariaDB Users with Ansible
+
+Ansible Vault is used to encrypt files used to store variables for the user names and passwords. This avoids exposing clear text passwords in a playbook.
+
+Securing User Passwords with Ansible Vault:
+
+Use an encrypted Ansible Vault group variable file to safely store user names and passwords. In this example, the password.yml file is located in 
+the directory that is associated with the group_name group in your inventory file.
+
+Sample inventory file:
+
+[user@host ansible]$ cat inventory
+[group_name]
+hosta.lab.example.com
+
+To create an Ansible Vault group variable file:
+
+[user@host ansible]$ ansible-vault create group_vars/group_name/password.yml
+New Vault password: vault_password
+Confirm New Vault password: vault_password
+mysql_user_passwords:
+  - name: john
+    password: john_password
+  - name: steve
+    password: steve_password
+
+
+
+Creating and Dropping Users:
+
+The following example playbook task references the name and password variables created in the encrypted password.yml file. When the play is executed 
+you are prompted for the Ansible Vault password used to create password.yml.
+
+- name: Create users and set password if not present
+  mysql_user:
+    name: "{{ item['name']  }}"
+    password: "{{ item['password'] }}"
+    update_password: on_create    !! -> The updated_password: on_create setting is important here because it only updates the user's password if the user does not already exist. Otherwise, every run of the play containing this task would reset the password to its original, initial setting. That could be a problem if the user has updated their password since the account was created.
+    state: present
+  loop: "{{ mysql_user_passwords }}"
+  no_log: yes
+
+
+-> Making sure a user account does not exist, dropping it if it does exist, by specifying state absent for the user name to the mysql_user module.
+
+- name: User does not exist for any host
+  mysql_user:
+    name: "{{ removed_user }}"
+    host_all: yes
+    state: absent
+
+
+Granting and Revoking Privileges:
+Use a group variable file to store user access privileges. In this example, the users.yml file is located in the directory that associates with the group_name group in your inventory file.
+
+Sample group_vars/group_name/users.yml file:
+
+---
+mysql_users:
+  - name: john
+    host: localhost
+    priv: 'inventory.*:INSERT,UPDATE,DELETE,SELECT'
+    state: present
+  - name: steve
+    host: '%'
+    priv: 'inventory.*:SELECT'
+    state: present
+
+
+The task from the play:
+
+- name: Configure users in MariaDB inventory
+  mysql_user:
+    name: "{{ item['name'] }}"
+    host: "{{ item['host'] }}"
+    priv: "{{ item['priv'] }}"
+    state: "{{ item['state'] }}"
+  loop: "{{ mysql_users }}"
+
+
+To revoke privileges for a user and revert them to the minimal privileges that a new user has:
+
+- name: Ensure user only has minimal privileges, on all hosts
+  mysql_user:
+    name: "{{ revoked_user }}"
+    priv: "*.*:USAGE"
+    host_all: yes
+    state: present
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1  Creating and Restoring from Backup Files with Ansible
+
+The mysql_db Ansible module is used to perform both create (dump) and restore (import) operations.
+
+
+Creating a Database Backup File:
+
+The following playbook task uses the mysql_db Ansible module with the state parameter set to dump to create a backup of the inventory database.
+ The target parameter specifies where you want to store the backup file.
+
+- name: Backup inventory database
+  mysql_db:
+    state: dump
+    name: inventory
+    target: /srv/inventory.dump
+
+
+Restoring a Database from a Backup File
+In the following play the first task uses the mysql_db Ansible module to test for the presence of the inventory database in MariaDB. The results are stored in the inventory_present variable.
+
+- name: Make sure an inventory database exists
+  mysql_db:
+    name: inventory
+    state: present
+  register: inventory_present
+The second task uses the stat Ansible module to test for the presence of the inventory.dump backup file. The results are stored in the inventory_present variable.
+
+- name: Is inventory database backup present?
+  stat:
+    path: /srv/inventory.dump
+  register: inventory_bkup
+The third and final task of the play evaluates the inventory_present variable to determine if the inventory database is still present (nothing has changed) and if the inventory_bkup variable results show that the target inventory backup file exists.
+
+If the inventory database exists and if the target backup file exists then the mysql_db Ansible module imports the target database backup file into the MariaDB inventory database. Otherwise, the task is skipped.
+
+- name: Import inventory backup data
+  mysql_db:
+    name: inventory
+    state: import
+    target: /srv/inventory.dump
+  when:
+    - inventory_present['changed'] == false
+    - inventory_bkup['stat']['exists'] == true

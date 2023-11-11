@@ -1,0 +1,238 @@
+#!/usr/bin/env groovy
+
+// Variables
+
+prodEnv = [
+    ftpdHosts: ['xbprodcom1', 'xbprodcom2', 'xbprodcom3', 'xbprodcom4', 'xbprodcom5', 'xbprodcom5', 'xbprodcbn1', 'xbprodcbn2']
+]
+
+simuEnv = [
+    ftpdHosts: ['xbsimucom1', 'xbsimucom2', 'xbsimucom3', 'xbsimucom4' ,'xbsimucom5' ,'xbsimucom6', 'xbsimucbn1', 'xbsimucbn2']
+]
+
+cuteEnv = [
+    ftpdHosts: ['xbcutscom1', 'xbcutscbn1', ]
+]
+
+inteEnv = [
+    ftpdHosts: ['xbintecom1', 'xbintecom2', 'xbintecom3', 'xbintecom4', 'xbintecbn1', 'xbintecbn2']
+]
+
+// Functions
+
+def addPmi(ftpdHosts) {
+    def folderPath = "/opt/data01/${username}/OUT/pmi/"
+    echo("Adding PMI files for ${username} ${environment}")
+    sh(
+        script: """\
+            ssh -o StrictHostKeyChecking=no 'ansible@${ftpdHosts}' <<EOF
+                sudo -i
+                echo "/opt/data01/pmi_archiver/OUT/pmi /opt/data01/${username}/OUT/pmi  none    bind    0 0" >> /etc/fstab
+                mount ${folderPath}
+            EOF
+           
+        """.stripIndent()
+    )
+}
+
+def isExternal() {
+    return env.JOB_NAME == 'Operations/06-XBID/support/xbid_sftp_user'
+}
+
+def isBizOps() {
+    return env.JOB_NAME == 'Operations/06-XBID/xbid_sftp_user_bizops'
+}
+
+// === ENVS ====
+def bizopsEnvs = [
+    'inte','cuts','simu'
+]
+
+def interalEnvs = [
+    'inte'
+]
+
+conditionalEnv = isCuteEnvironment()
+
+String isCuteEnvironment() {
+    if (params.environment == "cuts") {
+        return "cute"
+    }
+
+    return params.environment
+}
+
+// Defined during run
+def envs = null
+if (isBizOps()) {
+    envs = bizopsEnvs + ['prod']
+} else if (isExternal()) {
+    envs = bizopsEnvs
+} else {
+    envs = interalEnvs
+}
+
+def agentLabel = isExternal() || isBizOps() ? 'englobauto1' : 'entestauto1'
+
+pipeline {
+    agent { label agentLabel }
+
+    parameters {
+        choice(name: 'environment', description: 'environment to deploy against', choices: envs)
+        string(name: 'username', description: 'SFTP Username')
+        string(name: 'fullname', description: 'SFTP Fullname')
+        choice(name: 'action', choices: ['update_jenkins_job', 'add_new_user', 'add_new_key', 'add_PMI_bind'])
+        choice(name: 'user_type', choices: ['am', 'normal'])
+        text(name: 'key', defaultValue: '', description: 'Select Public key to upload. This will be concatenated with our general keys and stored in Vault')
+        booleanParam(name: 'check', defaultValue: true, description: '*dont change anything* run in check mode in all respective playbook steps')
+    }
+    stages {
+        stage('Set build meta') {
+            steps {
+                script {
+                    if (params.action == 'update_jenkins_job') {
+                        currentBuild.displayName = "#${BUILD_NUMBER} update_jenkins_job"
+                        currentBuild.result = 'ABORTED'
+                        error("This was done deliberately to update the build parameters.")
+                    }
+
+                    currentBuild.displayName = "#${BUILD_NUMBER} ${params.environment} ${params.action} ${params.username}"
+                }
+            }
+        }
+
+        stage('Download sftp ansible repo') {
+            steps {
+            // Checkout energy.xbid.sftp in workspace
+                git(
+                    url: 'git@github.deutsche-boerse.de:dev/energy.xbid.sftp.git',
+                    credentialsId: 'ff4c895e-1043-458e-be44-195fb4d1b1b2',  // energygithub ssh
+                )
+            }
+        }
+
+        stage('Add new sftp-user') {
+            when { equals expected: 'add_new_user', actual: params.action}
+            steps {
+                script {
+                    checkmode=""
+                    if (check == "true") {
+                      checkmode="--check"
+                    }
+
+                    sh """
+                    echo "${key}" > Key
+                    chmod 0600 Key
+                    echo "${key}" > RFC_Key
+                    vim RFC_Key -c "set ff=unix" -c ":wq" #Dos2unix warning
+
+                    max_id=1
+                    secrets=\$(/usr/local/sbin/vault kv list -format=json secret/xbid/${environment}/users/sftp/)
+                    for secret in \$(echo "\$secrets" | jq -r '.[]')
+                    do
+                        if (/usr/local/sbin/vault read -field=id secret/xbid/${environment}/users/sftp/\$secret >/dev/null 2>/dev/null); then
+                            sftpid=\$(/usr/local/sbin/vault read -field=id secret/xbid/${environment}/users/sftp/\$secret)        
+                            if (( \$sftpid > \$max_id )); then
+                                max_id=\$sftpid
+                            fi
+                        fi
+                    done
+                    sftpid=\$((\$max_id + 1))
+
+                    if [ "${environment}" == "prod" ]
+                    then
+                        cat RFC_Key files/generalkeys_prod.pem > key_full
+                    else
+                        cat RFC_Key files/generalkeys_nonprod.pem > key_full
+                    fi
+
+                    # add user to vault
+                    ## TO DO: add a check only add user if the name doesn't exist!!!
+                    password=\$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 10 | head -n 1)
+                    /usr/local/sbin/vault write secret/xbid/${environment}/users/sftp/${username} fullname=${fullname} id=\$sftpid authorized_keys=@key_full password=\$password user_type=${user_type}
+  
+                    # add user to LDAP
+                    ansible-playbook playbooks/setup_slapd.yml --limit "${conditionalEnv}" --tags adduser --extra-vars "user=${username}" -K ${checkmode}
+                    # add user to SFTP
+                    ansible-playbook playbooks/setup_proftpd.yml --limit "${conditionalEnv}" --tags adduser --extra-vars "user=${username}" ${checkmode}
+                    """
+                }
+            }
+        }
+
+        stage('Add new sftp-key to an existing user') {
+            when { equals expected: 'add_new_key', actual: params.action}
+            steps {
+                script {
+                    checkmode=""
+                    if (check == "true") {
+                      checkmode="--check"
+                    }
+
+                    sh """
+                    echo "${key}" > Key
+                    chmod 0600 Key
+                    echo "${key}" > RFC_Key
+                    vim RFC_Key -c "set ff=unix" -c ":wq" #Dos2unix warning
+
+                    password=\$(/usr/local/sbin/vault read -field=password secret/xbid/${environment}/users/sftp/${username})
+                    sftpid=\$(/usr/local/sbin/vault read -field=id secret/xbid/${environment}/users/sftp/${username})
+                    echo \$sftpid
+                    fullname=\$(/usr/local/sbin/vault read -field=fullname secret/xbid/${environment}/users/sftp/${username})
+                    user_type=\$(/usr/local/sbin/vault read -field=user_type secret/xbid/${environment}/users/sftp/${username})
+                    /usr/local/sbin/vault read -field=authorized_keys secret/xbid/${environment}/users/sftp/${username} > old_key
+                    cat RFC_Key old_key > key_full
+                    /usr/local/sbin/vault write secret/xbid/${environment}/users/sftp/${username} fullname=${fullname} id=\$sftpid authorized_keys=@key_full password=\$password user_type=${user_type}
+                    # update SFTP
+                    ansible-playbook playbooks/setup_proftpd.yml --limit "${conditionalEnv}" --tags addkeys --extra-vars "user=${username}" ${checkmode}
+                    """
+                }
+            }
+        }
+
+        stage("Add PMI Files to the given user") {
+            when { equals expected: 'add_PMI_bind', actual: params.action 
+            }
+            steps {
+               script {
+                    if ( environment == 'prod') {
+                        for (ftpdHosts in  prodEnv.ftpdHosts) {
+                            
+                            addPmi(
+                                ftpEnv
+                            )
+
+                        }
+                    
+                    } else if ( environment == 'simu'){
+                        for (ftpdHosts in  simuEnv.ftpdHosts) {
+                            
+                            addPmi(
+                                ftpEnv
+                            )
+
+                        }
+
+                    } else if ( environment == 'cuts'){
+                        for (ftpdHosts in  cuteEnv.ftpdHosts) {
+                            
+                            addPmi(
+                                ftpEnv
+                            )
+
+                        }
+                            
+                    } else if ( environment == 'inte') {
+                        for (ftpdHosts in inteEnv.ftpdHosts) {
+                            
+                            addPmi(
+                                ftpdHosts
+                            )
+
+                        }
+                    }              
+                }           
+            }
+        }
+    }
+}

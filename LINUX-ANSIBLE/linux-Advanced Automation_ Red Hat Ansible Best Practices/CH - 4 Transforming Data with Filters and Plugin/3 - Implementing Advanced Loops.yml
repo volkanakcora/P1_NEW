@@ -1,0 +1,56 @@
+##3 Loops and Lookup Plug-ins:
+
+- name: using loop
+  debug:
+   msg: "{{ item }}"
+  loop: "{{ mylist }}"
+- name: using with_list
+  debug:
+   msg: "{{ item }}"
+  with_list: "{{ mylist }}"
+- name: using lookup plugin
+  debug:
+   msg: "{{ item }}"
+  loop: "{{ lookup('list', mylist) }}"
+
+
+### Example Iteration Scenarios:
+
+- name: Remove build files
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+  - "{{ app_a_tmp_files }}"
+  - "{{ app_b_tmp_files }}"
+  - "{{ app_c_tmp_files }}"
+
+The app_a_tmp_files variable contains a list of temporary files, as do both the
+app_b_tmp_files and app_c_tmp_files. The with_items keyword combines these three
+lists into a single list containing the entries from all three lists. It automatically performs one level
+flattening of its list.
+
+
+To refactor a with_items task to use the loop keyword, use the flatten filter. The flatten
+filter recursively searches for embedded lists, and creates a single list from discovered values.
+The flatten filter accepts a levels argument, that specifies an integer number of levels to
+search for embedded lists. A levels=1 argument specifies that values are obtained by only
+descending into one additional list for each item in the initial list. This is the same one level
+flattening that with_items does implicitly.
+To refactor a with_items task to use the loop keyword, you must also use the
+flatten(levels=1) filter:
+
+- name: Remove build files
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop: "{{ list_of_lists | flatten(levels=1) }}"
+  vars:
+    list_of_lists:
+      - "{{ app_a_tmp_files }}"
+
+      - "{{ app_b_tmp_files }}"
+
+      - "{{ app_c_tmp_files }}"
+
+CHECK THE DOCUMENTATION IN RODER TO SEE MORE EXAMPLES RELATED TO LOOP

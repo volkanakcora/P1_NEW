@@ -1,0 +1,45 @@
+ansible-galaxy init mysql
+
+playbook.yml
+-
+  name: Install and configure Mysql
+  hosts: db-server
+
+  roles:
+     - mysql
+
+
+-
+  name: Install and configure Mysql
+  hosts: db-server
+
+  roles:
+     - geerlingguy.mysql
+
+-
+  name: Install and configure Mysql
+  hosts: db-server
+
+  roles:
+     - role: geerlingguy.mysql
+       become: yes
+       vars:
+          mysql_user_name: db-user
+
+# Playbook all in one.yml
+-
+  name: Install and configure MYsql
+  hosts: db-and-webserver
+  roles:
+    - geerlingguy.mysql
+    - nginx
+
+
+
+#installing
+ansible-galaxy install geerlingguy.mysql -p ./roles
+# Listing roles:
+ansible-galaxy list
+
+ansible-config dump | grep ROLE
+

@@ -1,0 +1,124 @@
+Most inventory plugins are disabled by default. You can enable specific plugins in your
+
+ansible.cfg configuration file, in the enable_plugins directive in the inventory section:
+
+[inventory]
+enable_plugins = host_list, script, auto, yaml, ini, toml
+
+
+#####################3 YAML Static Inventory Files: #######################
+
+To review, here is an example of a INI static inventory file:
+[lb_servers]
+servera.lab.example.com
+
+[web_servers]
+serverb.lab.example.com
+serverc.lab.example.com
+
+[backend_server_pool]
+server[b:f].lab.example.com
+
+
+And here is the same inventory in YAML format:
+
+lb_servers:
+  hosts:
+    servera.lab.example.com:
+web_servers:
+  hosts:
+    serverb.lab.example.com:
+    serverc.lab.example.com:
+backend_server_pool:
+  hosts:
+    server[b:f].lab.example.com:
+
+
+
+Some INI-based static inventories include hosts that are not a member of any group.
+notinagroup.lab.example.com
+
+[mailserver]
+mail.lab.example.com
+
+Ansible automatically puts any of these hosts in the special group ungrouped. You can
+accomplish the same thing in a YAML-based static inventory by explicitly assigning hosts to ungrouped:
+
+all:
+  children:
+    ungrouped:
+      notinagroup.lab.example.com:
+mailserver:
+  mail.lab.example.com:
+
+
+
+
+
+  In a group block, you can use the vars keyword to set group variables directly in a YAML inventory
+file. For example, in an INI-based static inventory file, you could set the smtp_relay variable to
+the value smtp.lab.example.com for all hosts in group monitoring as follows:
+[monitoring]
+watcher.lab.example.com
+[monitoring:vars]
+smtp_relay: smtp.lab.example.com
+
+
+###############33 Converting from INI to YAML #######################
+
+
+[active_web_servers]
+server[b:c].lab.example.com
+
+Would become:
+
+active_web_servers:
+  hosts:
+    server[b:c].lab.example.com:
+
+------------------------------------------------------
+For example, the following section:
+[web_servers:children]
+active_web_servers
+inactive_web_servers
+
+Would become:
+
+web_servers:
+  children:
+    active_web_servers:
+    inactive_web_servers: 
+----------------------------------------------------
+[all_servers:children]
+web_servers
+
+Becomes:
+
+all_servers:
+  hosts:
+    servera.lab.example.com:
+children:
+  web_servers:
+-------------------------------------------------
+
+The inventory.yml file should look like this after the conversion:
+DO447-RHAE2.8-en-2-20200818Chapter 2 | Managing Inventories
+active_web_servers:
+  hosts:
+    server[b:c].lab.example.com:
+inactive_web_servers:
+  hosts:
+    server[d:f].lab.example.com:
+region_eu:
+  hosts:
+    serverc.lab.example.com:
+    serverf.lab.example.com:
+web_servers:
+  children:
+    active_web_servers:
+    inactive_web_servers:
+all_servers:
+  hosts:
+    servera.lab.example.com:
+children:
+  web_servers:

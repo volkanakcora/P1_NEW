@@ -1,0 +1,130 @@
+let
+    Source = Odbc.DataSource("dsn=PG_kombi64", [HierarchicalNavigation=true]),
+    ebsm_Database = Source{[Name="ebsm",Kind="Database"]}[Data],
+    ebsm_Schema = ebsm_Database{[Name="ebsm",Kind="Schema"]}[Data],
+    cxsp_kpi_valuesmonth_Table = ebsm_Schema{[Name="cxsp_kpi_valuesmonth",Kind="Table"]}[Data],
+    #"Removed Columns" = Table.RemoveColumns(cxsp_kpi_valuesmonth_Table,{"cxsp_kpi_measures", "gnrl_dim_date", "gnrl_dim_schemas"}),
+    #"Pivoted Column" = Table.Pivot(Table.TransformColumnTypes(#"Removed Columns", {{"kpi_id", type text}}, "en-GB"), List.Distinct(Table.TransformColumnTypes(#"Removed Columns", {{"kpi_id", type text}}, "en-GB")[kpi_id]), "kpi_id", "kpi_value", List.Sum),
+    #"Renamed Columns" = Table.RenameColumns(#"Pivoted Column",{{"20280", "ACTIVECONTRACTSMAX"}, {"20320", "LOGINSPERUSERAVG"}, {"20310", "LOGINSPERUSERMAX"}, {"20460", "ORDERSPERTRADE"}, {"20430", "USERACCOUNTSAVG"}, {"20630", "ORDERSPERDAYAVG"}, {"20620", "ORDERSPERDAYMAX"}, {"20640", "ORDERSPERDAYMIN"}, {"20600", "ORDERSPERCONTRACTAVG"}, {"20590", "ORDERSPERCONTRACTMAX"}, {"20610", "ORDERSPERCONTRACTMIN"}, {"20690", "ORDERSPERMINUTEAVG"}, {"20680", "ORDERSPERMINUTEMAX"}, {"20720", "ORDERSPERMINUTEMIN"}, {"20710", "ORDERSPERSECONDMAX"}, {"20910", "CONCURRENTLOGINSMAX"}, {"20920", "CONCURRENTLOGINSMIN"}, {"20930", "CONCURRENTLOGINSWEBGUIMAX"}, {"20940", "CONCURRENTLOGINSWEBGUIMIN"}, {"21240", "TRADESPERDAYAVG"}, {"21230", "TRADESPERDAYMAX"}, {"21250", "TRADESPERDAYMIN"}, {"21300", "TRADESPERMINUTEAVG"}, {"21210", "TRADESPERCONTRACTAVG"}, {"21200", "TRADESPERCONTRACTMAX"}, {"21290", "TRADESPERMINUTEMAX"}, {"21320", "TRADESPERSECONDMAX"}, {"20270", "SERVICEYTDTIME"}, {"20250", "SERVICEYTDMAINTENANCETIME"}, {"20230", "SERVICETIME"}, {"20210", "SERVICEMAINTENANCETIME"}, {"20190", "SERVICEAVAILABILITY"}, {"20200", "SERVICEAVAILABLETIME"}, {"20900", "CONCURRENTLOGINSAPIMIN"}, {"20890", "CONCURRENTLOGINSAPIMAX"}, {"20330", "LOGINSPERDAYMAX"}, {"20340", "LOGINSPERDAYAVG"}, {"20300", "ACTIVECONTRACTSMIN"}, {"20290", "ACTIVECONTRACTSAVG"}, {"20650", "ORDERSPERHOURMAX"}, {"20660", "ORDERSPERHOURAVG"}, {"21270", "TRADESPERHOURAVG"}, {"21370", "TRADEDCONTRACTSMIN"}, {"21350", "TRADEDCONTRACTSMAX"}, {"21360", "TRADEDCONTRACTSAVG"}, {"20050", "ACTIVEADMINS"}, {"20030", "ACTIVETRADERS"}, {"20010", "ACTIVEUSERS1"}, {"20350", "LOGINSPERDAYMIN"}, {"20370", "LOGINUSERSPERDAYAVG"}, {"20360", "LOGINUSERSPERDAYMAX"}, {"20380", "LOGINUSERSPERDAYMIN"}, {"20400", "MESSAGESPERDAYAVG"}, {"20390", "MESSAGESPERDAYMAX"}, {"20410", "MESSAGESPERDAYMIN"}, {"20450", "USERACCOUNTSMAX"}, {"20440", "USERACCOUNTSMIN"}, {"20480", "OMTPERDAYAVG"}, {"20470", "OMTPERDAYMAX"}, {"20490", "OMTPERDAYMIN"}, {"20510", "OMTPERHOURAVG"}, {"20520", "OMTPERHOURMIN"}, {"20500", "OMTPERHOURMAX"}, {"20540", "OMTPERMINUTEAVG"}, {"20530", "OMTPERMINUTEMAX"}, {"20550", "OMTPERMINUTEMIN"}, {"20570", "OMTPERSECONDAVG"}, {"20560", "OMTPERSECONDMAX"}, {"20580", "OMTPERSECONDMIN"}, {"21260", "TRADESPERHOURMAX"}, {"21280", "TRADESPERHOURMIN"}, {"20465", "OMTNUM"}, {"21195", "TRADESNUM"}, {"20585", "ORDERSNUM"}})
+in
+    #"Renamed Columns"
+
+
+
+
+Source = Odbc.Query("dsn=PG_kombi64", "SELECT * FROM f_valuesmonth_cxhu(cast(1400 as int2),'2020-01-01','2021-12-31')"),
+
+
+
+
+let
+    Source = Odbc.DataSource("dsn=PG_kombi64","SELECT * FROM f_valuesmonth_cxsp(cast(1600 as int2),'2020-01-01','2021-12-31')", [HierarchicalNavigation=true]),
+    ebsm_Database = Source{[Name="ebsm",Kind="Database"]}[Data],
+    ebsm_Schema = ebsm_Database{[Name="ebsm",Kind="Schema"]}[Data],
+    cxsp_kpi_valuesmonth_Table = ebsm_Schema{[Name="cxsp_kpi_valuesmonth",Kind="Table"]}[Data],
+    #"Removed Columns" = Table.RemoveColumns(cxsp_kpi_valuesmonth_Table,{"cxsp_kpi_measures", "gnrl_dim_date", "gnrl_dim_schemas"}),
+    #"Pivoted Column" = Table.Pivot(Table.TransformColumnTypes(#"Removed Columns", {{"kpi_id", type text}}, "en-GB"), List.Distinct(Table.TransformColumnTypes(#"Removed Columns", {{"kpi_id", type text}}, "en-GB")[kpi_id]), "kpi_id", "kpi_value", List.Sum),
+    #"Renamed Columns" = Table.RenameColumns(#"Pivoted Column",{{"20280", "ACTIVECONTRACTSMAX"}, {"20320", "LOGINSPERUSERAVG"}, {"20310", "LOGINSPERUSERMAX"}, {"20460", "ORDERSPERTRADE"}, {"20430", "USERACCOUNTSAVG"}, {"20630", "ORDERSPERDAYAVG"}, {"20620", "ORDERSPERDAYMAX"}, {"20640", "ORDERSPERDAYMIN"}, {"20600", "ORDERSPERCONTRACTAVG"}, {"20590", "ORDERSPERCONTRACTMAX"}, {"20610", "ORDERSPERCONTRACTMIN"}, {"20690", "ORDERSPERMINUTEAVG"}, {"20680", "ORDERSPERMINUTEMAX"}, {"20720", "ORDERSPERMINUTEMIN"}, {"20710", "ORDERSPERSECONDMAX"}, {"20910", "CONCURRENTLOGINSMAX"}, {"20920", "CONCURRENTLOGINSMIN"}, {"20930", "CONCURRENTLOGINSWEBGUIMAX"}, {"20940", "CONCURRENTLOGINSWEBGUIMIN"}, {"21240", "TRADESPERDAYAVG"}, {"21230", "TRADESPERDAYMAX"}, {"21250", "TRADESPERDAYMIN"}, {"21300", "TRADESPERMINUTEAVG"}, {"21210", "TRADESPERCONTRACTAVG"}, {"21200", "TRADESPERCONTRACTMAX"}, {"21290", "TRADESPERMINUTEMAX"}, {"21320", "TRADESPERSECONDMAX"}, {"20270", "SERVICEYTDTIME"}, {"20250", "SERVICEYTDMAINTENANCETIME"}, {"20230", "SERVICETIME"}, {"20210", "SERVICEMAINTENANCETIME"}, {"20190", "SERVICEAVAILABILITY"}, {"20200", "SERVICEAVAILABLETIME"}, {"20900", "CONCURRENTLOGINSAPIMIN"}, {"20890", "CONCURRENTLOGINSAPIMAX"}, {"20330", "LOGINSPERDAYMAX"}, {"20340", "LOGINSPERDAYAVG"}, {"20300", "ACTIVECONTRACTSMIN"}, {"20290", "ACTIVECONTRACTSAVG"}, {"20650", "ORDERSPERHOURMAX"}, {"20660", "ORDERSPERHOURAVG"}, {"21270", "TRADESPERHOURAVG"}, {"21370", "TRADEDCONTRACTSMIN"}, {"21350", "TRADEDCONTRACTSMAX"}, {"21360", "TRADEDCONTRACTSAVG"}, {"20050", "ACTIVEADMINS"}, {"20030", "ACTIVETRADERS"}, {"20010", "ACTIVEUSERS1"}, {"20350", "LOGINSPERDAYMIN"}, {"20370", "LOGINUSERSPERDAYAVG"}, {"20360", "LOGINUSERSPERDAYMAX"}, {"20380", "LOGINUSERSPERDAYMIN"}, {"20400", "MESSAGESPERDAYAVG"}, {"20390", "MESSAGESPERDAYMAX"}, {"20410", "MESSAGESPERDAYMIN"}, {"20450", "USERACCOUNTSMAX"}, {"20440", "USERACCOUNTSMIN"}, {"20480", "OMTPERDAYAVG"}, {"20470", "OMTPERDAYMAX"}, {"20490", "OMTPERDAYMIN"}, {"20510", "OMTPERHOURAVG"}, {"20520", "OMTPERHOURMIN"}, {"20500", "OMTPERHOURMAX"}, {"20540", "OMTPERMINUTEAVG"}, {"20530", "OMTPERMINUTEMAX"}, {"20550", "OMTPERMINUTEMIN"}, {"20570", "OMTPERSECONDAVG"}, {"20560", "OMTPERSECONDMAX"}, {"20580", "OMTPERSECONDMIN"}, {"21260", "TRADESPERHOURMAX"}, {"21280", "TRADESPERHOURMIN"}, {"20465", "OMTNUM"}, {"21195", "TRADESNUM"}, {"20585", "ORDERSNUM"}})
+in
+    #"Renamed Columns"
+
+
+
+    value = 
+
+        var drops = Count(TC)
+        var drops1 = Sum
+
+    return divide()
+
+    Volume = 
+
+VAR Drops = COUNT(tc540Grp[tc540Grp1.tc540Rec.ordrNo])
+VAR DropsConnects = COUNT(tc810Grp[tc810Grp1.tc810Rec.ordrNo])*100
+
+RETURN DIVIDE(DropsConnects,Drops)
+
+
+let
+    Source = Odbc.DataSource("dsn=PG_kombi64","SELECT * FROM cxsp_stats_app_sessions_daily(cast(1600 as int2),'2020-01-01','2021-12-31')", [HierarchicalNavigation=true]),
+    ebsm_Database = Source{[Name="ebsm",Kind="Database"]}[Data],
+    ebsm_Schema = ebsm_Database{[Name="ebsm",Kind="Schema"]}[Data],
+    cxsp_kpi_valuesmonth_Table = ebsm_Schema{[Name="cxsp_kpi_valuesmonth",Kind="Table"]}[Data],
+    #"Removed Columns" = Table.RemoveColumns(cxsp_kpi_valuesmonth_Table,{"cxsp_kpi_measures", "gnrl_dim_date", "gnrl_dim_schemas"}),
+    #"Pivoted Column" = Table.Pivot(Table.TransformColumnTypes(#"Removed Columns", {{"kpi_id", type text}}, "en-GB"), List.Distinct(Table.TransformColumnTypes(#"Removed Columns", {{"kpi_id", type text}}, "en-GB")[kpi_id]), "kpi_id", "kpi_value", List.Sum),
+    #"Renamed Columns" = Table.RenameColumns(#"Pivoted Column",{{"20280", "ACTIVECONTRACTSMAX"}, {"20320", "LOGINSPERUSERAVG"}, {"20310", "LOGINSPERUSERMAX"}, {"20460", "ORDERSPERTRADE"}, {"20430", "USERACCOUNTSAVG"}, {"20630", "ORDERSPERDAYAVG"}, {"20620", "ORDERSPERDAYMAX"}, {"20640", "ORDERSPERDAYMIN"}, {"20600", "ORDERSPERCONTRACTAVG"}, {"20590", "ORDERSPERCONTRACTMAX"}, {"20610", "ORDERSPERCONTRACTMIN"}, {"20690", "ORDERSPERMINUTEAVG"}, {"20680", "ORDERSPERMINUTEMAX"}, {"20720", "ORDERSPERMINUTEMIN"}, {"20710", "ORDERSPERSECONDMAX"}, {"20910", "CONCURRENTLOGINSMAX"}, {"20920", "CONCURRENTLOGINSMIN"}, {"20930", "CONCURRENTLOGINSWEBGUIMAX"}, {"20940", "CONCURRENTLOGINSWEBGUIMIN"}, {"21240", "TRADESPERDAYAVG"}, {"21230", "TRADESPERDAYMAX"}, {"21250", "TRADESPERDAYMIN"}, {"21300", "TRADESPERMINUTEAVG"}, {"21210", "TRADESPERCONTRACTAVG"}, {"21200", "TRADESPERCONTRACTMAX"}, {"21290", "TRADESPERMINUTEMAX"}, {"21320", "TRADESPERSECONDMAX"}, {"20270", "SERVICEYTDTIME"}, {"20250", "SERVICEYTDMAINTENANCETIME"}, {"20230", "SERVICETIME"}, {"20210", "SERVICEMAINTENANCETIME"}, {"20190", "SERVICEAVAILABILITY"}, {"20200", "SERVICEAVAILABLETIME"}, {"20900", "CONCURRENTLOGINSAPIMIN"}, {"20890", "CONCURRENTLOGINSAPIMAX"}, {"20330", "LOGINSPERDAYMAX"}, {"20340", "LOGINSPERDAYAVG"}, {"20300", "ACTIVECONTRACTSMIN"}, {"20290", "ACTIVECONTRACTSAVG"}, {"20650", "ORDERSPERHOURMAX"}, {"20660", "ORDERSPERHOURAVG"}, {"21270", "TRADESPERHOURAVG"}, {"21370", "TRADEDCONTRACTSMIN"}, {"21350", "TRADEDCONTRACTSMAX"}, {"21360", "TRADEDCONTRACTSAVG"}, {"20050", "ACTIVEADMINS"}, {"20030", "ACTIVETRADERS"}, {"20010", "ACTIVEUSERS1"}, {"20350", "LOGINSPERDAYMIN"}, {"20370", "LOGINUSERSPERDAYAVG"}, {"20360", "LOGINUSERSPERDAYMAX"}, {"20380", "LOGINUSERSPERDAYMIN"}, {"20400", "MESSAGESPERDAYAVG"}, {"20390", "MESSAGESPERDAYMAX"}, {"20410", "MESSAGESPERDAYMIN"}, {"20450", "USERACCOUNTSMAX"}, {"20440", "USERACCOUNTSMIN"}, {"20480", "OMTPERDAYAVG"}, {"20470", "OMTPERDAYMAX"}, {"20490", "OMTPERDAYMIN"}, {"20510", "OMTPERHOURAVG"}, {"20520", "OMTPERHOURMIN"}, {"20500", "OMTPERHOURMAX"}, {"20540", "OMTPERMINUTEAVG"}, {"20530", "OMTPERMINUTEMAX"}, {"20550", "OMTPERMINUTEMIN"}, {"20570", "OMTPERSECONDAVG"}, {"20560", "OMTPERSECONDMAX"}, {"20580", "OMTPERSECONDMIN"}, {"21260", "TRADESPERHOURMAX"}, {"21280", "TRADESPERHOURMIN"}, {"20465", "OMTNUM"}, {"21195", "TRADESNUM"}, {"20585", "ORDERSNUM"}})
+in
+    #"Renamed Columns"
+
+
+
+
+### Daily Stats 
+
+let
+    Source = Odbc.DataSource("dsn=PG_kombi64", [HierarchicalNavigation=true]),
+    ebsm_Database = Source{[Name="ebsm",Kind="Database"]}[Data],
+    ebsm_Schema = ebsm_Database{[Name="ebsm",Kind="Schema"]}[Data],
+    cxsp_stats_app_sessions_daily_Table = ebsm_Schema{[Name="cxsp_stats_app_sessions_daily",Kind="Table"]}[Data],
+    #"Removed Columns" = Table.RemoveColumns(cxsp_stats_app_sessions_daily_Table,{"gnrl_dim_date", "gnrl_dim_schemas"})
+in
+    #"Removed Columns"
+
+
+# How to colorize the KPI boxes:
+
+MeasureAVG OMTs = CALCULATE(SUM('DB-ValuesMonth1520'[OMTPERDAYAVG_KPI]),DATEADD('DB-ValuesMonth1520'[KPI_DATE],-1,MONTH))
+
+
+Epex_value_DB:
+
+let
+    Source = Odbc.Query("dsn=PG_kombi64", "SELECT * FROM f_valuesmonth_cxxp(cast(1520 as int2),'2018-01-01','2021-12-31')"),
+    #"Added Custom1" = Table.AddColumn(Source, "REPORT_TIME_MATH98", each [#"REPORTTIMEADMINTC540P98YTD"] / 86400),
+    #"Added Custom2" = Table.AddColumn(#"Added Custom1", "REPORT_TIME_MATH99", each [#"REPORTTIMEADMINTC540P99YTD"] / 86400),
+    #"Changed Type" = Table.TransformColumnTypes(#"Added Custom2",{{"REPORT_TIME_MATH98", type time}}),
+    #"Changed Type1" = Table.TransformColumnTypes(#"Changed Type",{{"REPORT_TIME_MATH99", type time}}),
+    #"Inserted Hour" = Table.AddColumn(#"Changed Type1", "Hour98", each Time.Hour([REPORT_TIME_MATH98]), Int64.Type),
+    #"Inserted Hour1" = Table.AddColumn(#"Inserted Hour", "Hour99", each Time.Hour([REPORT_TIME_MATH99]), Int64.Type),
+    #"Inserted Minute" = Table.AddColumn(#"Inserted Hour1", "Minute98", each Time.Minute([REPORT_TIME_MATH98]), Int64.Type),
+    #"Inserted Minute1" = Table.AddColumn(#"Inserted Minute", "Minute99", each Time.Minute([REPORT_TIME_MATH99]), Int64.Type),
+    #"Inserted Second" = Table.AddColumn(#"Inserted Minute1", "Second98", each Time.Second([REPORT_TIME_MATH98]), type number),
+    #"Inserted Second1" = Table.AddColumn(#"Inserted Second", "Second99", each Time.Second([REPORT_TIME_MATH99]), type number),
+    #"Added Custom3" = Table.AddColumn(#"Inserted Second1", "REPORT_TIME98", each [Hour98] + ( [Minute98] / 60 ) + ( [Second98] / 3600 )),
+    #"Added Custom4" = Table.AddColumn(#"Added Custom3", "REPORT_TIME99", each [Hour99] + ( [Minute99] / 60 ) + ( [Second99] / 3600 )),
+    #"Changed Type2" = Table.TransformColumnTypes(#"Added Custom4",{{"REPORT_TIME98", type number}}),
+    #"Changed Type3" = Table.TransformColumnTypes(#"Changed Type2",{{"REPORT_TIME99", type number}}),
+    #"Duplicated Column" = Table.DuplicateColumn(#"Changed Type3", "TRADESPERDAYMAX", "TRADESPERDAYMAX_KPI"),
+    #"Duplicated Column1" = Table.DuplicateColumn(#"Duplicated Column", "TRADESPERDAYAVG", "TRADESPERDAYAVG_KPI"),
+    #"Duplicated Column2" = Table.DuplicateColumn(#"Duplicated Column1", "OMTPERDAYMAX", "OMTPERDAYMAX_KPI"),
+    #"Duplicated Column3" = Table.DuplicateColumn(#"Duplicated Column2", "OMTPERDAYAVG", "OMTPERDAYAVG_KPI"),
+    #"Changed Type with Locale" = Table.TransformColumnTypes(#"Duplicated Column3", {{"TRADESPERDAYMAX_KPI", Int64.Type}}, "de-DE"),
+    #"Changed Type with Locale1" = Table.TransformColumnTypes(#"Changed Type with Locale", {{"TRADESPERDAYAVG_KPI", Int64.Type}}, "de-DE"),
+    #"Changed Type with Locale2" = Table.TransformColumnTypes(#"Changed Type with Locale1", {{"OMTPERDAYMAX_KPI", Int64.Type}}, "de-DE"),
+    #"Changed Type with Locale3" = Table.TransformColumnTypes(#"Changed Type with Locale2", {{"OMTPERDAYAVG_KPI", Int64.Type}}, "de-DE")
+in
+    #"Changed Type with Locale3"
+
+
+
+
+
+DaysBetween average per DATE-xbid = 
+AVERAGEX(
+	KEEPFILTERS(VALUES('Maintenance&Outages'[Date])),
+	CALCULATE([DaysBetweenepex])
+)
+
+
+
+
+DaysBetweenepex = 
+VAR CurrentPurchaseDate = MAX( 'Maintenance&Outages'[Date] )
+VAR PriorMaxDate = CALCULATE( MAX( 'Maintenance&Outages'[Date] ), FILTER( ALL( 'Maintenance&Outages' ), 'Maintenance&Outages'[Date] < CurrentPurchaseDate ) )
+VAR FirstOverallDate = CALCULATE( MIN( 'Maintenance&Outages'[Date] ), ALL( 'Maintenance&Outages' ) )
+
+RETURN  
+    IF( MIN( 'Maintenance&Outages'[Date] ) = FirstOverallDate,
+        1,
+    
+            VALUE( CurrentPurchaseDate - PriorMaxDate ))

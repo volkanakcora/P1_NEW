@@ -1,0 +1,98 @@
+// Variables
+
+prodEnv = [
+    ftpdHosts: ['xbprodcom1', 'xbprodcom2', 'xbprodcom3', 'xbprodcom4', 'xbprodcom5', 'xbprodcom5', 'xbprodcbn1', 'xbprodcbn2']
+]
+
+simuEnv = [
+    ftpdHosts: ['xbsimucom1', 'xbsimucom2', 'xbsimucom3', 'xbsimucom4' ,'xbsimucom5' ,'xbsimucom6', 'xbsimucbn1', 'xbsimucbn2']
+]
+
+cuteEnv = [
+    ftpdHosts: ['xbcutscom1', 'xbcutscbn1', ]
+]
+
+inteEnv = [
+    ftpdHosts: ['xbintecom1', 'xbintecom2', 'xbintecom3', 'xbintecom4', 'xbintecbn1', 'xbintecbn2']
+]
+
+// Functions
+
+def addPmi(ftpdHosts) {
+    def folderPath = "/opt/data01/${username}/OUT/pmi/"
+    echo("Adding PMI files for ${username} ${environment}")
+    sh(
+        script: """\
+            ssh -o StrictHostKeyChecking=no 'ansible@${ftpdHosts}' <<EOF
+                sudo -i
+                echo "/opt/data01/pmi_archiver/OUT/pmi /opt/data01/${username}/OUT/pmi  none    bind    0 0" >> /etc/fstab
+                mount ${folderPath}
+            EOF
+           
+        """.stripIndent()
+    )
+}
+
+def isExternal() {
+    return env.JOB_NAME == 'Operations/06-XBID/support/xbid_sftp_user'
+}
+pipeline {
+        choice(name: 'environment', description: 'environment to deploy against', choices: envs)
+        string(name: 'username', description: 'SFTP Username')
+        string(name: 'fullname', description: 'SFTP Fullname')
+        choice(name: 'action', choices: ['update_jenkins_job', 'add_new_user', 'add_new_key'])
+        choice(name: 'action', choices: ['update_jenkins_job', 'add_new_user', 'add_new_key', 'add_PMI_bind'])
+        choice(name: 'user_type', choices: ['am', 'normal'])
+        text(name: 'key', defaultValue: '', description: 'Select Public key to upload. This will be concatenated with our general keys and stored in Vault')
+        booleanParam(name: 'check', defaultValue: true, description: '*dont change anything* run in check mode in all respective playbook steps')
+pipeline {
+                }
+            }
+        }
+
+        stage("Add PMI Files to the given user") {
+            when { equals expected: 'add_PMI_bind', actual: params.action 
+            }
+            steps {
+               script {
+                    if ( environment == 'prod') {
+                        for (ftpdHosts in  prodEnv.ftpdHosts) {
+
+                            addPmi(
+                                ftpEnv
+                            )
+
+                        }
+
+                    } else if ( environment == 'simu'){
+                        for (ftpdHosts in  simuEnv.ftpdHosts) {
+
+                            addPmi(
+                                ftpEnv
+                            )
+
+                        }
+
+                    } else if ( environment == 'cuts'){
+                        for (ftpdHosts in  cuteEnv.ftpdHosts) {
+
+                            addPmi(
+                                ftpEnv
+                            )
+
+                        }
+
+                    } else if ( environment == 'inte') {
+                        for (ftpdHosts in inteEnv.ftpdHosts) {
+
+                            addPmi(
+                                ftpdHosts
+                            )
+
+                        }
+                    }              
+                }           
+            }
+        }
+    }
+}

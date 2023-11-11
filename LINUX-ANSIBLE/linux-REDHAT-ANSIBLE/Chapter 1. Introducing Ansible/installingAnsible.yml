@@ -1,0 +1,33 @@
+'Installing Ansible'
+
+Register your system to Red Hat Subscription Manager.
+
+
+#[root@host ~]# subscription-manager register
+Enable the Red Hat Ansible Engine repository.
+
+#[root@host ~]# subscription-manager repos \
+> --enable ansible-2-for-rhel-8-x86_64-rpms
+
+
+Install Red Hat Ansible Engine.
+
+#[root@host ~]# yum install ansible
+
+
+
+
+
+''''''''''''''''''''''''''''''''Managed Hosts:
+
+One of the benefits of Ansible is that managed hosts do not need to have a special agent installed. The Ansible control node connects to managed 
+hosts using a standard network protocol to ensure that the systems are in the specified state.
+
+
+
+-> Linux and UNIX managed hosts need to have Python 2 (version 2.6 or later) or Python 3 (version 3.5 or later) installed for most modules to work.
+#[root@host ~]# yum module install python36
+
+-> If SELinux is enabled on the managed hosts, ensure that the python3-libselinux package is installed before using modules that are related to any copy, file, or template functions. 
+
+

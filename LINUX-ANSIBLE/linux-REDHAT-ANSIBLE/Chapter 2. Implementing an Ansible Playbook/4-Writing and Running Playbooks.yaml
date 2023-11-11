@@ -1,0 +1,220 @@
+Writing and Running Playbooks
+
+
+
+Ansible Playbooks and Ad Hoc Commands:
+
+Ad hoc commands can run a single, simple task against a set of targeted hosts as a one-time command. The real power of Ansible, however, is in learning how to use playbooks t
+o run multiple, complex tasks against a set of targeted hosts in an easily repeatable manner.
+
+
+Formatting an Ansible Playbook:
+
+To help you understand the format of a playbook, review this ad hoc command from a previous chapter
+
+#[student@workstation ~]$ ansible -m user -a "name=newbie uid=4000 state=present" servera.lab.example.com
+
+This can be rewritten as a single task play and saved in a playbook. The resulting playbook appears as follows:
+
+---
+- name: Configure important user consistently
+  hosts: servera.lab.example.com
+  tasks:
+    - name: newbie exists with UID 4000
+      user:
+        name: newbie
+        uid: 4000
+        state: present
+
+
+The following is another example of a tasks attribute with multiple tasks, using the service module to ensure that several network services are enabled to start at boot:
+
+  tasks:
+    - name: web server is enabled
+      service:
+        name: httpd
+        enabled: true
+
+    - name: NTP server is enabled
+      service:
+        name: chronyd
+        enabled: true
+
+    - name: Postfix is enabled
+      service:
+        name: postfix
+        enabled: true
+
+
+[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[        Running Playbooks        ]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+
+The command is executed on the control node and the name of the playbook to be run is passed as an argument:
+
+#[student@workstation ~]$ ansible-playbook site.yml
+
+
+The following example shows the contents of a simple playbook, and then the result of running it:
+
+#[student@workstation playdemo]$ cat webserver.yml
+---
+- name: play to setup web server
+  hosts: servera.lab.example.com
+  tasks:
+  - name: latest httpd version installed
+    yum:
+      name: httpd
+      state: latest
+...output omitted...
+
+
+#[student@workstation playdemo]$ ansible-playbook webserver.yml
+
+PLAY [play to setup web server] ************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [servera.lab.example.com]
+
+TASK [latest httpd version installed] ******************************************
+changed: [servera.lab.example.com]
+
+PLAY RECAP *********************************************************************
+servera.lab.example.com    : ok=2    changed=1    unreachable=0    failed=0
+
+
+
+
+The value of the name key for each play and task is displayed when the playbook is run. 
+
+
+You should also see that the latest httpd version installed task is changed for servera.lab.example.com. This means that the task changed something on that host to ensure its 
+specification was met. In this case, it means that the httpd package probably was not installed or was not the latest version.
+
+
+#[student@workstation playdemo]$ ansible-playbook webserver.yml
+
+PLAY [play to setup web server] ************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [servera.lab.example.com]
+
+TASK [latest httpd version installed] ******************************************
+ok: [servera.lab.example.com]
+
+PLAY RECAP *********************************************************************
+servera.lab.example.com    : ok=2    changed=0    unreachable=0    failed=0     --> that means httpd was not in the correct state, and was changed by ansible
+
+
+
+!! if you want more details on output: 
+
+-v	The task results are displayed.
+-vv	Both task results and task configuration are displayed
+-vvv	Includes information about connections to managed hosts
+-vvvv	Adds extra verbosity options to the connection plug-ins, including users being used in the managed hosts to execute scripts, and what scripts have been executed
+
+
+[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[      Syntax Verification    ]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+
+Prior to executing a playbook, it is good practice to perform a verification to ensure that the syntax of its contents is correct. The ansible-playbook command offers a --syntax-check option:
+
+#[student@workstation ~]$ ansible-playbook --syntax-check webserver.yml
+
+playbook: webserver.yml
+
+
+
+#[student@workstation ~]$ ansible-playbook --syntax-check webserver.yml
+
+'ERROR! Syntax Error while loading YAML.
+  mapping values are not allowed in this context
+
+The error appears to have been in ...output omitted... line 3, column 8, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+- name:play to setup web server
+  hosts: servera.lab.example.com
+       ^ here'
+
+
+
+[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[       Executing a Dry Run     ]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+You can use the -C option to perform a dry run of the playbook execution
+
+#[student@workstation ~]$ ansible-playbook -C webserver.yml
+
+PLAY [play to setup web server] ************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [servera.lab.example.com]
+
+TASK [latest httpd version installed] ******************************************
+changed: [servera.lab.example.com]
+
+PLAY RECAP *********************************************************************
+servera.lab.example.com    : ok=2    changed=1    unreachable=0    failed=0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[EXERCISE]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+Procedure 2.4. Instructions
+
+The /home/student/playbook-basic working directory has been created on workstation for this exercise. This directory has already been populated with an ansible.cfg configuration file, and also an inventory inventory file, which defines a web group that includes both managed hosts listed above as members.
+
+In this directory, use a text editor to create a playbook named site.yml. This playbook contains one play, which should target members of the web host group. The playbook should use tasks to ensure that the following conditions are met on the managed hosts:
+
+- The httpd package is present, using the yum module.
+
+- The local files/index.html file is copied to /var/www/html/index.html on each managed host, using the copy module.
+
+- The httpd service is started and enabled, using the service module.
+
+You can use the ansible-doc command to help you understand the keywords needed for each of the modules.
+
+
+Your entire site.yml Ansible Playbook should match the following example. Make sure that the indentation of your play's keywords, the list of tasks, and each task's keywords are all correct.
+
+---
+- name: Install and start Apache HTTPD
+  hosts: web
+  tasks:
+    - name: httpd package is present
+      yum:
+        name: httpd
+        state: present
+
+    - name: correct index.html is present
+      copy:
+        src: files/index.html
+        dest: /var/www/html/index.html
+
+    - name: httpd is started
+      service:
+        name: httpd
+        state: started
+        enabled: true
+
+
+#[student@workstation playbook-basic]$ ansible-playbook --syntax-check site.yml
+
+
+#[student@workstation playbook-basic]$ ansible-playbook site.yml

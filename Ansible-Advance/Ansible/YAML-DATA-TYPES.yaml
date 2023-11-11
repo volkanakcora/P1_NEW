@@ -1,0 +1,95 @@
+#Key value Pair#
+
+Fruit: Apply
+Vegetable: Carrot
+Liquid: Water
+Meat: Chickec
+
+#Array-list#
+
+Fruits:
+- Orange
+- Apple
+- Banana
+Vegetables:
+- Carrot
+- Caluliflowe
+- Tomato
+
+employees:
+    -
+        name: john
+        gender: male
+        age: 24
+    -
+        name: sarah
+        gender: female
+        age: 28
+
+#Dictionary/Map#
+Banana:
+  Calories: 105
+  Fat: 0.4 g
+  Carbs: 27 g
+Grapes:
+  Calories: 62
+  Fat: 0.3 g
+  Carbs: 16 g
+
+#List of dictionary in a dictionary#
+employee:
+    name: john
+    gender: male
+    age: 24
+    address:
+        city: edison
+        state: 'new jersey'
+        country: 'united states'
+    payslips:
+        -
+            month: june
+            amount: 1400
+        -
+            month: july
+            amount: 2400
+        -
+            month: august
+            amount: 3400
+
+#Example#
+
+---
+car:
+  color: blue
+  price: "$20,000"
+  wheels:
+  - 
+    model: KDJ39848T
+    location: front-right
+  - 
+    model: MDJ39485DK
+    location: front-left
+  - 
+    model: KCMDD3435K
+    location: rear-right
+  - 
+    model: JJDH34234KK
+    location: rear-left
+bus:
+  color: white
+  price: "$120,000"
+  wheels: 
+      - 
+        model: BBBB39848T
+        location: front-right
+      - 
+        model: BBBB9485DK
+        location: front-left
+      - 
+        model: BBBB3435K
+        location: rear-right
+      - 
+        model: BBBB4234KK
+        location: rear-left
+
+            

@@ -1,0 +1,143 @@
+Controlling Order of Execution:
+
+In a play, Ansible always runs the tasks from roles, called by roles, before the tasks that you
+define under the tasks section. The following playbook contains both a roles and a tasks
+section.
+
+
+
+Importing or Including Roles as a Task:
+
+The following playbook demonstrates how a role can be included using a task with the
+include_role module.
+
+Use the include_role module to dynamically include a role, and use the import_role module
+to statically import a role.
+
+---
+- name: Executing a role as a task
+  hosts: remote.example.com
+  tasks:
+    - name: A normal task
+    debug:
+      msg: 'first task'
+
+    - name: A task to include role2 here
+      include_role:
+        name: role2
+
+    - name: Another normal task
+      debug:
+        msg: 'second task'
+
+
+With import_role, the ansible-playbook command starts by parsing and inserting the role in
+the play before starting the execution. Ansible detects and reports syntax errors immediately and
+does not start the playbook execution.
+
+With include_role, however, Ansible parses and inserts the role in the play when it reaches the
+include_role task, during the play execution. If Ansible detects syntax errors in the role, then
+execution of the playbook is aborted.
+
+
+Defining Pre and Post Tasks:
+
+- pre_tasks is a tasks section that runs before the roles section.
+
+• post_tasks is a tasks section that runs after the tasks section and any handlers notified by
+tasks.
+
+
+Reviewing the Order of Execution:
+
+Ansible runs the play sections in the following order:
+• pre_tasks
+• handlers notified in the pre_tasks section
+• roles
+• tasks
+• handlers notified in the roles and tasks sections
+• post_tasks
+• handlers notified in the post_tasks section
+
+
+Ansible executes and flushes notified handlers at several points during a run: after the pre_tasks
+section, after the roles and tasks sections, and after the post_tasks section. This means
+that a handler can run more than once, at different times during the play execution, if notified in
+multiple sections.
+
+To immediately run any handlers that have been notified by a particular task in the play, add a
+task that uses the meta module with the flush_handlers parameter. This allows you to define
+specific points during task execution when all notified handlers are run.
+
+
+
+---
+- name: Updating the application configuration and cache
+hosts: app_servers
+tasks:
+- name: Deploying the configuration file
+  template:
+    src: api-server.cfg.j2
+    dest: /etc/api-server.cfg
+
+notify: Restart api server
+  - name: Running all notified handlers
+      meta: flush_handlers
+  - name: Asking the API server to rebuild its internal cache
+    uri:
+    url: "https://{{ inventory_hostname }}/rest/api/2/cache/"
+    method: POST
+    force_basic_auth: yes   <---
+      user: admin
+      password: redhat
+      body_format: json
+      body:
+      type: data
+      delay: 0
+      status_code: 201
+handlers:
+- name: Restart api server
+service:
+name: api-server
+state: restarted
+enabled: yes
+
+
+
+Listening to Handlers:
+
+In addition to being notified by tasks, a handler can also "subscribe" to a specific notification,
+and run when that notification is triggered. This allows multiple handlers to be triggered by one
+notification.
+
+By default, a handler executes when a notification string matches the handler name. However, as
+each handler must have a unique name, the only way to trigger multiple handlers at the same time
+is that each one subscribes to the same notification name.
+
+
+- name: Testing the listen directive
+  hosts: localhost
+  gather_facts: no
+  become: no
+  tasks:
+      - debug:
+          msg: Trigerring the handlers
+        notify: My handlers
+  changed_when: true
+
+
+
+
+
+handlers:
+# Listening to the "My handlers" event
+- name: Listening to a notification
+  debug:
+     msg: First handler was notified
+  listen: My handlers
+
+
+!!!  Approaches to Handler Notification:
+
+• It can notify a list of handlers individually by name.
+• It can notify one name for which multiple handlers are configured to listen.

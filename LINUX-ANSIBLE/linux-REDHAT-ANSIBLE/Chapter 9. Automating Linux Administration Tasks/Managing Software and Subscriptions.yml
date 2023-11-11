@@ -1,0 +1,32 @@
+Managing Packages with Ansible
+
+
+
+The yum Ansible module uses the Yum Package Manager on the managed hosts to handle the package operations. 
+The following example is a playbook that installs the httpd package on the servera.lab.example.com managed host:
+
+---
+- name: Install the required packages on the web server
+  hosts: servera.lab.example.com
+  tasks:
+    - name: Install the httpd packages
+      yum:
+        name: httpd    
+        state: present 
+
+
+
+Optimizing Multiple Package Installation
+To operate on several packages, the name keyword accepts a list. The following example shows a playbook that installs three packages on servera.lab.example.com.
+
+---
+- name: Install the required packages on the web server
+  hosts: servera.lab.example.com
+  tasks:
+    - name: Install the packages
+      yum:
+        name:
+          - httpd
+          - mod_ssl
+          - httpd-tools
+        state: present

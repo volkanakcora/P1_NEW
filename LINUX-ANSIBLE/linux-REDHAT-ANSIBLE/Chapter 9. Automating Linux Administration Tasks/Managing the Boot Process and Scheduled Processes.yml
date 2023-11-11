@@ -1,0 +1,95 @@
+
+
+Managing the Boot Process and Scheduled Processes
+
+
+
+After completing this section, you should be able to manage service startup, schedule processes with at, cron, and systemd, reboot, and 
+control the default boot target on managed hosts.
+
+
+
+Scheduling with the at Module:
+
+Quick one-time scheduling is done with the at module. You create the job for a future time to run and it is held until that time comes to execute. There are six parameters that come with this module. They are: command, count, script_file, state, unique, and units.
+
+The at Module Example:
+- name: remove tempuser.
+  at:
+    command: userdel -r tempuser
+    count: 20
+    units: minutes
+    unique: yes
+
+check PDF!!!
+
+
+Appending Commands with the cron Module:
+
+The cron module example:
+- cron:
+    name: "Flush Bolt"
+    user: "root"
+    minute: 45
+    hour: 11
+    job: "php ./app/nut cache:clear"
+
+
+
+Parameter	                        Options	                                                             Comments
+special_time   	reboot, yearly, annually, monthly, weekly, daily, hourly                        	A set of reoccurring times.
+state	                        absent, present	                                   If set to present, it will create the command. Absent will remove it.
+cron_file	                         Null                                             If you have large banks of servers to maintain then sometimes it is better to have a pre-written crontab file.
+backup	                          yes, no	                                                 Backs up the crontab file prior to being edited.
+
+
+
+
+Managing Services with the systemd and service Modules:
+
+The service Module Example:
+- name: start nginx
+  service:
+    name: nginx
+    state: started"
+
+
+The systemd Module Example:
+- name: reload web server
+  systemd:
+    name: apache2
+    state: reload
+    daemon-reload: yes
+
+
+The Reboot Module:
+
+The reboot module Example:
+
+- name: "Reboot after patching"
+  reboot:
+    reboot_timeout: 180
+
+- name: force a quick reboot
+  reboot:
+
+
+
+The Shell and Command Module:
+
+
+The shell module example:
+- name: Run a templated variable (always use quote filter to avoid injection)
+    shell: cat {{ myfile|quote }}
+
+To sanitize any variables, It is suggested that you use {{ var | quote }} instead of just {{ var }}
+
+The command module example:
+- name: This command only
+  command: /usr/bin/scrape_logs.py arg1 arg2
+  args:1
+    chdir: scripts/
+    creates: /path/to/script
+
+
+

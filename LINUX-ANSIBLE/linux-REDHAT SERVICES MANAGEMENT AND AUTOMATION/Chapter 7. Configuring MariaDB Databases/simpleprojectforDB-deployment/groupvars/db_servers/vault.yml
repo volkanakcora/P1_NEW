@@ -1,0 +1,6 @@
+pw: redhat
+mysql_user_passwords:
+  - name: john
+    password: john_password
+  - name: steve
+    password: steve_password

@@ -1,0 +1,11 @@
+---
+- name: Create user accounts
+  user:
+    name: "{{ item.username }}"
+    state: present
+  loop: "{{ web_developers }}"
+
+
+- name: Give student access to all accounts
+  authorized_key:
+    user: "{{ item."

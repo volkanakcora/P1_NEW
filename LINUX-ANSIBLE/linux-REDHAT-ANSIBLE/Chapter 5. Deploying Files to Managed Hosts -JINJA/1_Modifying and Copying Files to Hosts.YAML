@@ -1,0 +1,191 @@
+blockinfile:	Insert, update, or remove a block of multiline text surrounded by customizable marker lines.
+copy:	Copy a file from the local or remote machine to a location on a managed host. Similar to the file module, the copy module can also set file attributes, including SELinux context.
+fetch:	This module works like the copy module, but in reverse. This module is used for fetching files from remote machines to the control node and storing them in a file tree, organized by host name.
+file:	Set attributes such as permissions, ownership, SELinux contexts, and time stamps of regular files, symlinks, hard links, and directories. This module can also create or remove regular files, symlinks, hard links, and directories. A number of other file-related modules support the same options to set attributes as the file module, including the copy module.
+lineinfile:	Ensure that a particular line is in a file, or replace an existing line using a back-reference regular expression. This module is primarily useful when you want to change a single line in a file.
+stat:	Retrieve status information for a file, similar to the Linux stat command.
+synchronize:	A wrapper around the rsync command to make common tasks quick and easy. The synchronize module is not intended to provide access to the full power of the rsync command, but does make the most common invocations easier to implement. You may still need to call the rsync command directly via the run command module depending on your use case.
+
+
+Automation Examples with Files Modules:
+
+ name: Touch a file and set permissions
+  file:
+    path: /path/to/file
+    owner: user1
+    group: group1
+    mode: 0640
+    state: touch
+Example outcome:
+
+#[user@host ~]$ ls -l file
+-rw-r-----.  user1 group1 0 Nov 25 08:00 file
+
+
+SELinux context type attribute of the samba_file file is the desired samba_share_t type. This behavior is similar to the Linux chcon command:
+
+- name: SELinux type is set to samba_share_t
+  file:
+    path: /path/to/samba_file
+    setype: samba_share_t
+Example outcome:
+
+#[user@host ~]$ ls -Z samba_file
+-rw-r--r--.  owner group unconfined_u:object_r:samba_share_t:s0 samba_file
+
+
+!! The sefcontext module updates the default context for the target in the SELinux policy, but does not change the context on existing files.
+
+
+
+[[[[[[[[[[[[[[[[[[[[[[[ Copying and Editing Files on Managed Hosts: ]]]]]]]]]]]]]]]]]]]]]]]
+
+
+- name: Copy a file to managed hosts
+  copy:
+    src: file
+    dest: /path/to/file
+
+To retrieve files from managed hosts use the fetch module. This could be used to retrieve a file such as an SSH public key from a reference 
+system before distributing it to other managed hosts.:
+
+- name: Retrieve SSH key from reference host
+  fetch:
+    src: "/home/{{ user }}/.ssh/id_rsa.pub
+    dest: "files/keys/{{ user }}.pub"
+
+To ensure a specific single line of text exists in an existing file, use the lineinfile module:
+
+- name: Add a line of text to a file
+  lineinfile:
+    path: /path/to/file
+    line: 'Add this line to the file'
+    state: present
+
+To add a block of text to an existing file, use the blockinfile module:
+
+- name: Add additional lines to a file
+  blockinfile:
+    path: /path/to/file
+    block: |
+      First line in the additional block of text
+      Second line in the additional block of text
+    state: present
+
+
+
+
+Removing a File from Managed Hosts:
+
+- name: Make sure a file does not exist on managed hosts
+  file:
+    dest: /path/to/file
+    state: absent
+
+
+[[[[[[[[[[[[[[[[[[[[[ Retriving the Status of a File on Managed Hosts:  ]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+The following example registers the results of a stat module and then prints the MD5 checksum of the file that it checked. (The more modern SHA256 algorithm is also available; MD5 is being used here for easier legibility.)
+
+- name: Verify the checksum of a file
+  stat:
+    path: /path/to/file
+    checksum_algorithm: md5
+  register: result
+
+- debug
+    msg: "The checksum of the file is {{ result.stat.checksum }}"
+
+
+The outcome should be similar to the following:
+
+TASK [Get md5 checksum of a file] *****************************************
+ok: [hostname]
+
+TASK [debug] **************************************************************
+ok: [hostname] => {
+    "msg": "The checksum of the file is 5f76590425303022e933c43a7f2092a3"
+}
+
+
+Information about the values returned by the stat module are documented by ansible-doc, or you can register a variable and display its contents to see what is available:
+
+- name: Examine all stat output of /etc/passwd
+  hosts: localhost
+
+  tasks:
+    - name: stat /etc/passwd
+      stat:
+        path: /etc/passwd
+      register: results
+
+    - name: Display stat results
+      debug:
+        var: results
+
+
+
+[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[ EXERCISE ]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+
+
+HOW TO RETRIVE FILE FROM OTHER HOSTS TO LOCAL ONE 
+
+
+Create the secure_log_backups.yml playbook with initial content:
+
+---
+- name: Use the fetch module to retrieve secure log files
+  hosts: all
+  remote_user: root
+  tasks:
+    - name: Fetch the /var/log/secure log file from managed hosts
+      fetch:
+        src: /var/log/secure
+        dest: secure-backups
+        flat: no
+
+
+
+
+------------------------------------------------------------
+
+COPY FILES FOR OTHER HOSTS:
+
+---
+- name: Using the copy module
+  hosts: all
+  remote_user: root
+  tasks:
+    - name: Copy a file to managed hosts and set attributes
+      copy:
+        src: files/users.txt
+        dest: /home/devops/users.txt
+        owner: devops
+        group: devops
+        mode: u+rw,g-wx,o-rwx
+        setype: samba_share_t
+
+
+-------------------------------------------------------------------
+
+
+CHANGING SELINUX CONTEXT DEFAULTS 
+---
+- name: Using the file module to ensure SELinux file context
+  hosts: all
+  remote_user: root
+  tasks:
+    - name:  SELinux file context is set to defaults
+      file:
+        path: /home/devops/users.txt
+        seuser: _default
+        serole: _default
+        setype: _default
+        selevel: _default
+
+
+
+------------------------------------------------------------------
+
+

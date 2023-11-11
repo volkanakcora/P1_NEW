@@ -1,0 +1,116 @@
+####   Calling Lookup Plug-ins
+
+ansible-doc -t lookup -l to obtain the complete list of available lookup plug-ins
+
+run the ansible-doc -t lookup PLUGIN_NAME command.
+
+
+
+For example, the following variable definition uses the file lookup plug-in to put the contents of
+the file /etc/hosts into the Ansible variable myhosts:
+
+vars:
+  hosts: "{{ lookup('file', '/etc/hosts') }}"
+
+
+
+
+You can include more than one file name to the file plug-in. When called with the lookup
+function, each file's contents will be separated by a comma in the templated value.
+
+vars:
+  hosts: "{{ lookup('file', '/etc/hosts', '/etc/issue') }}"
+
+
+In Ansible 2.5 and later, the query function can be used instead of lookup to call lookup plug-ins.
+The difference between the two is that instead of the values returned being comma-separated,
+query always returns a list, which can be easier to parse and work with.
+
+
+The preceding example could be called like this:
+vars:
+hosts: "{{ query('file', '/etc/hosts', '/etc/issue') }}"
+
+
+tasks:
+- name: Add authorized keys
+authorized_key:
+user: "{{ item }}"
+key: "{{ lookup('file', item + '.key.pub') }}"
+loop: "{{ users }}"
+
+
+A useful trick with the file plug-in is that if the file is in YAML or JSON format, you can parse it
+into properly structured data with the from_yaml or from_json filters.
+
+my_yaml: "{{ lookup('file', '/path/to/my.yaml') | from_yaml }}"
+
+
+A useful trick with the file plug-in is that if the file is in YAML or JSON format, you can parse it
+into properly structured data with the from_yaml or from_json filters.
+
+my_yaml: "{{ lookup('file', '/path/to/my.yaml') | from_yaml }}"
+
+
+
+
+
+####Applying Data with a Template
+
+template before applying the contents. If you pass a relative path to the template file, the plug-in
+will look for it in your playbook's templates directory.
+
+{{ lookup('template', 'my.template.j2') }}
+
+
+The previous example will process the templates/my.template.j2 template in your
+
+playbook's directory. As an example, assume the content of the template is the following:
+Hello {{ name }}.
+
+
+##### Reading an Environment Variable on the Control Node
+
+{{ lookup('env','MY_PASSWORD') }}
+
+##### Reading Command Output on the Control Node
+
+For example, assume that you have the following Jinja2 expression:
+{{ query('pipe', 'ls files') }}
+
+This expression will return the raw output of the ls command as a string. If you use the lines
+plug-in, then the expression is as follows:
+
+{{ query('lines', 'ls files') }}
+This command results in a list with each line of output returned by ls as a list item.
+
+
+
+One interesting application of this functionality is to get the first line (or any specific line) of
+output from a set of commands:
+- name: Prints the first line of some files
+debug:
+msg: "{{ item[0] }}"
+loop:
+- "{{ query('lines', 'cat files/my.file') }}"
+- "{{ query('lines', 'cat files/my.file.2') }}"
+
+
+###    Getting Content from a URL
+Similar to the way the file plug-in gets the contents of a file, the url plug-in gets content from a
+URL.
+
+{{ lookup('url', 'https://my.site.com/my.file') }}
+
+
+#### Handling Lookup Error
+{{ lookup('file', 'my.file', errors='warn') | default("Default file content") }}
+
+
+
+
+
+controller_lang: "{{ lookup('env','LANG') | default('en_US.UTF-8') }}"
+iac_version: "{{ lookup('pipe', 'git rev-parse --short HEAD')|quote }}"
+
+content: "{{ lookup('template','webapp.' + locale + '.j2') }}"

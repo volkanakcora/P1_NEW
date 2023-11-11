@@ -1,0 +1,112 @@
+Overview
+
+Ansible has several features that enable rolling updates, a strategy that staggers deployments to
+batches of servers. With this strategy, infrastructure updates are deployed with zero downtime.
+
+When an unforeseen problem occurs, Ansible can halt the deployment and any errors can be
+limited to only those servers in a particular batch. With tests and monitoring in place, you can
+configure playbook tasks to:
+
+• Rollback configuration for hosts in the affected batch.
+• Quarantine affected hosts to enable analysis of the failed deployment.
+• Send notifications of the deployment to stakeholders.
+
+
+Controlling Batch Size:
+use the serial keyword in your play. The serial
+keyword specifies how many hosts should be in each batch. Ansible will process each batch of
+hosts all the way through the play before starting the next batch. If all hosts in the current batch
+fail, the entire play is aborted and Ansible does not start the next batch
+
+onsider the beginning portion of the following play:
+---
+- name: Update Webservers
+  hosts: web_servers
+  serial: 2
+
+In this example, the serial keyword instructs Ansible to process hosts in the web_servers host
+group in batches of two hosts. If the play executes without error, the play is repeated with a new
+batch.
+
+This process continues until all the hosts in the play are processed. As a result, the last batch may
+contain fewer hosts than the indicated value of the serial keyword, if the total number of hosts
+in the play is not divisible by the batch size. In the previous example, the last batch contains one
+host if the total number of web servers is an odd value.
+
+
+
+
+
+#### Setting Batch Size as a Percentage
+
+You can also specify a percentage for the value of the serial keyword:
+---
+- name: Update Webservers
+hosts: web_servers
+serial: 25%
+
+
+
+If you use the serial keyword, playbook execution continues only as long as there are hosts
+remaining in the current batch with no failures. Consider this modification to the hypothetical
+playbook:
+---
+- name: Update Webservers
+  hosts: web_servers
+  serial: 2
+  tasks:
+    - name: Step One
+      shell: /usr/bin/some_command
+    - name: Step Two
+      shell: /usr/bin/some_other_command
+If the first batch of two contains a host that succeeds and a host that fails, then the batch
+completes and Ansible moves on to the second batch of two. If both hosts in the second batch fail
+on a task in the play, then Ansible aborts the entire play and starts no more batches.
+In this scenario, after the playbook executes:
+• One host successfully completes the play.
+• Three hosts might be in an error state.
+• The rest of the hosts remain unaltered.
+
+## Specifying Failure Tolerance
+
+Specifying Failure Tolerance
+
+Alter Ansible's failure behavior by adding the max_fail_percentage keyword to a play:
+---
+- name: Update Webservers
+  hosts: web_servers
+  max_fail_percentage: 30%
+  serial:
+  - 2
+  - 10%
+  - 100%
+  tasks:
+  - name: Step One
+  shell: /usr/bin/some_command
+  - name: Step Two
+  shell: /usr/bin/some_other_command
+
+
+Important
+To summarize Ansible's failure behavior:
+• If the serial keyword and the max_fail_percentage value are not set, all
+hosts are run through the play in one batch. If all hosts fail, then the play fails.
+• If the serial keyword is set, then hosts are run through the play in multiple
+batches and the play fails if all hosts in any one batch fail.
+• If max_fail_percentage keyword is set, then the play fails if more than that
+percentage of hosts in a batch fail.
+If a play fails, all remaining plays in the playbook are aborted.
+
+
+############ Running a Task Once:
+In certain scenarios, you may only need to run a task once for an entire batch of hosts, rather than
+once for each host in the batch. To do so, add the run_once keyword to the task with a Boolean
+true (or yes) value.
+
+- name: Reactivate Hosts
+  shell: /sbin/activate.sh {{ active_hosts_string }}
+  run_once: yes
+  delegate_to: monitor.example.com
+  vars:
+    active_hosts_string: "{{ ansible_play_batch | join(' ')}}"
+

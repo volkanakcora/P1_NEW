@@ -1,0 +1,220 @@
+Defining the Inventory:
+
+An inventory defines a collection of hosts that Ansible will manage. These hosts can also be assigned to 
+groups, which can be managed collectively. Groups can contain child groups, and hosts can be members of multiple groups. 
+
+Specifying Managed Hosts with a Static Inventory:
+A static inventory file is a text file that specifies the managed hosts that Ansible targets. You can write this file using a 
+number of different formats, including INI-style or YAML. The INI-style format is very common and will be used for most examples in this course.
+
+
+Host Example:
+
+In the following example, the host inventory defines two host groups [webservers and db-servers.]
+
+[webservers]
+web1.example.com
+web2.example.com
+192.0.2.42
+
+[db-servers]
+db1.example.com
+db2.example.com
+
+
+Two host groups always exist:
+
+The all host group contains every host explicitly listed in the inventory.
+
+The ungrouped host group contains every host explicitly listed in the inventory that is not a member of any other group.
+
+
+Defining Nested Groups:
+
+Ansible host inventories can include groups of host groups. This is accomplished by creating a host group name with the :children suffix. 
+The following example creates a new group called north-america, which includes all hosts from the usa and canada groups.
+
+[usa]
+washington1.example.com
+washington2.example.com
+
+[canada]
+ontario01.example.com
+ontario02.example.com
+
+[north-america:children]
+canada
+usa
+
+
+Simplifying Host Specifications with Ranges:
+
+[START:END]
+
+Ranges match all values from START to END, inclusively. Consider the following examples:
+
+192.168.[4:7].[0:255] matches all IPv4 addresses in the 192.168.4.0/22 network (192.168.4.0 through 192.168.7.255).
+
+server[01:20].example.com matches all hosts named server01.example.com through server20.example.com.
+
+[a:c].dns.example.com matches hosts named a.dns.example.com, b.dns.example.com, and c.dns.example.com.
+
+2001:db8::[a:f] matches all IPv6 addresses from 2001:db8::a through 2001:db8::f.
+
+
+
+
+Verifying the Inventory:
+
+When in doubt, use the ansible command to verify a machine's presence in the inventory
+
+#[user@controlnode ~]$ ansible washington1.example.com --list-hosts
+  hosts (1):
+    washington1.example.com
+
+#[user@controlnode ~]$ ansible washington01.example.com --list-hosts
+ [WARNING]: provided hosts list is empty, only localhost is available
+
+  hosts (0):
+
+
+-> You can run the following command to list all hosts in a group
+
+#[user@controlnode ~]$ ansible canada --list-hosts
+  hosts (2):
+    ontario01.example.com
+    ontario02.example.com
+
+
+
+
+
+Overriding the Location of the Inventory:
+
+The /etc/ansible/hosts file is considered the system's default static inventory file. However, normal practice is not to use that file but to 
+define a different location for inventory files in your Ansible configuration file. This is covered in the next section.
+
+The ansible and ansible-playbook commands that you use to run Ansible ad hoc commands and playbooks later in the course can also 
+specify the location of an inventory file on the command line with the --inventory PATHNAME or -i PATHNAME option, where PATHNAME is the path to the 
+desired inventory file.
+
+
+
+
+
+
+------------------------- EXERCISE ---------------------------- 
+
+Modify /etc/ansible/hosts to include servera.lab.example.com as a managed host:
+
+Add servera.lab.example.com to the end of the default inventory file, /etc/ansible/hosts.
+
+#[student@workstation ~]$ sudo vim /etc/ansible/hosts
+...output omitted...
+## db-[99:101]-node.example.com
+
+servera.lab.example.com
+
+
+[webservers]
+serverb.lab.example.com
+
+
+Verify the managed hosts in the /etc/ansible/hosts inventory file:
+
+Use the ansible all --list-hosts command to list all managed hosts in the default inventory file.
+
+#[student@workstation ~]$ ansible all --list-hosts
+  hosts (2):
+    servera.lab.example.com
+    serverb.lab.example.com
+
+
+#[student@workstation ~]$ ansible ungrouped --list-hosts
+  hosts (1):
+    servera.lab.example.com
+
+
+#[student@workstation ~]$ ansible webservers --list-hosts
+  hosts (1):
+    serverb.lab.example.com
+
+
+
+PRACTICES:
+
+Create the /home/student/deploy-inventory working directory, and change into it.
+
+[student@workstation ~]$ mkdir ~/deploy-inventory
+[student@workstation ~]$ cd ~/deploy-inventory
+[student@workstation deploy-inventory]$
+
+[webservers]
+server[a:d].lab.example.com
+
+[raleigh]
+servera.lab.example.com
+serverb.lab.example.com
+
+[mountainview]
+serverc.lab.example.com
+
+[london]
+serverd.lab.example.com
+
+[development]
+servera.lab.example.com
+
+[testing]
+serverb.lab.example.com
+
+[production]
+serverc.lab.example.com
+serverd.lab.example.com
+
+[us:children]
+raleigh
+mountainview
+
+
+
+
+#[student@workstation deploy-inventory]$ ansible all -i inventory --list-hosts
+  hosts (4):
+    servera.lab.example.com
+    serverb.lab.example.com
+    serverc.lab.example.com
+    serverd.lab.example.com
+
+
+#[student@workstation deploy-inventory]$ ansible ungrouped -i inventory \
+> --list-hosts
+ [WARNING]: No hosts matched, nothing to do
+
+  hosts (0):   
+
+
+#[student@workstation deploy-inventory]$ ansible development -i inventory \
+> --list-hosts
+  hosts (1):
+    servera.lab.example.com
+
+
+#[student@workstation deploy-inventory]$ ansible testing -i inventory \
+> --list-hosts
+  hosts (1):
+    serverb.lab.example.com
+
+
+#[student@workstation deploy-inventory]$ ansible production -i inventory \
+> --list-hosts
+  hosts (2):
+    serverc.lab.example.com
+    serverd.lab.example.com
+
+
+#[student@workstation deploy-inventory]$ ansible us -i inventory --list-hosts
+  hosts (3):
+    servera.lab.example.com
+    serverb.lab.example.com
+    serverc.lab.example.com

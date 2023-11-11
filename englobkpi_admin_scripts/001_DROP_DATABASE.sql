@@ -1,0 +1,2 @@
+DROP DATABASE IF EXISTS englobkpi;
+DROP ROLE     IF EXISTS englobkpi;

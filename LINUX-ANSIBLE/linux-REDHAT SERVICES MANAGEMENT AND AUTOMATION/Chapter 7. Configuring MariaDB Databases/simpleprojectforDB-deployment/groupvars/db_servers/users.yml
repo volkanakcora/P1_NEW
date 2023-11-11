@@ -1,0 +1,10 @@
+---
+mysql_users:
+  - name: john
+    host: localhost
+    priv: 'inventory.*:INSERT,UPDATE,DELETE,SELECT'
+    state: present
+  - name: steve
+    host: '%'
+    priv: 'inventory.*:SELECT'
+    state: present

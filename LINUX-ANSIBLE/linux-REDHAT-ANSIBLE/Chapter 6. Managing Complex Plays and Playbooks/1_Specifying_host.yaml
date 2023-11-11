@@ -1,0 +1,42 @@
+[[[ EXAMPLES]]]
+
+- hosts: lab
+
+
+- hosts: all
+
+
+- hosts: ungrouped
+
+
+- hosts: '*.example.com'
+
+
+- hosts: '192.168.2.*'
+
+
+
+- hosts: 'datacenter*'
+
+
+- hosts: labhost1.example.com,test2.example.com,192.168.2.2
+
+- hosts: lab,datacenter1
+
+
+
+following host pattern matches machines in the lab group only if they are also in the datacenter1 group:
+
+#[student@controlnode ~]$ cat playbook.yml
+---
+- hosts: lab,&datacenter1
+
+
+
+EXCLUDE:
+
+- hosts: datacenter,!test2.example.com
+
+
+
+ANSIBLE INVENTORY PLAYBOOK.YML PLAYS TASKS 

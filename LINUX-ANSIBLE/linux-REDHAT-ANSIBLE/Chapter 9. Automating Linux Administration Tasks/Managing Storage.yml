@@ -1,0 +1,377 @@
+Managing Storage
+
+Configuring Storage with Ansible Modules:
+
+
+Parameter name                          	Description
+align	                                    Configures partition alignment.
+device	                                  Block device.
+flags	                                    Flags for the partition.
+number	                                  The partition number.
+part_end	                                Partition size from the beginning of the disk specified in parted supported units.
+state	                                    Creates or removes the partition.
+unit	                                    Size units for the partition information.
+
+The following example creates a new partition of 10 GB.
+
+- name: New 10GB partition
+  parted:
+    device: /dev/vdb   1
+    number: 1          2
+    state: present     3
+    part_end: 10GB     4
+1
+
+Uses vdb as the block device to partition.
+
+2
+
+Creates the partition number one.
+
+3
+
+Ensures the partition is available.
+
+4
+
+Sets the partition size to 10 GB.
+
+
+
+
+
+The lvg and lvol Modules:
+
+The lvg and lvol modules support the creation of logical volumes, including the configuration of physical volumes, and volume groups
+
+
+Parameter name	                        Description
+pesize	                                The size of the physical extent. Must be a power of 2, or multiple of 128 KiB.
+pvs	                                    List of comma-separated devices to be configured as physical volumes for the volume group.
+vg	                                    The name of the volume group.
+state	                                  Creates or removes the volume.
+
+
+
+- name: Creates a volume group
+  lvg:
+    vg: vg1           1
+    pvs: /dev/vda1    2
+    pesize: 32        3
+
+1
+
+The volume group name is vg1.
+
+2
+
+Uses /dev/vda1 as the back end physical volume for the volume group.
+
+3
+
+Sets the physical extent size to 32.
+
+
+
+In the following example, if the vg1 volume group is already available with /dev/vdb1 as a physical volume, 
+the volume is enlarged adding a new physical volume with /dev/vdc1.
+
+- name: Resize a volume group
+  lvg:
+    vg: vg1
+    pvs: /dev/vdb1,/dev/vdc1
+
+
+
+
+logical volumes:
+
+The lvol module creates logical volumes, and supports the resizing and shrinking of those volumes, and the filesystems on top of them.
+
+Parameter name	                                                  Description
+lv	                                                              The name of the logical volume.
+resizefs                                                        	Resizes the filesystem with the logical volume.
+shrink                                                          	Enable logical volume shrink.
+size                                                            	The size of the logical volume.
+snapshot                                                        	The name of the snapshot for the logical volume.
+state                                                           	Create or remove the logical volume.
+vg                                                              	The parent volume group for the logical volume.
+
+
+The following task creates a logical volume of 2 GB.
+
+- name: Create a logical volume of 2GB
+  lvol:
+    vg: vg1             1
+    lv: lv1             2
+    size: 2g            3 
+
+
+1
+The parent volume group name is vg1.
+
+2
+
+The logical volume name is lv1.
+
+3
+
+The size of the logical volume is 2 GB.
+
+
+
+The filesystem Module:
+
+The filesystem module supports both creating and resizing a filesystem. This module supports filesystem resizing for ext2, ext3, ext4, ext4dev, f2fs, lvm, xfs, and vfat. The following table lists some of the parameters for the filesystem module.
+
+Parameter name	                          Description
+dev	                                      Block device name.
+fstype	                                  Filesystem type.
+resizefs	                                Grows the filesystem size to the size of the block device.
+
+
+The following example creates a filesystem on a partition.
+
+- name: Create an XFS filesystem
+  filesystem:
+    fstype: xfs         1
+    dev: /dev/vdb1      2
+
+
+1
+
+Uses the XFS filesystem.
+
+2
+
+Uses the /dev/vdb1 device.
+
+
+The mount Module:
+
+The mount module supports the configuration of mount points on /etc/fstab. The following table lists some of the parameters for the mount module.
+
+Parameter name	                                  Description
+fstype	                                          Filesystem type.
+opts	                                            Mount options.
+path	                                            Mount point path.
+src	                                              Device to be mounted.
+state	                                            Specify the mount status. If set to mounted, the system mounts the device, and configures /etc/fstab with that mount information. To unmount the device and remove it from /etc/fstab use absent.
+
+The following example mounts a device with an specific ID.
+
+- name: Mount device with ID
+  mount:
+    path: /data 1
+    src: UUID=a8063676-44dd-409a-b584-68be2c9f5570 2
+    fstype: xfs 3
+    state: present 4
+1
+
+Uses /data as the mount point path.
+
+2
+
+Mounts the device with the a8063676-44dd-409a-b584-68be2c9f5570 ID.
+
+3
+
+Uses the XFS filesystem.
+
+4
+
+Mounts the device and configures /etc/fstab accordingly.
+
+The following example mounts the NFS share available at 172.25.250.100:/share on the /nfsshare directory at the managed host.
+
+- name: Mount NFS share
+  mount:
+    path: /nfsshare
+    src: 172.25.250.100:/share
+    fstype: nfs
+    opts: defaults
+    dump: '0'
+    passno: '0'
+    state: mounted
+
+
+Configuring swap with Modules:
+
+- name: Create new swap VG
+  lvg:
+    vg: vgswap
+    pvs: /dev/vda1
+    state: present
+
+- name: Create new swap LV
+  lvol:
+    vg: vgswap
+    lv: lvswap
+    size: 10g
+
+- name: Format swap LV
+  command: mkswap /dev/vgswap/lvswap
+  when: ansible_swaptotal_mb < 128
+
+- name: Activate swap LV
+  command: swapon /dev/vgswap/lvswap
+  when: ansible_swaptotal_mb < 128
+
+
+
+
+
+
+
+
+
+
+
+
+  [[[[ SCENARIO ]]]]
+
+
+You are responsible for managing a set of web servers. A recommended practice for web server configuration is to store web server data on a separate partition or logical volume.
+
+You will write a playbook to:
+
+Manage partitions of the /dev/vdb device
+
+Manage a volume group named apache-vg for web server data
+
+Create two logical volumes named content-lv and logs-lv, both backed by the apache-vg volume group
+
+Create an XFS file system on both logical volumes
+
+Mount the content-lv logical volume at /var/www
+
+Mount the logs-lv logical volume at /var/log/httpd
+
+
+Review the storage.yml playbook:
+
+---
+- name: Ensure Apache Storage Configuration
+  hosts: webservers
+  vars_files:
+    - storage_vars.yml
+  tasks:
+    - name: Correct partitions exist on /dev/vdb
+      debug:
+        msg: TODO
+      loop: "{{ partitions }}"
+
+    - name: Ensure Volume Groups Exist
+      debug:
+        msg: TODO
+      loop: "{{  volume_groups }}"
+
+    - name: Create each Logical Volume (LV) if needed
+      debug:
+        msg: TODO
+      loop: "{{ logical_volumes }}"
+      when: true
+
+    - name: Ensure XFS Filesystem exists on each LV
+      debug:
+        msg: TODO
+      loop: "{{ logical_volumes }}"
+
+    - name: Ensure the correct capacity for each LV
+      debug:
+        msg: TODO
+      loop: "{{ logical_volumes }}"
+
+    - name: Each Logical Volume is mounted
+      debug:
+        msg: TODO
+      loop: "{{ logical_volumes }}"
+
+
+
+The name of each task acts as an outline of the intended procedure to implement. In later steps, you will update and change these six tasks.
+
+Review the storage_vars.yml variables file.
+
+---
+
+partitions:
+  - number: 1
+    start: 1MiB
+    end: 257MiB
+
+volume_groups:
+  - name: apache-vg
+    devices: /dev/vdb1
+
+logical_volumes:
+  - name: content-lv
+    size: 64M
+    vgroup: apache-vg
+    mount_path: /var/www
+
+  - name: logs-lv
+    size: 128M
+    vgroup: apache-vg
+    mount_path: /var/log/httpd
+
+
+eview the completed storage.yml playbook. Execute the playbook and verify that each logical volume is mounted.
+
+Review the playbook:
+
+---
+- name: Ensure Apache Storage Configuration
+  hosts: webservers
+  vars_files:
+    - storage_vars.yml
+  tasks:
+    - name: Correct partitions exist on /dev/vdb
+      parted:
+        device: /dev/vdb
+        state: present
+        number: "{{ item.number }}"
+        part_start: "{{ item.start }}"
+        part_end: "{{ item.end }}"
+      loop: "{{ partitions }}"
+
+    - name: Ensure Volume Groups Exist
+      lvg:
+        vg: "{{ item.name }}"
+        pvs: "{{ item.devices }}"
+      loop: "{{  volume_groups }}"
+
+    - name: Create each Logical Volume (LV) if needed
+      lvol:
+        vg: "{{ item.vgroup }}"
+        lv: "{{ item.name }}"
+        size: "{{ item.size }}"
+      loop: "{{ logical_volumes }}"
+      when: item.name not in ansible_lvm["lvs"]
+
+    - name: Ensure XFS Filesystem exists on each LV
+      filesystem:
+        dev: "/dev/{{ item.vgroup }}/{{ item.name }}"
+        fstype: xfs
+      loop: "{{ logical_volumes }}"
+
+    - name: Ensure the correct capacity for each LV
+      lvol:
+        vg: "{{ item.vgroup }}"
+        lv: "{{ item.name }}"
+        size: "{{ item.size }}"
+        resizefs: yes
+        force: yes
+      loop: "{{ logical_volumes }}"
+
+    - name: Each Logical Volume is mounted
+      mount:
+        path: "{{ item.mount_path }}"
+        src: "/dev/{{ item.vgroup }}/{{ item.name }}"
+        fstype: xfs
+        opts: noatime
+        state: mounted
+      loop: "{{ logical_volumes }}"
+
+
+

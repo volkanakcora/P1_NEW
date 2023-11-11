@@ -1,0 +1,13 @@
+web ansible_host = server1.com ansible_connection = ssh  ansible_user = root
+db ansible_host = server1.com ansible_connection = winrm  ansible_user = admin
+mail ansible_host = server1.com ansible_connection = ssh  ansible_ssh_pass=****
+web2 ansible_host = server1.com ansible_connection = winrm
+
+ansible_connection - ssh/winrm/localhost
+ansible_port - 22/5986
+ansible_user - root/administration
+ansible_ssh_pass - Password 
+
+ansible all -m ping -i inventory.txt 
+
+ansible-playbook playbook-pingtest.yaml -i inventory.txt 

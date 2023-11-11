@@ -1,0 +1,50 @@
+Objectives
+
+After completing this section, you should be able to create and manage Ansible Playbooks in a Git
+repository, following recommended practices.
+
+Infrastructure as Code:
+
+  One key DevOps concept is the idea of infrastructure as code. Instead of managing your
+  infrastructure manually, you define and build your systems by running your automation code.
+  Red Hat Ansible Automation is a key tool that can help you implement this approach.
+
+  If Ansible projects are the code which is used to define the infrastructure, then a version control
+  system such as Git should be used to track and control changes to the code.
+
+
+
+Structuring Ansible Projects in Git:
+
+  library/  # for custom modules (optional)
+  filter_plugins/   # for custom filter plugins (optional)
+
+  site.yml    # MASTER PLAYBOOK includes other playbooks
+  webservers.yml     # playbook for webserver tier
+  dbservers.yml     # playbook for dbserver tier
+
+
+  roles/ # directory for roles
+    webserver/   # a particular role
+
+      tasks/   # tasks for the role, can include other files
+
+        main.yml
+
+      defaults/   # default low-priority variables for the role
+
+        main.yml 
+
+
+  templates/
+    httpd.conf.j2   # a Jinja2 template used by the role
+
+  files/
+    motd   # a file used by the role
+
+  handlers/
+    main.yml   # handlers used by the role
+
+  meta/
+    main.yml   # role information and dependencies
+  ...additional roles...

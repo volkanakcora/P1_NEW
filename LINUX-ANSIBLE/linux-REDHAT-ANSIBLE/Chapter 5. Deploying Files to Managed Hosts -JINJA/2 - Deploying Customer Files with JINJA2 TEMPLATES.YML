@@ -1,0 +1,202 @@
+Deploying Custom Files with Jinja2 Templates:
+
+
+Templating Files
+Red Hat Ansible Automation Platform has a number of modules that can be used to modify existing files. These include lineinfile and blockinfile, 
+among others. However, they are not always easy to use effectively and correctly.
+
+
+
+Introduction to Jinja2:
+
+Using Delimiters
+
+
+Variables and logic expressions are placed between tags, or delimiters. For example, Jinja2 templates use {% EXPR %} for expressions or logic 
+(for example, loops), while {{ EXPR }} are used for outputting the results of an expression or a variable to the end user. 
+
+
+In the following example, the first line includes a comment that will not be included in the final file. The variable references in the second 
+line are replaced with the values of the system facts being referenced.
+
+{{ ansible_facts['default_ipv4']['address'] }}    {{ ansible_facts['hostname'] }}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1Building a Jinja2 template:
+
+A Jinja2 template is composed of multiple elements: data, variables, and expressions. 
+
+
+The following example shows how to create a template for /etc/ssh/sshd_config with variables and facts retrieved by Ansible from managed hosts.
+
+# {{ ansible_managed }}
+# DO NOT MAKE LOCAL MODIFICATIONS TO THIS FILE AS THEY WILL BE LOST
+
+Port {{ ssh_port }}
+ListenAddress {{ ansible_facts['default_ipv4']['address'] }}
+
+HostKey /etc/ssh/ssh_host_rsa_key
+HostKey /etc/ssh/ssh_host_ecdsa_key
+HostKey /etc/ssh/ssh_host_ed25519_key
+
+SyslogFacility AUTHPRIV
+
+PermitRootLogin {{ root_allowed }}
+AllowGroups {{ groups_allowed }}
+
+AuthorizedKeysFile /etc/.rht_authorized_keys .ssh/authorized_keys
+
+PasswordAuthentication {{ passwords_allowed }}
+
+ChallengeResponseAuthentication no
+
+GSSAPIAuthentication yes
+GSSAPICleanupCredentials no
+
+UsePAM yes
+
+X11Forwarding yes
+UsePrivilegeSeparation sandbox
+
+AcceptEnv LANG LC_CTYPE LC_NUMERIC LC_TIME LC_COLLATE LC_MONETARY LC_MESSAGES
+AcceptEnv LC_PAPER LC_NAME LC_ADDRESS LC_TELEPHONE LC_MEASUREMENT
+AcceptEnv LC_IDENTIFICATION LC_ALL LANGUAGE
+AcceptEnv XMODIFIERS
+
+Subsystem sftp	/usr/libexec/openssh/sftp-server
+
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1Deploying Jinja2 Templates:
+
+Jinja2 templates are a powerful tool to customize configuration files to be deployed on the managed hosts
+
+To use the template module, use the following syntax. The value associated with the src key specifies 
+the source Jinja2 template, and the value associated with the dest key specifies the file to be created on the destination hosts.
+
+tasks:
+  - name: template render
+    template:
+      src: /tmp/j2-template.j2
+      dest: /tmp/dest-config-file.txt
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1Managing Templated Files:
+
+To avoid having system administrators modify files deployed by Ansible, it is a good practice to include a comment at the top of the template to 
+indicate that the file should not be manually edited.
+
+One way to do this is to use the "Ansible managed" string set in the ansible_managed directive. This is not a normal variable but can 
+be used as one in a template. The ansible_managed directive is set in the ansible.cfg file:
+
+ansible_managed = Ansible managed
+
+
+To include the ansible_managed string inside a Jinja2 template, use the following syntax:
+
+{{ ansible_managed }}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1 Control Structures:
+
+Using Loops:
+
+{% for user in users %}
+      {{ user }}
+{% endfor %}
+
+
+
+The following example template uses a for statement to run through all the values in the users variable, 
+replacing myuser with each value, except when the value is root:
+
+{% for myuser in users if not myuser == "root" %}
+User number {{ loop.index }} - {{ myuser }}
+{% endfor %}
+
+
+
+
+As another example, this template also uses a for statement, and assumes a myhosts variable has been defined in the inventory file being used:
+
+{% for myhost in groups['myhosts'] %}
+{{ myhost }}
+{% endfor %}
+
+For a more practical example, you can use this to generate an /etc/hosts file from host facts dynamically. Assume that you have the following playbook:
+
+- name: /etc/hosts is up to date
+  hosts: all
+  gather_facts: yes
+  tasks:
+    - name: Deploy /etc/hosts
+      template:
+        src: templates/hosts.j2
+        dest: /etc/hosts
+
+I can confirm it is a new bug introduced by latest release 3.2.27. I was able to reproduce it locally. We hoped for the latent fault, but in version 3.1.15 the same activation ended up fine.
+The bug is in order validator which was rewritten as part of technical debt removal
+The following three-line templates/hosts.j2 template constructs the file from all hosts in the group all:
+
+{% for host in groups['all'] %}
+{{ hostvars[host]['ansible_facts']['default_ipv4']['address'] }} {{ hostvars[host]['ansible_facts']['fqdn'] }} 
+{{ hostvars[host]['ansible_facts']['hostname'] }}
+{% endfor %}
+
+
+Using Conditionals:
+
+{% if finished %}
+{{ result }}
+{% endif %}
+
+Variable Filters:
+
+Jinja2 provides filters which change the output format for template expressions (for example, to JSON):
+
+
+{{ output | to_json }}
+{{ output | to_yaml }}
+
+Additional filters are available, such as the to_nice_json and to_nice_yaml filters, which format the expression output in either JSON or YAML human readable format.
+
+{{ output | to_nice_json }}
+{{ output | to_nice_yaml }}
+
+Both the from_json and from_yaml filters expect strings in either JSON or YAML format, respectively, to parse them.
+
+{{ output | from_json }}
+{{ output | from_yaml }}
+
+
+
+
+
+[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[ example ]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+motd.j2:
+
+This is the system {{ ansible_facts['fqdn'] }}.
+This is a {{ ansible_facts['distribution'] }} version {{ ansible_facts['distribution_version'] }} system.
+Only use this system with permission.
+Please report issues to {{ system_owner }}.
+
+
+motd.yaml:
+
+
+---
+- name: configure SOE
+  hosts: all
+  remote_user: devops
+  become: true
+  vars:
+    - system_owner: clyde@example.com
+  tasks:
+    - name: configure /etc/motd
+      template:
+        src: motd.j2
+        dest: /etc/motd
+        owner: root
+        group: root
+        mode: 0644

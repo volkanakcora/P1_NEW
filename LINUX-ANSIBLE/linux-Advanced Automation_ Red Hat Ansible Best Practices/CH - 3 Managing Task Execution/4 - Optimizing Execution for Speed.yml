@@ -1,0 +1,85 @@
+you should be able to optimize your playbook to run more efficiently,
+and use callback plug-ins to profile and analyze which tasks consume the most time.
+
+
+Optimizing the Infrastructure:
+
+Disabling Fact Gathering: Each play has a hidden task which runs first, using the setup module to collect facts from each host.  
+
+```""gather_facts: False""```
+
+
+Increasing Parallelism:  When Ansible is running a play, it will run the first task on every host in the current batch, then run
+the second task on every host in the current batch, and so on until the play completes. The forks
+parameter controls how many connections Ansible can have active at the same time. By default,
+this is set to 5, which means that even if there are 100 hosts to process on the current task, Ansible
+will communicate with them in groups of five.
+
+
+By increasing the forks value, Ansible runs each task simultaneously on more hosts at a time,
+and the playbook usually completes in less time. For example, if you set forks to 100, Ansible
+can attempt to open connections to all 100
+
+
+The following example shows the forks parameter set to 100 under the [defaults] section of the ansible.cfg configuration file: 
+
+[user@demo ~]$ cat ansible.cfg
+[defaults]
+inventory=inventory
+remote_user=devops
+forks=100
+
+or by passing a -f option to ansible-playbook.  
+!!!!! Try first with a conservative value, 20 or 50 for
+example, and increase that number step by step, each time monitoring the system.
+
+
+Avoiding Loops with the Package Manager Modules:
+
+Some modules accept a list of items to work on and do not require the use of a loop. This approach
+can increase efficiency, since the module will be called once rather than multiple times.
+
+best practice:
+
+---
+- name: Install the packages on the web servers
+  hosts: web_servers
+  become: True
+  gather_facts: False
+  tasks:
+    - name: Ensure the packages are installed
+      yum:
+      name:
+        - httpd
+        - mod_ssl
+        - httpd-tools
+        - mariadb-server
+        - mariadb
+        - php
+        - php-mysqlnd
+      state: present
+
+bad practice:
+tasks:
+- name: Ensure the packages are installed
+  yum:
+    name: "{{ item }}"
+    state: present
+  loop:
+  - httpd
+  - mod_ssl
+  - httpd-tools
+  - mariadb-server
+  - mariadb
+  - php
+  - php-mysqlnd
+
+
+
+Profiling Playbook Execution with Callback plug-ins:
+
+[user@demo ~]$ cat ansible.cfg
+[defaults]
+inventory=inventory
+remote_user=devops
+callback_whitelist=timer, profile_tasks, cgroup_perf_recap

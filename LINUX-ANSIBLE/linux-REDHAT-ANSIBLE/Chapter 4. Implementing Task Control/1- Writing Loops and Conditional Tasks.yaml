@@ -1,0 +1,272 @@
+Task Iteration with Loops:
+
+Consider the following snippet that uses the service module twice in order to ensure two network services are running:
+
+- name: Postfix is running
+  service:
+    name: postfix
+    state: started
+
+- name: Dovecot is running
+  service:
+    name: dovecot
+    state: started
+
+
+
+----- THAT CAN BE --->
+
+These two tasks can be rewritten to use a simple loop so that only one task is needed to ensure both services are running:
+
+- name: Postfix and Dovecot are running
+  service:
+    name: "{{ item }}"
+    state: started
+  loop:
+    - postfix
+    - dovecot
+
+
+
+
+The list used by loop can be provided by a variable. In the following example, the variable mail_services contains the list of services that need to be running:
+
+
+vars:
+  mail_services:
+    - postfix
+    - dovecot
+
+tasks:
+  - name: Postfix and Dovecot are running
+    service:
+      name: "{{ item }}"
+      state: started
+    loop: "{{ mail_services }}"
+
+
+
+
+Loops over a List of Hashes or Dictionaries:
+
+- name: Users exist and are in the correct groups
+  user:
+    name: "{{ item.name }}"
+    state: present
+    groups: "{{ item.groups }}"
+  loop:
+    - name: jane
+      groups: wheel
+    - name: joe
+      groups: root
+
+!! example !!!
+
+---
+- name: MariaDB server is running
+  hosts: database_dev
+  vars:
+    mariadb_packages:
+      - mariadb-server
+      - python3-PyMySQL
+
+  tasks:
+    - name: MariaDB packages are installed
+      yum:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ mariadb_packages }}"
+
+    - name: Start MariaDB service
+      service:
+        name: mariadb
+        state: started
+        enabled: true
+
+
+
+using register variables with loops:
+
+#[student@workstation loopdemo]$ cat loop_register.yml
+---
+- name: Loop Register Test
+  gather_facts: no
+  hosts: localhost
+  tasks:
+    - name: Looping Echo Task
+      shell: "echo This is my item: {{ item }}"
+      loop:
+        - one
+        - two
+      register: echo_results1
+
+    - name: Show echo_results variable
+      debug:
+        var: echo_results2
+
+
+
+
+
+
+In the above, the results key contains a list. Below, the playbook is modified such that the second task iterates over this list:
+
+[student@workstation loopdemo]$ cat new_loop_register.yml
+---
+- name: Loop Register Test
+  gather_facts: no
+  hosts: localhost
+  tasks:
+    - name: Looping Echo Task
+      shell: "echo This is my item: {{ item }}"
+      loop:
+        - one
+        - two
+      register: echo_results
+
+    - name: Show stdout from the previous task.
+      debug:
+        msg: "STDOUT from previous task: {{ item.stdout }}"
+      loop: "{{ echo_results['results'] }}"
+
+
+
+
+
+
+
+
+
+[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[ Running Tasks Conditionally:   ]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+run only if run_my_task is true:
+
+---
+- name: Simple Boolean Task Demo
+  hosts: all
+  vars:
+    run_my_task: true
+
+  tasks:
+    - name: httpd package is installed
+      yum:
+        name: httpd
+      when: run_my_task
+
+
+
+The next example is a bit more sophisticated, and tests whether the my_service variable has a value. If it does, 
+the value of my_service is used as the name of the package to install. If the my_service variable is not defined, 
+then the task is skipped without an error:
+
+---
+- name: Test Variable is Defined Demo
+  hosts: all
+  vars:
+    my_service: httpd
+
+  tasks:
+    - name: "{{ my_service }} package is installed"
+      yum:
+        name: "{{ my_service }}"
+      when: my_service is defined
+
+
+
+If the value of ansible_distribution is in the supported_distros list, the conditional passes and the task runs:
+
+---
+- name: Demonstrate the "in" keyword
+  hosts: all
+  gather_facts: yes
+  vars:
+    supported_distros:
+      - RedHat
+      - Fedora
+  tasks:
+    - name: Install httpd using yum, where supported
+      yum:
+        name: http
+        state: present
+      when: ansible_distribution in supported_distros
+
+---
+
+- name: MariaDB server is running
+  hosts: database_prod
+  vars:
+...output omitted...
+  tasks:
+    - name: MariaDB packages are installed
+      yum:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ mariadb_packages }}"
+      when: ansible_distribution == "RedHat"
+
+
+!! when statement is not a module variable, it must be placed outside the module by being indented at the top level of the task.
+
+
+
+[[[[[[[[[[[[[[[[[[[[[[[[[[[[[            Testing Multiple Conditions:  ]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+
+when: ansible_distribution == "RedHat" or ansible_distribution == "Fedora"
+
+
+The when keyword also supports using a list to describe a list of conditions:
+
+when:
+  - ansible_distribution_version == "7.5"
+  - ansible_kernel == "3.10.0-327.el7.x86_64"
+
+
+
+For example, the following conditional statement is met if the machine is running either Red Hat Enterprise Linux 7 or Fedora 28. 
+This example uses the greater-than character (>) so that the long conditional can be split over multiple lines in the playbook, 
+to make it easier to read:
+
+when: >
+    ( ansible_distribution == "RedHat" and
+      ansible_distribution_major_version == "7" )
+    or
+    ( ansible_distribution == "Fedora" and
+    ansible_distribution_major_version == "28" )
+
+
+
+
+[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[      Combining Loops and Conditional Tasks: ]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+
+The loop iterates over each dictionary in the list, and the conditional statement is not met unless a dictionary is found representing 
+a mounted file system where both conditions are true:
+
+
+- name: install mariadb-server if enough space on root
+  yum:
+    name: mariadb-server
+    state: latest
+  loop: "{{ ansible_mounts }}"
+  when: item.mount == "/" and item.size_available > 300000000
+
+
+
+
+Here is another example that combines conditionals and register variables. The following annotated playbook restarts the httpd service only if the postfix service is running:
+
+---
+- name: Restart HTTPD if Postfix is Running
+  hosts: all
+  tasks:
+    - name: Get Postfix server status
+      command: /usr/bin/systemctl is-active postfix 
+      ignore_errors: yes
+      register: result
+
+    - name: Restart Apache HTTPD based on Postfix status
+      service:
+        name: httpd
+        state: restarted
+      when: result.rc == 0

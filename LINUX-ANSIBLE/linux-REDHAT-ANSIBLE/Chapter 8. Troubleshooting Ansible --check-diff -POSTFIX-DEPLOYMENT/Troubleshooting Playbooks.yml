@@ -1,0 +1,52 @@
+Troubleshooting Playbooks
+
+Log Files for Ansible:
+By default, Ansible is not configured to log its output to any log file. It provides a built-in logging infrastructure that can be 
+configured through the log_path parameter in the default section of the ansible.cfg configuration file, or through the $ANSIBLE_LOG_PATH 
+environment variable. If any or both are configured, Ansible stores output from both the ansible and ansible-playbook commands in the 
+log file configured, either through the ansible.cfg configuration file or the $ANSIBLE_LOG_PATH environment variable.
+
+
+The Debug Module:
+The debug module provides insight into what is happening in the play. This module can display the value for a certain variable at a certain point in the play.
+
+The following examples use the msg and var settings inside of debug tasks. The first example displays the value at run time of the ansible_facts['memfree_mb'] fact as part of a message printed to the output of ansible-playbook. 
+The second example displays the value of the output variable.
+
+
+- name: Display free memory
+  debug:
+    msg: "Free memory for this system is {{ ansible_facts['memfree_mb'] }}"
+- name: Display the "output" variable
+  debug:
+    var: output
+    verbosity: 2
+
+
+
+Managing Errors:
+Earlier in this course, you learned about the --syntax-check option, which checks the YAML syntax for the playbook. It is a good practice to run a syntax check on your playbook before using it or if you are having problems with it.
+
+#[student@demo ~]$ ansible-playbook play.yml --syntax-check
+
+
+You can also use the --step option to step through a playbook one task at a time. The ansible-playbook --step command interactively prompts for confirmation that you want each task to run.
+
+#[student@demo ~]$ ansible-playbook play.yml --step
+
+
+The --start-at-task option allows you to start execution of a playbook from a specific task. It takes as an argument the name of the task at which to start.
+
+#[student@demo ~]$ ansible-playbook play.yml --start-at-task="start httpd service"
+
+
+./db_archive.sh xbintepha1 25106 xbsyt1cor xbsyt1cor uapp01xbsyt1cor '12tg?}[_-z' cor &> ${log_file}
+./db_archive.sh xbintepha1 25206 xbsyt1cmi xbsyt1cmi uapp01xbsyt1cmi 'f34nv}[_-Y' cmi &>> ${log_file}
+./db_archive.sh xbintepha1 25206 xbsyt1spm xbsyt1spm uapp01xbsyt1spm 'J)56?qO_-q' spm &>> ${log_file}
+
+
+#./db_archive.sh xbintepdb1.deutsche-boerse.de 25106 xbsyt1cor xbsyt1cor uapp01xbsyt1cor '12tg?}[_-z' cor &> ${log_file}
+#./db_archive.sh xbintepdb1.deutsche-boerse.de 25206 xbsyt1cmi xbsyt1cmi uapp01xbsyt1cmi 'f34nv}[_-Y' cmi &>> ${log_file}
+#./db_archive.sh xbintepdb1.deutsche-boerse.de 25206 xbsyt1spm xbsyt1spm uapp01xbsyt1spm 'J)56?qO_-q' spm &>> ${log_file}
+[root@xbintepmi1 xbid-syt1-db-archiver1]# 
+

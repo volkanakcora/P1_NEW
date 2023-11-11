@@ -1,0 +1,251 @@
+Some of the facts gathered for a managed host might include:
+
+- The host name
+
+- The kernel version
+
+- The network interfaces
+
+- The IP addresses
+
+- The version of the operating system
+
+- Various environment variables
+
+- The number of CPUs
+
+- The available or free memory
+
+- The available disk space
+
+
+Facts are a convenient way to retrieve the state of a managed host and to determine what action to take based on that state. For example:
+
+- A server can be restarted by a conditional task which is run based on a fact containing the managed host's current kernel version.
+
+- The MySQL configuration file can be customized depending on the available memory reported by a fact.
+
+- The IPv4 address used in a configuration file can be set based on the value of a fact.
+
+
+
+
+Short host name	                            ansible_facts['hostname']
+Fully qualified domain name	                ansible_facts['fqdn']
+Main IPv4 address (based on routing)	      ansible_facts['default_ipv4']['address']
+List of the names of all network interfaces	ansible_facts['interfaces']
+Size of the /dev/vda1 disk partition	      ansible_facts['devices']['vda']['partitions']['vda1']['size']
+List of DNS servers	                        ansible_facts['dns']['nameservers']
+Version of the currently running kernel	    ansible_facts['kernel']
+
+
+EXAMPLE:
+
+---
+- hosts: all
+  tasks:
+  - name: Prints various Ansible facts
+    debug:
+      msg: >
+        The default IPv4 address of {{ ansible_facts.fqdn }}
+        is {{ ansible_facts.default_ipv4.address }}
+
+
+The following output shows how Ansible was able to query the managed node and dynamically use the system information to update the variable. 
+Facts can also be used to create dynamic groups of hosts that match particular criteria.
+
+
+#[user@demo ~]$ ansible-playbook playbook.yml
+PLAY ***********************************************************************
+
+TASK [Gathering Facts] *****************************************************
+ok: [demo1.example.com]
+
+TASK [Prints various Ansible facts] ****************************************
+ok: [demo1.example.com] => {
+    "msg": "The default IPv4 address of demo1.example.com is
+            172.25.250.10"
+}
+
+PLAY RECAP *****************************************************************
+demo1.example.com    : ok=2    changed=0    unreachable=0    failed=0
+
+
+
+
+
+Ansible Facts Injected as Variables:
+
+#[user@demo ~]$ ansible demo1.example.com -m setup
+
+demo1.example.com | SUCCESS => {
+    "ansible_facts": {
+        "ansible_all_ipv4_addresses": [
+            "172.25.250.10"
+        ],
+        "ansible_all_ipv6_addresses": [
+            "fe80::5054:ff:fe00:fa0a"
+        ],
+        "ansible_apparmor": {
+            "status": "disabled"
+        },
+        "ansible_architecture": "x86_64",
+        "ansible_bios_date": "01/01/2011",
+        "ansible_bios_version": "0.5.1",
+        "ansible_cmdline": {
+            "BOOT_IMAGE": "/boot/vmlinuz-3.10.0-327.el7.x86_64",
+            LANG: "en_US.UTF-8",
+            "console": "ttyS0,115200n8",
+            "crashkernel": "auto",
+            "net.ifnames": "0",
+            "no_timer_check": true,
+            "ro": true,
+            "root": "UUID=2460ab6e-e869-4011-acae-31b2e8c05a3b"
+}
+
+
+
+!! !Turning !Off !Fact !Gathering:
+
+To disable fact gathering for a play, set the gather_facts keyword to no:
+
+""---
+ -name: This play gathers no facts automatically
+  hosts: large_farm
+  gather_facts: no
+Even if gather_facts: no is set for a play, you can manually gather facts at any time by running a task that uses the setup module:
+
+  tasks:
+    - name: Manually gather facts
+      !setup:
+...output omitted...
+""
+
+
+
+
+
+Creating Custom Facts:
+
+This is an example of a static custom facts file written in INI format. An INI-formatted custom facts file contains a 
+top level defined by a section, followed by the key-value pairs of the facts to define:
+
+[packages]
+web_package = httpd
+db_package = mariadb-server
+
+[users]
+user1 = joe
+user2 = jane
+
+Facts are produced by a file saved as /etc/ansible/facts.d/custom.fact on the managed host. In that case, 
+the value of ansible_facts['ansible_local']['custom']['users']['user1'] is joe.
+
+You can inspect the structure of your custom facts by running the setup module on the managed hosts with an ad hoc command:
+
+#[user@demo ~]$ ansible demo1.example.com -m setup
+demo1.example.com | SUCCESS => {
+    "ansible_facts": {
+...output omitted...
+        "ansible_local": {
+            "custom": {
+                "packages": {
+                    "db_package": "mariadb-server",
+
+
+                
+
+ALSO: 
+
+Custom facts can be used the same way as default facts in playbooks:
+
+#[user@demo ~]$ cat playbook.yml
+---
+- hosts: all
+  tasks:
+  - name: Prints various Ansible facts
+    debug:
+      msg: >
+           The package to install on {{ ansible_facts['fqdn'] }}
+           is {{ ansible_facts['ansible_local']['custom']['packages']['web_package'] }}
+
+
+ansible_default_ipv4": {
+            "address": "10.139.20.254"
+
+[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[ Using Magic Variables ]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+Four of the most useful are:
+
+!hostvars:
+Contains the variables for managed hosts, and can be used to get the values for another managed host's variables. It does not include the 
+managed host's facts if they have not yet been gathered for that host.
+
+!group_names:
+Lists all groups the current managed host is in.
+
+!groups:
+Lists all groups and hosts in the inventory.
+
+!inventory_hostname:
+Contains the host name for the current managed host as configured in the inventory. This may be different from the host name reported by facts for various reasons.
+
+
+#[user@demo ~]$ ansible localhost -m debug -a 'var=hostvars["localhost"]'
+
+[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[  exercise ]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+Basically we would like to define vars for specific servers, so follow those steps:
+
+
+
+!-> Check current vars of the servers:  # [student@workstation data-facts]$ ansible webserver -m setup
+
+
+
+
+!->  Create your custom facts to be deployed: /home/student/data-facts/custom.fact. The fact file defines the package to install and the 
+service to start on servera. The file should read as follows:
+
+[general]
+package = httpd
+service = httpd
+state = started
+enabled = true
+
+
+!-> Prepare playbook to deploy them into the respective location:
+
+Create the setup_facts.yml playbook to make the /etc/ansible/facts.d remote directory and to save the custom.fact file to that directory.
+
+---
+- name: Install remote facts
+  hosts: webserver
+  vars:
+    remote_dir: /etc/ansible/facts.d
+    facts_file: custom.fact
+  tasks:
+    - name: Create the remote directory
+      file:
+        state: directory
+        recurse: yes
+        path: "{{ remote_dir }}"
+    - name: Install the new facts
+      copy:
+        src: "{{ facts_file }}"
+        dest: "{{ remote_dir }}"
+
+
+!-> deploy your playbook so facts will be recognized by ansible
+
+#[student@workstation data-facts]$ ansible-playbook setup_facts.yml
+
+
+
+!-> then you can use those variables in our playbook such: 
+
+ name: Start the service
+      service:
+        name: "{{ ansible_facts['ansible_local']['custom']['general']['service'] }}"
+        state: "{{ ansible_facts['ansible_local']['custom']['general']['state'] }}"
+        enabled: "{{ ansible_facts['ansible_local']['custom']['general']['enabled'] }}"

@@ -1,0 +1,35 @@
+englobmon1 ansible_host=englobmon1 ansible_connection= ssh ansible_user=globmon
+
+
+
+
+
+
+
+
+
+
+
+[Load_balancer]
+LOAD_BALANCER_IP1 ansible_host=10.103.128.23 ansible_connection=ssh    
+LOAD_BALANCER_IP2 ansible_host=10.103.129.23 ansible_connection=ssh    ####ansible_user=administrator ansible_password=Win$Pass
+LOAD_BALANCER_SPM_IP1 ansible_host=10.136.146.28 ansible_connection=ssh
+LOAD_BALANCER_SPM_IP2 ansible_host=10.136.18.28 ansible_connection=ssh
+LOAD_BALANCER_CMI_IP1 ansible_host=10.136.146.27 ansible_connection=ssh
+LOAD_BALANCER_CMI_IP2 ansible_host=10.136.18.27  ansible_connection=ssh
+LOAD_BALANCER_REP_IP1 ansible_host=10.136.146.25 ansible_connection=ssh
+LOAD_BALANCER_REP_IP2 ansible_host=10.136.18.25 ansible_connection=ssh
+
+[Apache]
+
+
+APACHE_SOB_PORT ansible_port=60100  
+APACHE_CMI_PORT ansible_port=443 
+APACHE_CMM_PORT ansible_port=60101 
+APACHE_SPM_PORT ansible_port=443
+APACHE_CTP_PORT ansible_port=60104 
+APACHE_REP_PORT ansible_port=60105
+
+
+
+

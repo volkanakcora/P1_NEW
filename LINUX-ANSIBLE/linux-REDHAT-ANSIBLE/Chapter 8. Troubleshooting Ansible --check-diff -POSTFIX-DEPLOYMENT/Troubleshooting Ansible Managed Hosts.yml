@@ -1,0 +1,141 @@
+Using Check Mode as a Testing Tool:
+
+
+You can use the ansible-playbook --check command to run smoke tests on a playbook.
+
+#[student@demo ~]$ ansible-playbook --check playbook.yml
+
+
+The following task is always run in check mode, and does not make changes.
+
+  tasks:
+    - name: task always in check mode
+      shell: uname -a
+      check_mode: yes
+
+
+The following task is always run normally, even when started with ansible-playbook --check.
+
+  tasks:
+    - name: task always runs even in check mode
+      shell: uname -a
+      check_mode: no
+
+
+
+The ansible-playbook command also provides a --diff option. This option reports the changes made to the template files on managed hosts. 
+If used with the --check option, those changes are displayed in the command's output but not actually made:
+
+#[student@demo ~]$ ansible-playbook --check --diff playbook.yml
+
+
+
+
+
+Testing with Modules
+
+The uri module provides a way to check that a RESTful API is returning the required content:
+
+  tasks:
+    - uri:
+        url: http://api.myapp.com
+        return_content: yes
+      register: apiresponse
+
+    - fail:
+        msg: 'version was not provided'
+      when: "'version' not in apiresponse.content"
+
+
+
+The script module supports executing a script on managed hosts, and fails if the return code for that script is nonzero. 
+The script must exist on the control node and is transferred to and executed on the managed hosts:
+
+  tasks:
+    - script: check_free_memory
+
+
+
+The stat module gathers facts for a file much like the stat command. You can use it to register a variable and then test to determine i
+f the file exists or to get other information about the file. If the file does not exist, the stat task will not fail, but its 
+registered variable will report false for *.stat.exists.
+
+In this example, an application is still running if /var/run/app.lock exists, in which case the play should abort:
+
+  tasks:
+    - name: Check if /var/run/app.lock exists
+      stat:
+        path: /var/run/app.lock
+      register: lock
+
+    - name: Fail if the application is running
+      fail:
+      when: lock.stat.exists
+
+
+
+
+The assert module is an alternative to the fail module. The assert module supports a that option that takes a list of conditionals.
+If any of those conditionals are false, the task fails. You can use the success_msg and fail_msg options to customize the message 
+it prints if it reports success or failure.
+
+The following example repeats the preceding one, but uses assert instead of fail:
+
+  tasks:
+    - name: Check if /var/run/app.lock exists
+      stat:
+        path: /var/run/app.lock
+      register: lock
+
+    - name: Fail if the application is running
+      assert:
+        that:
+          - not lock.stat.exists
+
+
+
+
+
+
+
+
+Testing Managed Hosts Using Ad Hoc Commands:
+
+#[student@demo ~]$ ansible demohost -m ping
+demohost | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/libexec/platform-python"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+
+
+
+#[student@demo ~]$ ansible demohost -m ping --become
+demohost | FAILED! => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/libexec/platform-python"
+    },
+    "changed": false,
+    "module_stderr": "sudo: a password is required\n",
+    "module_stdout": "",
+    "msg": "MODULE FAILURE\nSee stdout/stderr for the exact error",
+    "rc": 1
+}
+
+
+This example returns the currently available space on the disks configured in the demohost managed host. That can be useful to confirm that the file system on the managed host is not full.
+
+#[student@demo ~]$ ansible demohost -m command -a 'df'
+
+
+This example returns the currently available free memory on the demohost managed host.
+
+#[student@demo ~]$ ansible demohost -m command -a 'free -m'
+
+
+
+
+
+

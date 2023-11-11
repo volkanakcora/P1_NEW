@@ -1,0 +1,219 @@
+Running Ad Hoc Commands with Ansible:
+
+An ad hoc command is a way of executing a single Ansible task quickly, one that you do not need to 
+save to run again later. They are simple, online operations that can be run without writing a playbook.
+
+
+Ad hoc commands are useful for quick tests and changes. For example, you can use an ad hoc command to 
+make sure that a certain line exists in the '/etc/hosts' file on a group of servers.
+
+
+Running Ad Hoc Commands:
+
+Use the ansible command to run ad hoc commands:
+
+#ansible host-pattern -m module [-a 'module arguments'] [-i inventory]
+
+!! The -m option takes as an argument the name of the module that Ansible should run on the targeted hosts.
+
+
+..........................
+
+One of the simplest ad hoc commands uses the ping module. This module does not do an ICMP ping, but checks to see if you can run 
+Python-based modules on managed hosts. For example, the following ad hoc command determines whether all managed hosts in the inventory 
+can run standard modules:
+
+
+#[user@controlnode ~]$ ansible all -m ping
+servera.lab.example.com | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/libexec/platform-python"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+
+.............................
+
+Performing Tasks with Modules Using Ad Hoc Commands:
+
+
+Modules are the tools that ad hoc commands use to accomplish tasks. Ansible provides hundreds of modules which do different 
+things. You can usually find a tested, special-purpose module that does what you need as part of the standard installation.
+
+
+The ansible-doc -l command lists all modules installed on a system. You can use ansible-doc to view the documentation of particular modules by name
+
+For example, the following command displays documentation for the ping module:
+
+#[user@controlnode ~]$ ansible-doc ping
+> PING    (/usr/lib/python3.6/site-packages/ansible/modules/system/ping.py)
+
+
+..................................
+Ansible Modules:
+
+
+Files modules	
+
+copy: Copy a local file to the managed host
+
+file: Set permissions and other properties of files
+
+lineinfile: Ensure a particular line is or is not in a file
+
+synchronize: Synchronize content using rsync
+
+
+
+Software package modules	
+
+package: Manage packages using autodetected package manager native to the operating system
+
+yum: Manage packages using the YUM package manager
+
+apt: Manage packages using the APT package manager
+
+dnf: Manage packages using the DNF package manager
+
+gem: Manage Ruby gems
+
+pip: Manage Python packages from PyPI
+
+
+
+System modules	
+
+firewalld: Manage arbitrary ports and services using firewalld
+
+reboot: Reboot a machine
+
+service: Manage services
+
+user: Add, remove, and manage user accounts
+
+
+Net Tools modules	
+
+get_url: Download files over HTTP, HTTPS, or FTP
+
+nmcli: Manage networking
+
+uri: Interact with web services
+
+
+
+Most modules take arguments. You can find the list of arguments available for a module in the module's documentation
+
+- Ad hoc commands pass arguments to modules using the -a option. 
+
+For example, the following ad hoc command uses the user module to ensure that the newbie user exists and has UID 4000 on servera.lab.example.com:
+
+#[user@controlnode ~]$ ansible -m user -a 'name=newbie uid=4000 state=present' \
+> servera.lab.example.com
+
+
+
+Most modules are idempotent, which means that they can be run safely multiple times, and if the system is already in the correct state, they do nothing. For example, if you run the previous ad hoc command again, it should report no change:
+
+#[user@controlnode ~]$ ansible -m user -a 'name=newbie uid=4000 state=present'  servera.lab.example.com
+servera.lab.example.com | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/libexec/platform-python"
+    },
+    "append": false,
+    "changed": false
+    "comment": "",
+    "group": 4000,
+    "home": "/home/newbie",
+    "move_home": false,
+    "name": "newbie",
+    "shell": "/bin/bash",
+    "state": "present",
+    "uid": 4000
+}
+
+
+Running Arbitrary Commands on Managed Hosts:
+
+The command module allows administrators to run arbitrary commands on the command line of managed hosts
+
+#[user@controlnode ~]$ ansible mymanagedhosts -m command -a /usr/bin/hostname
+host1.lab.example.com | CHANGED | rc=0 >>
+host1.lab.example.com
+host2.lab.example.com | CHANGED | rc=0 >>
+host2.lab.example.com
+
+Use the -o option to display the output of Ansible ad hoc commands in a single line format.
+
+#[user@controlnode ~]$ ansible mymanagedhosts -m command -a /usr/bin/hostname -o
+
+host1.lab.example.com | CHANGED | rc=0 >> (stdout) host1.lab.example.com
+host2.lab.example.com | CHANGED | rc=0 >> (stdout) host2.lab.example.com
+
+
+!! use shell option to have env available:
+
+#[user@controlnode ~]$ ansible localhost -m command -a set
+localhost | FAILED | rc=2 >>
+[Errno 2] No such file or directory
+
+#[user@controlnode ~]$ ansible localhost -m shell -a set
+localhost | CHANGED | rc=0 >>
+BASH=/bin/sh
+BASHOPTS=cmdhist:extquote:force_fignore:hostcomplete:interact
+ive_comments:progcomp:promptvars:sourcepath
+BASH_ALIASES=()
+...output omitted...
+
+
+
+......................................
+
+Configuring Connections for Ad Hoc Commands:
+
+The directives for managed host connections and privilege escalation can be configured in the Ansible configuration file, 
+and they can also be defined using options in ad hoc commands
+
+
+
+Ansible Command-line Options
+
+Configuration file directives	  Command-line option
+inventory	                      -i
+remote_user	                    -u
+become	                        --become, -b
+become_method	                  --become-method
+become_user	                    --become-user
+become_ask_pass	                --ask-become-pass, -K
+
+
+
+............................................................. EXERCISE ..............................................
+
+HOW TO EXECUTE SOME COMMAND LOCALLY: 
+
+#[student@workstation deploy-adhoc]$ ansible localhost -m command -a 'id'
+localhost | CHANGED | rc=0 >>
+
+
+Execute the previous ad hoc command on workstation but connect and perform the operation with the devops user account by using the -u option:
+
+#[student@workstation deploy-adhoc]$ ansible localhost -m command -a 'id' -u devops
+
+Using the copy module, execute an ad hoc command on workstation to change the contents of the /etc/motd file, IT WILL FAIL BC OF USER PRIV:
+
+
+#[student@workstation deploy-adhoc]$ ansible localhost -m copy  -a 'content="Managed by Ansible\n" dest=/etc/motd' -u devops
+localhost | FAILED! => {
+
+
+
+Define it to be root either in ansible.cfg or in the command as ad-hoc: 
+
+#[student@workstation deploy-adhoc]$ ansible localhost -m copy  -a 'content="Managed by Ansible\n" dest=/etc/motd' -u devops --become
+
+Check if that have been changed:
+
+#[student@workstation deploy-adhoc]$ ansible all -m command -a 'cat /etc/motd' -u devops
+

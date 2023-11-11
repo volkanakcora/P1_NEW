@@ -1,0 +1,2 @@
+target1 ansible_host= ansible_user= ansible_ssh_pass=pass123
+

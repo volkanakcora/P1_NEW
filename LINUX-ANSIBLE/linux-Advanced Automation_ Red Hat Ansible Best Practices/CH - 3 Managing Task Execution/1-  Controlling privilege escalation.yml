@@ -1,0 +1,93 @@
+Privilege Escalation by Configuration:
+
+become:           --become or -b
+become_method:    --become-method=BECOME_METHOD
+become_user:      --become-user=BECOME_USER
+become_password:  --ask-become-pass or -K
+
+Privilege Escalation in Plays:
+
+- name: Become the user "manager"
+  hosts: webservers
+  become: true
+  tasks:
+      - name: Show the user used by this play
+        debug:
+        var: ansible_user_id
+
+- name: Do not use privilege escalation
+  hosts: webservers
+  become: false
+  tasks:
+      - name: Show the user used by this play
+      debug:
+      var: ansible_user_id
+
+
+Privilege Escalation in Tasks:
+
+
+You can also turn on (or off) privilege escalation for just one task in the play. To do this, add the
+appropriate become directive to the task.
+---
+- name: Play with two tasks, one uses privilege escalation
+  hosts: all
+  become: false
+  tasks:
+    - name: This task needs privileges
+      yum:
+      name: perl
+      state: installed
+      become: true
+
+Privilege Escalation in Blocks:
+If you have a subset of tasks in your play that require (or do not require) privilege escalation, you
+can set become on a block. All tasks in the block share the same privilege escalation setting,
+and this setting overrides the setting made at the play level.
+
+Use with become_user to use privilege escalation to perform a subset of tasks as some other
+regular user used by your application (such as a database user) instead of root.
+
+---
+- name: Deploy web services
+hosts: webservers
+become: false
+tasks:
+  - block:
+      - name: Ensure httpd is installed
+        yum:
+            name: httpd
+            state: installed
+      - name: Start and enable webserver
+            service:
+            name: httpd
+            state: started
+            enabled: yes
+        become: true
+
+Privilege Escalation in Roles:
+
+- name: Example play with one role
+hosts: localhost
+roles:
+    - role: role-name
+      become: true
+
+
+Privilege Escalation with Connection Variables:
+The following example demonstrates using privilege escalation variables in a YAML inventory for a group
+
+webservers:
+  hosts:
+      servera.lab.example.com:
+      serverb.lab.example.com:
+  vars:
+      ansible_become: true
+
+The following example demonstrates configuring privilege escalation using connection variables at host level
+
+webservers:
+  hosts:
+    servera.lab.example.com:
+      ansible_become: true
+    serverb.lab.example.com:     

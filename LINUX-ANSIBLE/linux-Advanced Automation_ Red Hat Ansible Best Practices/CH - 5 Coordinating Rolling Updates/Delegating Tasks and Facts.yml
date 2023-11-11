@@ -1,0 +1,75 @@
+#####    Delegating Tasks
+
+
+
+Sometimes, when Ansible is running a play to ensure the correct configuration of a system, it
+might need to perform one or more tasks on a different system on the managed host's behalf. For
+example, you might need to log into a network device to change a DHCP configuration, or make
+sure certain groups exist in an Active Directory domain, or communicate with the API of a service
+using tools that are not available on the managed host.
+
+In a play, you can delegate a task to run on a different host instead of the current managed host.
+
+A task delegates the action to a host using the delegate_to directive. This directive points
+Ansible to the host that will execute the task in place of the corresponding target.
+
+
+The following simple example runs the uname -a command on each host in the play, and then
+runs the uname -a command on localhost on behalf of each host in the play.
+---
+- hosts: servera.lab.example.com
+  tasks:
+
+- name: Get system information
+  command: uname -a
+  register: server
+
+- name: Display servera system information
+  debug:
+    msg: {{ server }}
+
+- name: Get system information
+  command: uname -a
+  delegate_to: localhost
+  register: local
+
+- name: Display localhost system information
+  debug:
+    msg: {{ local }}
+
+- name: Remove the server from HAProxy
+  haproxy:
+    state: disabled
+    host: "{{ ansible_facts['fqdn'] }}"
+    socket: /var/lib/haproxy/stats
+  delegate_to: "{{ item }}"
+  loop: "{{ groups['lbservers'] }}"
+
+- name: Make sure Apache HTTPD is stopped
+  service:
+    name: httpd
+    state: stopped
+
+######## Delegating Facts
+
+In the preceding example, the fact ansible_facts['fqdn'] was used. The FQDN for the
+managed host is used, not localhost.
+When you delegate a task, use the host variables and facts for the managed host (the current
+inventory_hostname) for which the task is running. So, if the task is running for servera, but
+has been delegated to localhost, then use the variables and facts for servera. This is usually
+exactly what you want.
+However, sometimes you might want to assign the facts collected by a delegated task to the host
+to which the task was delegated. To change this setting, set the delegate_facts directive to
+true.
+
+- hosts: localhost
+  gather_facts: no
+tasks:
+  - name: Set a fact in delegated task on servera
+    set_fact:
+      myfact: Where am I set?
+    delegate_to: servera.lab.example.com
+    delegate_facts: True
+  - name: Display the facts from servera.lab.example.com
+    debug:
+      msg: "{{ hostvars['servera.lab.example.com']['myfact'] }}"

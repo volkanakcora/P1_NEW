@@ -1,0 +1,29 @@
+#To stop all steps when one of the servers fail:
+
+-
+  name: Deploy web app
+  hosts: server1,server2,server3
+  any_errors_fatal: true    # this wat if any task fail on one server, ansible stops the execution of the play altogether and exits.
+  tasks:
+
+    - mail:
+        to: volkan@..
+        subject: serverDeployed
+        body: Web server Deployed   # if we would like to get notification about deployment
+      ignore_errors: yes  # it will ignore the errors and continue
+
+    - command: cat /var/log/server.log
+      register: command_output
+      failed_when: "'ERROR' in command_output.stdout"
+
+### check if the ip_Address is in the msg field of tebug task is correct
+
+-
+  name: Test valid IP Address
+  hosts: localhost
+  vars:
+    ip_address: 192.168.1.6
+  tasks:
+  - name: Test IP Address
+    debug:
+      msg: IP Address = {{ ip_address | ipaddr }}

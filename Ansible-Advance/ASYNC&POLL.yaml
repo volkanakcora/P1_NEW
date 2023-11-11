@@ -1,0 +1,21 @@
+#Ansible Playbook
+
+-
+  name: Deploy Web Application
+  hosts: db_and_web_server
+  tasks:
+    - command: /opt/monitor_webapp.py
+      async: 360 # total time of the process (second)
+      poll: 0 #that means ansible will not wait for determined time, and will move to the another tasks asap
+      register: webapp_result
+
+    - command: /opt/monitor_database.py
+      async: 360
+      poll: 0
+      register: database_result
+
+    - name: Check the status of the task
+      async_status: jid={{ webapp_result.ansible_job_id }}
+      register: job_result
+      until: job.result.finished
+      retries: 30

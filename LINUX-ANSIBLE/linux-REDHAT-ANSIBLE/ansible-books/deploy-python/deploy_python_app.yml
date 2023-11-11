@@ -1,0 +1,31 @@
+---
+- name: Refresh Python Application
+  hosts: localhost
+  become: true
+  tasks:
+          - name: install python.service
+            command: chdir=/home/oh856/collectorsapp sudo  python3 setup.py install
+            register: py
+            notify:
+             - Restart the app
+             - status
+          - debug:
+                  var: py
+
+
+
+
+
+
+
+  handlers:
+         - name: Restart the app
+           service:
+                     name: python.service
+                     state: restarted
+           register: status
+
+         - name: status
+           debug:
+                 var: status
+                                

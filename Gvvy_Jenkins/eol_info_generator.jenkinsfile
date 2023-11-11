@@ -1,0 +1,86 @@
+#!groovy
+
+
+def generateYml(){
+    def AppHost = 'englobkpi1'
+    def appFolder = '/root/automation.eol'
+
+    echo("Generating info...")
+    sh(
+        script: """\
+            ssh -o 'StrictHostKeyChecking=no' 'ansible@${AppHost}'<<EOF
+                    sudo -i
+                    cd ${appFolder}
+                    # checkout the latest changes
+                    git checkout github-pages
+                    git pull origin github-pages
+
+                    # If any venv is active disable it
+                    deactivate || true
+
+                    # Create new venv
+                    virtualenv-3 --python /usr/bin/python3 ./venv-eol
+
+                    # Upgrade pip
+                    ./venv-eol/bin/python3 -m pip install -U pip
+
+                    # Install requirements
+                    ./venv-eol/bin/python3 -m pip install -r requirements.txt
+
+                    # Get the EOL info from database and generate the yaml file
+                    ./venv-eol/bin/python3 run.py
+
+                    # update the repo
+                    git add application/yml/info.yml
+                    git commit -m 'updated EOL info'
+                    git push -u origin github-pages
+            EOF
+        """.stripIndent()
+    )
+}
+
+
+pipeline {
+    agent { label 'englobauto' }
+
+
+    triggers{
+        parameterizedCron('''
+            0 11 * * 1 %generateInfo=true
+        ''')
+    }
+
+    parameters {
+        booleanParam(
+                name: 'generateInfo',
+                description: 'Generate info.yml file'
+        )
+    }
+
+
+    stages {
+        stage('Set build meta') {
+            steps {
+                script {
+                    if (params.environment == 'update_jenkins_job') {
+                        currentBuild.displayName = "#${BUILD_NUMBER} update_jenkins_job"
+                        currentBuild.result = 'ABORTED'
+                        error("This was done deliberately to update the build parameters.")
+                    }
+
+                    currentBuild.displayName = "#${BUILD_NUMBER} ${params.environment}"
+                }
+            }
+        }
+
+        stage('Generate the Info.yml file'){
+            when { equals expected: true, actual: params.generateInfo }
+            steps{
+                script{
+                    generateYml()
+                }
+            }
+        }
+    }
+}
+

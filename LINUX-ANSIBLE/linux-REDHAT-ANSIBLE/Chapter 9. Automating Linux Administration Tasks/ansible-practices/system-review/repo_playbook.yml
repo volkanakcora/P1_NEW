@@ -1,0 +1,23 @@
+---
+- name: Repository Example Repo exists
+  hosts: webservers
+  tasks:
+      - name: EnSURE Example Repo exists
+        yum_repository:
+                name: example-internal
+                description: Example Inc. Internal YUM repo
+                file: example
+                baseurl: http://materials.example.com/yum/repository/
+                gpgcheck: yes
+
+      - name: Ensure Repo RPM key is installed
+        rpm_key:
+          key: http://materials.example.com/yum/repository/RPM-GPG-KEY-example
+
+          state: present
+
+      - name: Install Example motd package
+        yum:
+          name: example-motd
+          state: present
+

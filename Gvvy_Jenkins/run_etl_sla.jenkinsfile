@@ -1,0 +1,182 @@
+#!groovy
+
+import java.net.URLEncoder
+import java.text.SimpleDateFormat
+
+//#DPUHOSTS
+prodDpu = [
+    dpuHost: 'proddpu.srv.energy'
+]
+
+simuDpu = [
+    dpuHost: 'simudpu.srv.energy'
+]
+
+testDpu = [
+    dpuHost: 'testdpu.srv.energy'
+]
+
+//#ENV
+eltsEnv = [
+    envName: 'ELTS_PROD'    
+]
+
+eltsButAllEnv = [
+    [
+        envName: 'XSOP_PROD'
+        
+    ],
+
+    [
+        envName: 'HUPX_PROD'
+       
+    ],
+
+    [
+        envName: 'EUAP_PROD'
+        
+    ],
+
+    [
+        envName: 'CPCY_PROD'
+        
+    ],
+
+    [
+        envName: 'PLPX_PROD'
+       
+    ],
+
+    [
+        envName: 'XRPM_PROD'
+        
+    ],
+]
+
+//#SIMU
+simuEnv = [
+    [
+        envName: 'ELTS_ASIM'
+       
+    ],
+
+    [
+        envName: 'ELTS_XSIM'
+       
+    ],
+]
+
+//#TEST
+testEnv = [
+    [
+        envName: 'SHRD_SYT1'
+    ]
+]
+
+
+def runEtl(etl_envs, dpuHost) {
+    def folderPath = "/home/m7dpu/ebsm/"
+    echo("Running ETL for ${environment}")
+    sh(
+        script: """\
+            ssh -o 'StrictHostKeyChecking=no' 'ansible@${dpuHost}' <<EOF
+                sudo -iu m7dpu
+                java -Duser.timezone=UTC -cp ${folderPath}properties:${folderPath}ebsm-etl.jar com.deutscheboerse.energy.ebsm.gnrl.ImportValuesMonth "${etl_envs}"
+            EOF
+           
+        """.stripIndent()
+    )
+}
+
+def isExternal() {
+    return env.JOB_NAME == 'Operations/01-Common/SLA_KPI/support/run_etl_sla'
+}
+
+def isBizOps() {
+    return env.JOB_NAME == 'Operations/01-Common/SLA_KPI/run_etl_sla'
+}
+
+
+def bizopsEnvs = [
+    'ELTS_PROD', 'ELTSPROD_BUT_ALL', 'SIMU', 'TEST', 'update_jenkins_job'
+]
+
+def interalEnvs = [
+    'TEST', 'update_jenkins_job'
+]
+
+// Defined during run
+def envs = null
+if (isBizOps()) {
+    envs = bizopsEnvs 
+} else if (isExternal()) {
+    envs = bizopsEnvs
+} else {
+    envs = interalEnvs
+}
+
+def agentLabel = isExternal() || isBizOps() ? 'englobauto' : 'entestauto1'
+
+
+
+pipeline {
+    agent { label 'englobauto' }
+
+    triggers{
+        parameterizedCron('''
+            0 09 2 * * %ELTS_PROD=true
+            0 13 2 * * %ELTSPROD_BUT_ALL=true
+            0 09 2 * * %SIMU=true
+            0 09 2 * * %TEST=true
+        ''')
+    }
+   
+    parameters {
+        choice(
+                name: 'environment',
+                choices: envs,
+                description: 'environment'
+        )      
+    }
+    stages {
+        stage('Set build meta') {
+            steps {
+                script {
+                    if (params.environment == 'update_jenkins_job') {
+                        currentBuild.displayName = "#${BUILD_NUMBER} update_jenkins_job"
+                        currentBuild.result = 'ABORTED'
+                        error("This was done deliberately to update the build parameters.")
+                    }
+
+                    currentBuild.displayName = "#${BUILD_NUMBER} ${params.environment} ${params.action} ${params.username}"
+                }
+            }
+        }
+
+        stage('Script execution') {
+            steps {
+                script {
+                    if ( environment == 'ELTS_PROD'){
+                        for (env in eltsEnv.envName) {
+                            runEtl(env, prodDpu.dpuHost)
+                        }
+
+                    } else if ( environment == 'ELTSPROD_BUT_ALL'){
+                        for (env in eltsButAllEnv) {
+                                runEtl(env.envName, prodDpu.dpuHost)                                       
+                            }
+                    } else if ( environment == 'SIMU'){
+                        for (env in simuEnv) {                           
+                                runEtl(env.envName, simuDpu.dpuHost)                                    
+                            }
+                    } else if ( environment == 'TEST'){
+                        for (env in testEnv.envName) {
+                            runEtl(env, testDpu.dpuHost)
+                        }
+                    }                
+                                     
+                } 
+            }
+        }
+    }
+}
