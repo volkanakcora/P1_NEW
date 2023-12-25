@@ -14,6 +14,18 @@
             justify-content: space-between;
             flex-wrap: wrap;
         }
+
+        .delete-button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        .delete-button:hover {
+            background-color: #c82333;
+        }
     </style>
 </head>
 <body>
@@ -21,7 +33,7 @@
     {% with message = get_flashed_messages() %}
     {% if message %}
     <div class="alert alert-primary" role="alert">
-        {{message[0]}}
+        {{ message[0] }}
     </div>
     {% endif %}
     {% endwith %}
@@ -31,12 +43,11 @@
     </form>
 </div>
 <div class="card">
-    <ul id="weather-list">
+    <ul id="weather-list" class="cards">
         {% for weather in weather_data %}
             <li class="card {{ weather.time }}">
                 <div class="delete-wrapper">
-                    <form action="#" method="POST">
-                        <input type="hidden" name="id" value="">
+                    <form action="{{ url_for('delete_city', city_id=weather.id) }}" method="POST">
                         <button class="delete-button" type="submit">&#10006;</button>
                     </form>
                 </div>
