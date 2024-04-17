@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HyperNews - Create Article</title>
+</head>
+<body>
+  <h1>Create New Article</h1>
+  <form action="{% url 'create_article' %}" method="post">
+    {% csrf_token %}  <label for="title">Title: </label>
+    <input id="title" type="text" name="title" required>
+    <br>
+    <label for="text">Text: </label>
+    <textarea id="text" name="text" rows="5" cols="20" required></textarea>
+    <br>
+    <input type="submit" value="Add Article">
+  </form>
+  <br>
+  <a href="{% url 'index' %}" target="_blank">Back to Main Page</a>
+</body>
+</html>

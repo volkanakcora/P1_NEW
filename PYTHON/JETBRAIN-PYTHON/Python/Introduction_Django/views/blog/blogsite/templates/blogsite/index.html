@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Greetings page</title>
+</head>
+<body>
+  <h1>Hello, {{ greetings_to }} !</h1>
+  <h1>Unread articles for today: {{num_articles }}</h1>
+  {% for article in articles %}
+      <li>
+        <a href="{{ article.get_absolute_url }}">{{ article.title }}</a> {{article.author}}
+      </li>
+{% endfor %}
+</body>
+</html>
