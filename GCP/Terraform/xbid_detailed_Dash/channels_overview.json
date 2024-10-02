@@ -1,0 +1,432 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": {
+            "type": "grafana",
+            "uid": "-- Grafana --"
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "type": "dashboard"
+        }
+      ]
+    },
+    "description": "The Channels Overview Dashboard published by Seventh State offers insights into RabbitMQ channels, including global counts, message rates per channel, and channel utilisation. Channels are crucial for message throughput, making this dashboard invaluable for tuning and capacity planning.",
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "gnetId": 20831,
+    "graphTooltip": 2,
+    "id": 3131,
+    "links": [],
+    "liveNow": false,
+    "panels": [
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "gcp-managed-prometheus"
+        },
+        "description": "This table offers insights into RabbitMQ channels, including global counts, message rates per channel, and channel utilisation. Channels are crucial for message throughput, making this dashboard invaluable for tuning and capacity planning. <br/>\n\nThe metrics shown are for each channel:\n\n- **Consumers:** The number of queue subscriptions created on the channel.\n- **Unacknowledged message count:** Messages in flight, not yet acknowledged by the consumer application.\n- **Unconfirmed message count:** Messaging in flight from the publishing application, not yet acknowledged by RabbitMQ.\n- **Consumer prefetch:** Maximum number of messages in flight for each consumer subscription.\n- **Global prefetch:** Maximum number of messages in flight for the channel.\n- **Uncommitted messages:** Messages that have been published within a transaction but not yet committed.\n- **Uncommitted acks:** Messages that have been acknowledged within a transaction but not yet committed by the consumer.",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "align": "auto",
+              "cellOptions": {
+                "type": "auto"
+              },
+              "filterable": true,
+              "inspect": false
+            },
+            "fieldMinMax": false,
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "none"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "queue"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 304
+                },
+                {
+                  "id": "links",
+                  "value": [
+                    {
+                      "targetBlank": true,
+                      "title": "Show details",
+                      "url": "${queue_detail_dashboard_url_with_queue}var-namespace=$namespace&var-rabbitmq_cluster=$rabbitmq_cluster&var-rabbitmq_vhost=$rabbitmq_vhost&var-queue=${__value.raw}"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "vhost"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 165
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Messages"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 225
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byRegexp",
+                "options": "/.*rate/"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "mps"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Consumer prefetch"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 177
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Global prefetch"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 181
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 21,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        },
+        "id": 7,
+        "options": {
+          "cellHeight": "sm",
+          "footer": {
+            "countRows": false,
+            "enablePagination": true,
+            "fields": [],
+            "reducer": [
+              "sum"
+            ],
+            "show": false
+          },
+          "frameIndex": 0,
+          "showHeader": true,
+          "sortBy": []
+        },
+        "pluginVersion": "10.4.5",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "gcp-managed-prometheus"
+            },
+            "editorMode": "code",
+            "exemplar": false,
+            "expr": " (rabbitmq_detailed_channel_consumers{} * on(instance, job) group_left(energy_product) rabbitmq_identity_info{instance=\"xb-xbid-syt1-ext-amq1\"})\n",
+            "format": "time_series",
+            "hide": false,
+            "instant": false,
+            "interval": "",
+            "legendFormat": "",
+            "range": true,
+            "refId": "A"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "gcp-managed-prometheus"
+            },
+            "editorMode": "code",
+            "exemplar": false,
+            "expr": " (rabbitmq_detailed_channel_messages_unacked{} * on(instance, job) group_left(energy_product) rabbitmq_identity_info{instance=\"xb-xbid-syt1-ext-amq1\"})\n",
+            "format": "time_series",
+            "hide": false,
+            "instant": false,
+            "interval": "",
+            "legendFormat": "",
+            "range": true,
+            "refId": "B"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "gcp-managed-prometheus"
+            },
+            "editorMode": "code",
+            "exemplar": false,
+            "expr": " (rabbitmq_detailed_channel_messages_unconfirmed{} * on(instance, job) group_left(energy_product) rabbitmq_identity_info{instance=\"xb-xbid-syt1-ext-amq1\"})\n",
+            "format": "time_series",
+            "hide": false,
+            "instant": false,
+            "interval": "",
+            "legendFormat": "",
+            "range": true,
+            "refId": "C"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "gcp-managed-prometheus"
+            },
+            "editorMode": "code",
+            "exemplar": false,
+            "expr": " (rabbitmq_detailed_channel_messages_uncommitted{} * on(instance, job) group_left(energy_product) rabbitmq_identity_info{instance=\"xb-xbid-syt1-ext-amq1\"})\n\n",
+            "format": "time_series",
+            "hide": false,
+            "instant": false,
+            "interval": "",
+            "legendFormat": "",
+            "range": true,
+            "refId": "D"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "gcp-managed-prometheus"
+            },
+            "editorMode": "code",
+            "exemplar": false,
+            "expr": " (rabbitmq_detailed_channel_acks_uncommitted{} *  on(instance, job) group_left(energy_product) rabbitmq_identity_info{instance=\"xb-xbid-syt1-ext-amq1\"})\n",
+            "format": "time_series",
+            "hide": false,
+            "instant": false,
+            "interval": "",
+            "legendFormat": "",
+            "range": true,
+            "refId": "E"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "gcp-managed-prometheus"
+            },
+            "editorMode": "code",
+            "exemplar": false,
+            "expr": " (rabbitmq_detailed_consumer_prefetch{} * on(instance, job) group_left(energy_product) rabbitmq_identity_info{instance=\"xb-xbid-syt1-ext-amq1\"})\n",
+            "format": "time_series",
+            "hide": false,
+            "instant": false,
+            "interval": "",
+            "legendFormat": "",
+            "range": true,
+            "refId": "F"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "gcp-managed-prometheus"
+            },
+            "editorMode": "code",
+            "exemplar": false,
+            "expr": " (rabbitmq_detailed_channel_prefetch{} * on(instance, job) group_left(energy_product) rabbitmq_identity_info{instance=\"xb-xbid-syt1-ext-amq1\"})\n\n",
+            "format": "time_series",
+            "hide": false,
+            "instant": false,
+            "interval": "",
+            "legendFormat": "",
+            "range": true,
+            "refId": "G"
+          }
+        ],
+        "title": "Channels",
+        "transformations": [
+          {
+            "id": "timeSeriesTable",
+            "options": {
+              "C": {
+                "stat": "lastNotNull",
+                "timeField": ""
+              }
+            }
+          },
+          {
+            "id": "merge",
+            "options": {}
+          },
+          {
+            "id": "filterFieldsByName",
+            "options": {
+              "include": {
+                "names": [
+                  "channel",
+                  "rabbitmq_node",
+                  "Trend #A",
+                  "Trend #B",
+                  "Trend #C",
+                  "Trend #D",
+                  "Trend #E",
+                  "Trend #F",
+                  "Trend #G"
+                ]
+              }
+            }
+          },
+          {
+            "id": "organize",
+            "options": {
+              "excludeByName": {
+                "Trend #C": false
+              },
+              "includeByName": {},
+              "indexByName": {
+                "Trend #A": 2,
+                "Trend #B": 3,
+                "Trend #C": 4,
+                "Trend #D": 7,
+                "Trend #E": 8,
+                "Trend #F": 5,
+                "Trend #G": 6,
+                "channel": 1,
+                "rabbitmq_node": 0
+              },
+              "renameByName": {
+                "Publish rate": "",
+                "Trend #A": "Consumers",
+                "Trend #B": "Unacknowledged msgs",
+                "Trend #C": "Unconfirmed msgs",
+                "Trend #D": "Uncommitted msgs",
+                "Trend #E": "Uncommitted acks",
+                "Trend #F": "Consumer prefetch",
+                "Trend #G": "Global prefetch",
+                "channel": "Channel Pid",
+                "queue": "Queue",
+                "rabbitmq_node": "Node",
+                "vhost": "Vhost"
+              }
+            }
+          }
+        ],
+        "type": "table"
+      }
+    ],
+    "refresh": "10s",
+    "schemaVersion": 39,
+    "tags": [
+      "rabbitmq-prometheus",
+      "7s-rabbitmq-support"
+    ],
+    "templating": {
+      "list": [
+        {
+          "hide": 2,
+          "label": "Prometheus",
+          "name": "DS_PROMETHEUS",
+          "query": "prometheus",
+          "skipUrlSync": false,
+          "type": "constant"
+        },
+        {
+          "current": {},
+          "datasource": {
+            "type": "prometheus",
+            "uid": "gcp-managed-prometheus"
+          },
+          "definition": "label_values($namespace,$namespace)",
+          "hide": 0,
+          "includeAll": false,
+          "multi": false,
+          "name": "namespace",
+          "options": [],
+          "query": {
+            "qryType": 1,
+            "query": "label_values($namespace,$namespace)",
+            "refId": "PrometheusVariableQueryEditor-VariableQuery"
+          },
+          "refresh": 1,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 1,
+          "type": "query"
+        },
+        {
+          "current": {},
+          "datasource": {
+            "type": "prometheus",
+            "uid": "gcp-managed-prometheus"
+          },
+          "definition": "label_values(rabbitmq_cluster)",
+          "description": "",
+          "hide": 0,
+          "includeAll": false,
+          "label": "RabbitMQ Cluster",
+          "multi": false,
+          "name": "rabbitmq_cluster",
+          "options": [],
+          "query": {
+            "qryType": 1,
+            "query": "label_values(rabbitmq_cluster)",
+            "refId": "PrometheusVariableQueryEditor-VariableQuery"
+          },
+          "refresh": 1,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 1,
+          "type": "query"
+        }
+      ]
+    },
+    "time": {
+      "from": "now-5m",
+      "to": "now"
+    },
+    "timepicker": {},
+    "timezone": "",
+    "title": "RabbitMQ Channels Overview1",
+    "uid": "7s-rabbitmq-channels-overview",
+    "version": 8,
+    "weekStart": ""
+  }

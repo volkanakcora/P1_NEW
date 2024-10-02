@@ -1,0 +1,489 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "target": {
+            "limit": 100,
+            "matchAny": false,
+            "tags": [],
+            "type": "dashboard"
+          },
+          "type": "dashboard"
+        }
+      ]
+    },
+    "description": "Displays GCP billing costs straight from BigQuery.",
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "gnetId": 18449,
+    "graphTooltip": 1,
+    "id": 210,
+    "links": [],
+    "liveNow": false,
+    "panels": [
+      {
+        "datasource": {
+          "default": false,
+          "type": "grafana-bigquery-datasource",
+          "uid": "grafana-bigquery-datasource"
+        },
+        "description": " monthly time series of Prometheus ingestion Cost with different projects as separate legends",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "fillOpacity": 80,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineWidth": 1,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "short"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 14,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        },
+        "id": 57,
+        "options": {
+          "barRadius": 0,
+          "barWidth": 0.83,
+          "fullHighlight": false,
+          "groupWidth": 0.7,
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "right",
+            "showLegend": true
+          },
+          "orientation": "vertical",
+          "showValue": "always",
+          "stacking": "none",
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          },
+          "xTickLabelRotation": 0,
+          "xTickLabelSpacing": 100
+        },
+        "pluginVersion": "11.2.0",
+        "targets": [
+          {
+            "datasource": {
+              "type": "grafana-bigquery-datasource",
+              "uid": "grafana-bigquery-datasource"
+            },
+            "editorMode": "code",
+            "format": 0,
+            "location": "EU",
+            "project": "dbg-energy-sz-ceff08bc",
+            "rawQuery": true,
+            "rawSql": "SELECT\r\n  $__timeGroup(usage_start_time, '1M') AS month, \r\n  project.id AS project_id, \r\n  SUM(cost) AS total_cost \r\nFROM \r\n  $source_table\r\nWHERE \r\n  $__timeFilter(usage_start_time)  \r\n  AND sku.description = 'Prometheus Samples Ingested'\r\n  AND project.id IN ($project)  \r\nGROUP BY \r\n  month, project_id  \r\nHAVING \r\n  total_cost > 0  \r\nORDER BY \r\n  month ASC, total_cost DESC;  \r\n",
+            "refId": "A",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50
+            }
+          }
+        ],
+        "title": "Prometheus Ingestion Samples COST  by Month / Project",
+        "type": "barchart"
+      },
+      {
+        "datasource": {
+          "default": false,
+          "type": "grafana-bigquery-datasource",
+          "uid": "grafana-bigquery-datasource"
+        },
+        "description": " monthly time series of Prometheus ingestion with different projects as separate legends",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "fillOpacity": 80,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineWidth": 1,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "short"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 14,
+          "w": 24,
+          "x": 0,
+          "y": 14
+        },
+        "id": 58,
+        "options": {
+          "barRadius": 0,
+          "barWidth": 0.83,
+          "fullHighlight": false,
+          "groupWidth": 0.7,
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "right",
+            "showLegend": true
+          },
+          "orientation": "vertical",
+          "showValue": "always",
+          "stacking": "none",
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          },
+          "xTickLabelRotation": 0,
+          "xTickLabelSpacing": 100
+        },
+        "pluginVersion": "11.2.0",
+        "targets": [
+          {
+            "datasource": {
+              "type": "grafana-bigquery-datasource",
+              "uid": "grafana-bigquery-datasource"
+            },
+            "editorMode": "code",
+            "format": 0,
+            "location": "EU",
+            "project": "dbg-energy-sz-ceff08bc",
+            "rawQuery": true,
+            "rawSql": "SELECT\r\n  $__timeGroup(usage_start_time, '1M') AS month,  \r\n  project.id AS project_id, \r\n  SUM(usage.amount) AS total_samples_ingested  \r\nFROM \r\n  $source_table\r\nWHERE \r\n  $__timeFilter(usage_start_time)  \r\n  AND sku.description = 'Prometheus Samples Ingested'\r\n  AND project.id IN ($project)  \r\nGROUP BY \r\n  month, project_id  \r\nHAVING \r\n  total_samples_ingested > 0  \r\nORDER BY \r\n  month ASC, total_samples_ingested DESC;  \r\n",
+            "refId": "A",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50
+            }
+          }
+        ],
+        "title": "Prometheus Ingestion Samples by Month / Project",
+        "type": "barchart"
+      }
+    ],
+    "refresh": "1d",
+    "revision": 1,
+    "schemaVersion": 39,
+    "tags": [
+      "GCP",
+      "CostTracking"
+    ],
+    "templating": {
+      "list": [
+        {
+          "current": {
+            "selected": true,
+            "text": [
+              "dbg-energy-obsv-m7a-sz-7b",
+              "dbg-energy-obsv-m7c-sz-36",
+              "dbg-energy-obsv-m7t-sz-55",
+              "dbg-energy-obsv-xbid-sz-f2"
+            ],
+            "value": [
+              "dbg-energy-obsv-m7a-sz-7b",
+              "dbg-energy-obsv-m7c-sz-36",
+              "dbg-energy-obsv-m7t-sz-55",
+              "dbg-energy-obsv-xbid-sz-f2"
+            ]
+          },
+          "datasource": {
+            "type": "grafana-bigquery-datasource",
+            "uid": "grafana-bigquery-datasource"
+          },
+          "definition": "",
+          "hide": 0,
+          "includeAll": false,
+          "label": "Project",
+          "multi": true,
+          "name": "project",
+          "options": [],
+          "query": {
+            "0": "S",
+            "1": "E",
+            "2": "L",
+            "3": "E",
+            "4": "C",
+            "5": "T",
+            "6": " ",
+            "7": "D",
+            "8": "I",
+            "9": "S",
+            "10": "T",
+            "11": "I",
+            "12": "N",
+            "13": "C",
+            "14": "T",
+            "15": " ",
+            "16": "p",
+            "17": "r",
+            "18": "o",
+            "19": "j",
+            "20": "e",
+            "21": "c",
+            "22": "t",
+            "23": ".",
+            "24": "i",
+            "25": "d",
+            "26": " ",
+            "27": "F",
+            "28": "R",
+            "29": "O",
+            "30": "M",
+            "31": " ",
+            "32": "`",
+            "33": "$",
+            "34": "s",
+            "35": "o",
+            "36": "u",
+            "37": "r",
+            "38": "c",
+            "39": "e",
+            "40": "_",
+            "41": "t",
+            "42": "a",
+            "43": "b",
+            "44": "l",
+            "45": "e",
+            "46": "`",
+            "editorMode": "code",
+            "format": 1,
+            "location": "EU",
+            "project": "dbg-energy-sz-ceff08bc",
+            "rawQuery": true,
+            "rawSql": "SELECT DISTINCT project.id FROM `$source_table`",
+            "refId": "tempvar",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50
+            }
+          },
+          "refresh": 1,
+          "regex": "/dbg-energy-.*/",
+          "skipUrlSync": false,
+          "sort": 1,
+          "tagValuesQuery": "",
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        },
+        {
+          "current": {
+            "selected": true,
+            "text": "dbg-central-audit",
+            "value": "dbg-central-audit"
+          },
+          "hide": 0,
+          "label": "Source Project",
+          "name": "source_project",
+          "options": [
+            {
+              "selected": true,
+              "text": "dbg-central-audit",
+              "value": "dbg-central-audit"
+            }
+          ],
+          "query": "dbg-central-audit",
+          "skipUrlSync": false,
+          "type": "textbox"
+        },
+        {
+          "current": {
+            "selected": true,
+            "text": "billing_data",
+            "value": "billing_data"
+          },
+          "hide": 0,
+          "label": "Source Dataset",
+          "name": "source_dataset",
+          "options": [
+            {
+              "selected": true,
+              "text": "billing_data",
+              "value": "billing_data"
+            }
+          ],
+          "query": "billing_data",
+          "skipUrlSync": false,
+          "type": "textbox"
+        },
+        {
+          "current": {
+            "selected": false,
+            "text": "dbg-central-audit.billing_data.gcp_billing_export_v1_01029D_2E4AE6_9BE44D",
+            "value": "dbg-central-audit.billing_data.gcp_billing_export_v1_01029D_2E4AE6_9BE44D"
+          },
+          "datasource": {
+            "type": "grafana-bigquery-datasource",
+            "uid": "grafana-bigquery-datasource"
+          },
+          "definition": "",
+          "hide": 0,
+          "includeAll": false,
+          "label": "Source Table",
+          "multi": false,
+          "name": "source_table",
+          "options": [],
+          "query": {
+            "editorMode": "code",
+            "format": 1,
+            "location": "EU",
+            "project": "dbg-energy-sz-ceff08bc",
+            "rawQuery": true,
+            "rawSql": "SELECT CONCAT(table_catalog, \".\", table_schema, \".\", table_name) FROM `$source_project.$source_dataset.INFORMATION_SCHEMA.TABLES` WHERE REGEXP_CONTAINS(table_name, \"^gcp_billing_export_v1_\")",
+            "refId": "tempvar",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50
+            }
+          },
+          "refresh": 1,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 0,
+          "type": "query"
+        }
+      ]
+    },
+    "time": {
+      "from": "now-12h",
+      "to": "now"
+    },
+    "timepicker": {
+      "hidden": false,
+      "nowDelay": "",
+      "refresh_intervals": [
+        "1d"
+      ]
+    },
+    "timezone": "",
+    "title": "Prometheus ingestion Cost",
+    "uid": "0xLhbCB4ka",
+    "version": 10,
+    "weekStart": "monday"
+  }

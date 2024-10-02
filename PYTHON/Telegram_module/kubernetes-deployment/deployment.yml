@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: telegram-bot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: telegram-bot
+  template:
+    metadata:
+      labels:
+        app: telegram-bot
+    spec:
+      containers:
+      - name: telegram-bot
+        image: your-docker-username/telegram-bot-app:latest
+        ports:
+        - containerPort: 5000
+        env:
+        - name: BOT_TOKEN
+          value: "YOUR_BOT_TOKEN"
+        - name: CHAT_ID
+          value: "YOUR_CHAT_ID"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: telegram-bot-service
+spec:
+  selector:
+    app: telegram-bot
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5000
+  type: ClusterIP

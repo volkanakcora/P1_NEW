@@ -1,0 +1,236 @@
+{
+    "ancestors": [
+        {
+            "display_name": "dbg-energy-dev-659ba550",
+            "resource_name": "projects/259810250545"
+        },
+        {
+            "display_name": "energy-main-dev",
+            "resource_name": "folders/998369727579"
+        },
+        {
+            "display_name": "energy-main",
+            "resource_name": "folders/292451328275"
+        },
+        {
+            "display_name": "energy",
+            "resource_name": "folders/923051066942"
+        },
+        {
+            "display_name": "deutsche-boerse.com",
+            "resource_name": "organizations/787596028206"
+        }
+    ],
+    "ancestry_numbers": "/787596028206/923051066942/292451328275/998369727579/",
+    "id": "dbg-energy-dev-659ba550",
+    "labels": [
+        {
+            "key": "applicationid",
+            "value": null
+        },
+        {
+            "key": "costcenter",
+            "value": "6312"
+        },
+        {
+            "key": "creator",
+            "value": "ox626"
+        },
+        {
+            "key": "environment",
+            "value": "development"
+        },
+        {
+            "key": "owner",
+            "value": "ox626"
+        },
+        {
+            "key": "product",
+            "value": "energy"
+        },
+        {
+            "key": "productlineid",
+            "value": "0001996379"
+        },
+        {
+            "key": "supportgroupid",
+            "value": "0001996892"
+        }
+    ],
+    "name": "dbg-energy-dev-659ba550",
+    "number": "259810250545"
+}
+
+
+
+[
+    {
+        "key": "application",
+        "value": "energy_monitoring_tools"
+    },
+    {
+        "key": "applicationid",
+        "value": "aid901"
+    },
+    {
+        "key": "costcenter",
+        "value": "0001_b1-50223"
+    },
+    {
+        "key": "creator",
+        "value": "zl246"
+    },
+    {
+        "key": "environment",
+        "value": "development"
+    },
+    {
+        "key": "goog-k8s-cluster-name",
+        "value": "cluster-dev"
+    },
+    {
+        "key": "orchestrator",
+        "value": "terraform"
+    },
+    {
+        "key": "owner",
+        "value": "zl246"
+    },
+    {
+        "key": "product",
+        "value": "energy"
+    },
+    {
+        "key": "productlineid",
+        "value": "0001996379"
+    },
+    {
+        "key": "supportgroupid",
+        "value": "0001996892"
+    },
+    {
+        "key": "terraform_application",
+        "value": "gke-cluster"
+    }
+]
+
+
+
+[
+    {
+        "key": "applicationid",
+        "value": "aid901"
+    },
+    {
+        "key": "costcenter",
+        "value": "0001_b1-50223"
+    },
+    {
+        "key": "creator",
+        "value": "zl246"
+    },
+    {
+        "key": "environment",
+        "value": "development"
+    },
+    {
+        "key": "goog-fleet-project",
+        "value": "dbg-energy-dev-659ba550"
+    },
+    {
+        "key": "goog-k8s-cluster-location",
+        "value": "europe-west3"
+    },
+    {
+        "key": "goog-k8s-cluster-name",
+        "value": "cluster-dev"
+    },
+    {
+        "key": "orchestrator",
+        "value": "terraform"
+    },
+    {
+        "key": "owner",
+        "value": "zl246"
+    },
+    {
+        "key": "product",
+        "value": "energy"
+    },
+    {
+        "key": "productlineid",
+        "value": "0001996379"
+    },
+    {
+        "key": "project",
+        "value": "gke"
+    },
+    {
+        "key": "supportgroupid",
+        "value": "0001996892"
+    }
+]
+
+
+
+[
+    {
+        "inherited": true,
+        "key": "environment",
+        "namespace": "787596028206",
+        "value": "development"
+    }
+][
+    {
+        "key": "applicationid",
+        "value": "aid901"
+    },
+    {
+        "key": "costcenter",
+        "value": "0001_b1-50223"
+    },
+    {
+        "key": "creator",
+        "value": "zl246"
+    },
+    {
+        "key": "environment",
+        "value": "development"
+    },
+    {
+        "key": "goog-fleet-project",
+        "value": "dbg-energy-dev-659ba550"
+    },
+    {
+        "key": "goog-k8s-cluster-location",
+        "value": "europe-west3"
+    },
+    {
+        "key": "goog-k8s-cluster-name",
+        "value": "cluster-dev"
+    },
+    {
+        "key": "orchestrator",
+        "value": "terraform"
+    },
+    {
+        "key": "owner",
+        "value": "zl246"
+    },
+    {
+        "key": "product",
+        "value": "energy"
+    },
+    {
+        "key": "productlineid",
+        "value": "0001996379"
+    },
+    {
+        "key": "project",
+        "value": "gke"
+    },
+    {
+        "key": "supportgroupid",
+        "value": "0001996892"
+    }
+]

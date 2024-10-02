@@ -1,0 +1,112 @@
+receivers:
+  "prometheus/pgwatch2":
+    config:
+      scrape_configs:
+        - job_name: "pgwatch2"
+          scrape_interval: 50s
+          metrics_path: "/metrics"
+          static_configs:
+            - targets: ["localhost:9187"]
+          # Relabel instance directly in prometheus receiver. Otherwise it defaults to "localhost:9187"
+          relabel_configs:
+            - source_labels: [__address__]
+              regex: ".*"
+              target_label: instance
+              replacement: "pgwatch2"
+
+processors:
+ # Detect system metadata. Used to add "host.name" resource attribute.
+  resourcedetection/system:
+    detectors: ["system"]
+    system:
+      hostname_sources: ["os"]
+    attributes: ['exported_instance','client_environment','table_full_name']
+
+
+
+  "filter/problematic":
+    error_mode: ignore
+    metrics:
+      metric:
+        - 'not IsMatch(name, "^(pgwatch2_table_stats_n_tup_upd_total|pgwatch2_table_stats_idx_scan_total)$")'
+  resourcedetection/client_environment:
+    detectors: [env]
+    timeout: 2s
+    override: false
+  # GMP allows only following resource level attributes: location, cluster, namespace, job, instance
+  # All other resource level attributes get dropped
+  # Set instance and job to uniquely identify this receiver and instance
+  "transform/attributes_pgwatch2":
+    metric_statements:
+    - context: resource
+      statements:
+      # == Rename attributes (Old InfluxDB era names to new names) ==
+      - set(attributes["energy.customer"], attributes["client"])
+      - set(attributes["energy.environment"], attributes["client_environment"])
+      - delete_key(attributes, "client")
+      - delete_key(attributes, "client_environment")
+
+      # == Rename "exported_instance" attribute to "energy.instance_name" ==
+      # Background:
+      #   Telegraf exports label "instance" which conflicts with prometheus "instance" label.
+      #   Therefore prometheus (receiver) renames "instance" to "exported_instance".
+      #   As described in our docs "instance_name" must be set.
+      #   Docs: https://confluence.energy.svc.dbgcloud.io/x/CqdEBQ#OpenTelemetry/GoogleManagedPrometheus(GMP)-Attributes/Labels/Tags
+      - set(attributes["energy.instance_name"], attributes["exported_instance"])
+      - set(attributes["energy.product"], attributes["product"])
+      - delete_key(attributes, "exported_instance")
+      - delete_key(attributes, "product")
+      # == Instance ==
+      # Only set if all attributes are present
+      - set(attributes["service.instance.id"], Concat([attributes["energy.product"], attributes["energy.customer"], attributes["energy.environment"], attributes["energy.instance_name"]], "-")) where attributes["energy.product"] != nil and attributes["energy.customer"] != nil and attributes["energy.environment"] != nil and attributes["energy.instance_name"] != nil
+      # Default value if not all attributes are present
+      - set(attributes["service.instance.id"], attributes["host.name"]) where attributes["service.instance.id"] == nil
+  # Group metrics by metric attributes provided by pgwatch2
+  "groupbyattrs/pgwatch2":
+    keys:
+      - product
+      - client
+      - client_environment
+      # Prometheus renamed confliciting labels to "exported_{}". -> "instance" is a conflict.
+      - exported_instance
+
+exporters:
+  "debug/pgwatch2":
+    verbosity: basic
+    sampling_initial: 200
+    sampling_thereafter: 1000
+
+
+  # Google Managed Prometheus exporter with intToDouble feature gate enabled to prevent type conflicts
+  googlemanagedprometheus/xb:
+    metric:
+      resource_filters:
+        - prefix: "client.environment"
+        - prefix: "energy.customer"
+        - regex: "host.name"
+# Standard configuration for pipeline
+# See global config for definition of processors and exporters
+# /etc/otelcol-contrib/config.yaml
+service:
+  pipelines:
+    "metrics/pgwatch2":
+      receivers:
+        - "prometheus/pgwatch2"
+      processors:
+        # 'memory_limiter' processor should be first
+        - memory_limiter
+        # 'batch' processor should be after sampling processors
+        - batch
+        # Detect system metadata. Used to add "host.name" resource attribute.
+        - resourcedetection/system
+        # Instance specific resource attributes
+        - "transform/attributes_pgwatch2"
+        # Those two should be last processors to avoid conflicts
+        - "groupbyattrs/pgwatch2"
+        - "filter/problematic"
+        - resourcedetection/client_environment
+        - resource/gcp
+        - transform/gcp
+      exporters:
+        - "debug/pgwatch2"
+        - "googlemanagedprometheus/xb"

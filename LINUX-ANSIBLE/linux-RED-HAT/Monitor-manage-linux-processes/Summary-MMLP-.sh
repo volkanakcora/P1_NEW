@@ -52,7 +52,7 @@ kill -9 5199
 
 pkill control
 [1]   Terminated              control pkill1
-[2]-  Terminated              control pkill2
+[2]-  Terminated              control pkill2pki
 
 
 pkill -U user  'kills all process of an user'

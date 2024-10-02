@@ -1,0 +1,377 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": {
+            "type": "grafana",
+            "uid": "-- Grafana --"
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "gnetId": 20697,
+    "graphTooltip": 0,
+    "id": 3129,
+    "links": [],
+    "liveNow": false,
+    "panels": [
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "gcp-managed-prometheus"
+        },
+        "gridPos": {
+          "h": 2,
+          "w": 22,
+          "x": 0,
+          "y": 0
+        },
+        "id": 3,
+        "options": {
+          "code": {
+            "language": "plaintext",
+            "showLineNumbers": false,
+            "showMiniMap": false
+          },
+          "content": "#### RabbitMQ Clusters\n\nOverview of RabbitMQ Clusters.",
+          "mode": "markdown"
+        },
+        "pluginVersion": "10.4.5",
+        "type": "text"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "gcp-managed-prometheus"
+        },
+        "description": "The Clusters Dashboard provides a view of all RabbitMQ clusters within your environment. It showcases metrics offering a high-level overview critical for managing multiple clusters effectively.\n\nThe main metrics shown are the following for each cluster:\n\n- **Total message count:** Total number of messages in the queues.\n- **Unacknowledged message count:** Messages consumed but not yet acknowledged by consumers.\n- **Queue count:** Total number of queues in the cluster.\n- **Channel count:** Total number of channels in the cluster.\n- **Connection count:** Total number of connections in the cluster.\n- **Memory, disk and file handle internal RabbitMQ alarms:** The column displays a warning if there are any active internal alarms in the cluster. \n",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "align": "auto",
+              "cellOptions": {
+                "type": "auto"
+              },
+              "inspect": false
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Alarms"
+              },
+              "properties": [
+                {
+                  "id": "mappings",
+                  "value": [
+                    {
+                      "options": {
+                        "0": {
+                          "color": "green",
+                          "index": 0,
+                          "text": "No alarms"
+                        },
+                        "1": {
+                          "color": "red",
+                          "index": 1,
+                          "text": "WARNING: ALARM ACTIVE"
+                        }
+                      },
+                      "type": "value"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Messages"
+              },
+              "properties": [
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      },
+                      {
+                        "color": "red",
+                        "value": 5
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Cluster"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 235
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Messages"
+              },
+              "properties": [
+                {
+                  "id": "links",
+                  "value": [
+                    {
+                      "targetBlank": true,
+                      "title": "Test",
+                      "url": "https://telex.hu"
+                    }
+                  ]
+                },
+                {
+                  "id": "custom.cellOptions",
+                  "value": {
+                    "type": "auto"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 23,
+          "w": 24,
+          "x": 0,
+          "y": 2
+        },
+        "id": 1,
+        "options": {
+          "cellHeight": "sm",
+          "footer": {
+            "countRows": false,
+            "fields": "",
+            "reducer": [
+              "sum"
+            ],
+            "show": false
+          },
+          "frameIndex": 1,
+          "showHeader": true,
+          "sortBy": [
+            {
+              "desc": true,
+              "displayName": "Connections"
+            }
+          ]
+        },
+        "pluginVersion": "10.4.5",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "gcp-managed-prometheus"
+            },
+            "disableTextWrap": false,
+            "editorMode": "code",
+            "exemplar": false,
+            "expr": "sum by(instance) (rabbitmq_queue_messages)",
+            "fullMetaSearch": false,
+            "hide": false,
+            "includeNullMetadata": true,
+            "instant": false,
+            "legendFormat": "__auto",
+            "range": true,
+            "refId": "A",
+            "useBackend": false
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "gcp-managed-prometheus"
+            },
+            "editorMode": "code",
+            "expr": "sum by(instance) (rabbitmq_connections)",
+            "hide": false,
+            "instant": false,
+            "legendFormat": "__auto",
+            "range": true,
+            "refId": "B"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "gcp-managed-prometheus"
+            },
+            "editorMode": "code",
+            "exemplar": false,
+            "expr": "sum by(instance) (rabbitmq_queues)",
+            "hide": false,
+            "instant": false,
+            "legendFormat": "__auto",
+            "range": true,
+            "refId": "C"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "gcp-managed-prometheus"
+            },
+            "editorMode": "code",
+            "expr": "sum by(instance) (rabbitmq_channels)",
+            "hide": false,
+            "instant": false,
+            "legendFormat": "__auto",
+            "range": true,
+            "refId": "E"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "gcp-managed-prometheus"
+            },
+            "disableTextWrap": false,
+            "editorMode": "code",
+            "exemplar": true,
+            "expr": "sum by(instance) (rabbitmq_channel_messages_unacked)",
+            "fullMetaSearch": false,
+            "hide": false,
+            "includeNullMetadata": true,
+            "instant": false,
+            "legendFormat": "__auto",
+            "range": true,
+            "refId": "F",
+            "useBackend": false
+          }
+        ],
+        "title": "RabbitMQ Clusters",
+        "transformations": [
+          {
+            "id": "timeSeriesTable",
+            "options": {}
+          },
+          {
+            "id": "merge",
+            "options": {}
+          },
+          {
+            "id": "organize",
+            "options": {
+              "excludeByName": {},
+              "includeByName": {},
+              "indexByName": {
+                "Trend #A": 1,
+                "Trend #B": 5,
+                "Trend #C": 3,
+                "Trend #E": 4,
+                "Trend #F": 2,
+                "rabbitmq_cluster": 0
+              },
+              "renameByName": {
+                "Trend #A": "Messages",
+                "Trend #B": "Connections",
+                "Trend #C": "Queues",
+                "Trend #E": "Channels",
+                "Trend #F": "Unacked messages",
+                "Trend #G": "Alarms",
+                "rabbitmq_cluster": "Cluster"
+              }
+            }
+          }
+        ],
+        "type": "table"
+      }
+    ],
+    "refresh": "30s",
+    "schemaVersion": 39,
+    "tags": [
+      "rabbitmq-prometheus",
+      "7s-rabbitmq-support"
+    ],
+    "templating": {
+      "list": [
+        {
+          "hide": 2,
+          "label": "Prometheus",
+          "name": "DS_PROMETHEUS",
+          "query": "prometheus",
+          "skipUrlSync": false,
+          "type": "constant"
+        },
+        {
+          "allValue": "",
+          "current": {
+            "selected": true,
+            "text": [
+              "xbid"
+            ],
+            "value": [
+              "xbid"
+            ]
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "gcp-managed-prometheus"
+          },
+          "definition": "label_values(rabbitmq_connections,energy_customer)",
+          "hide": 0,
+          "includeAll": true,
+          "multi": true,
+          "name": "energy_customer",
+          "options": [],
+          "query": {
+            "qryType": 1,
+            "query": "label_values(rabbitmq_connections,energy_customer)",
+            "refId": "PrometheusVariableQueryEditor-VariableQuery"
+          },
+          "refresh": 1,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 0,
+          "type": "query"
+        }
+      ]
+    },
+    "time": {
+      "from": "now-5m",
+      "to": "now"
+    },
+    "timepicker": {},
+    "timezone": "",
+    "title": "RabbitMQ Clusters",
+    "uid": "7s-rabbitmq-clusters",
+    "version": 5,
+    "weekStart": ""
+  }
